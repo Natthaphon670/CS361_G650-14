@@ -32,6 +32,7 @@
 * **Integrated System (V7):** การบูรณาการข้อมูลอาจารย์ ผลงาน ภาระงาน การตรวจสอบข้อมูล และการรายงาน เพื่อสนับสนุนการจัดทำร่าง Workload Sheet และ/หรือรายงานประจำปี พร้อมทบทวน Security, Availability, Scalability, Performance, Cost และความเหมาะสมของ Architecture สำหรับการใช้งานระดับสาขาวิชาในอนาคต
 
 ## External actors / systems
+* **cs.sci.tu.ac.th:** แหล่งดึงข้อมูลส่วนตัวของอาจารย์
 * **Google Scholar:** แหล่งดึงข้อมูลผลงานของอาจารย์
 * **Amazon S3:** แหล่งจัดเก็บ Static Page และไฟล์ JSON
 
