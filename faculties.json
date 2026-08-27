@@ -1,0 +1,746 @@
+[
+  {
+    "faculty_id": "prof_001",
+    "name_th": "ผศ.ดร.ลัมพาพรรณ พันธ์ชูจิตร์",
+    "name_en": "Asst.Prof.Dr. Lumpapun Punchoojit",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 224",
+      "phone": "02-546-4444 ต่อ 2157 ต่อ 224",
+      "email": "lumpapun_p@sci.tu.ac.th"
+    },
+    "research_interests": [
+      "Human-Computer Interaction",
+      "Child-Computer Interaction",
+      "Human and Psychological factors in designing UX/UI",
+      "UX/UI research methods",
+      "Mobile Usability"
+    ],
+    "education": [
+      "Ph.D. (Computer Science), Faculty of Science and Technology, Thammasat University , 2019",
+      "M.Sc. (Information Technology) ,Faculty of Information Technology, King Mongkut’s University of Technology North Bangkok, 2013",
+      "B.Sc. (Computer Science), Mahidol University International College , 2009"
+    ],
+    "expertise": [
+      "วิจัยด้านการปฏิสัมพันธ์ระหว่างมนุษย์และคอมพิวเตอร์ และระหว่างเด็กและคอมพิวเตอร์ ศึกษาในเชิงทฤษฎี วัดผลและประเมินผล รวมถึงการประยุกต์ใช้ทฤษฎีในการสร้างผลิตภัณฑ์ต่าง ๆ",
+      "วิจัยด้านมนุษยปัจจัยและปัจจัยเชิงจิตวิทยาที่มีอิทธิพลต่อการออกแบบส่วนต่อประสานและประสบการณ์ผู้ใช้",
+      "การประยุกต์ใช้วิธีวิจัยรูปแบบต่าง ๆ ในการออกแบบส่วนต่อประสานและประสบการณ์ผู้ใช้",
+      "งานวิจัยด้านความยากง่ายในการใช้งานอุปกรณ์สื่อสารแบบเคลื่อนที่"
+    ],
+    "external_profiles": {
+      "google_scholar_url": "https://scholar.google.com/citations?user=6lbEl34KcAAC&hl=th",
+      "researchgate_url": "https://www.researchgate.net/publication/320986719_Usability_Studies_on_Mobile_User_Interface_Design_Patterns_A_Systematic_Literature_Review"
+    },
+    "total_publications": 20,
+    "publications": [
+      {
+        "title": "Usability studies on mobile user interface design patterns: a systematic literature review",
+        "year": 2017,
+        "venue": "N/A",
+        "citation_count": 322,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:d1gkVwhDpl0C"
+      },
+      {
+        "title": "Research ethics in human-computer interaction: a review of ethical concerns in the past five years",
+        "year": 2015,
+        "venue": "N/A",
+        "citation_count": 17,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:9yKSN-GCB0IC"
+      },
+      {
+        "title": "Usability Studies on Mobile User Interface Design Patterns: A Systematic Literature Review. Advances in Human-Computer Interaction, 2017, 1–22",
+        "year": 2017,
+        "venue": "N/A",
+        "citation_count": 12,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:roLk4NBRz8UC"
+      },
+      {
+        "title": "The influence of icon background colors and icon symbols on menu item selection for smartphone",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 10,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:zYLM7Y9cAGgC"
+      },
+      {
+        "title": "The effect of icon size and grid size on smartphone menu selection",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 7,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:u5HHmVD_uO8C"
+      },
+      {
+        "title": "Usability studies on mobile user interface design patterns: a systematic literature review, Advances in Human-Computer Interaction (2017) 2017",
+        "year": 2017,
+        "venue": "N/A",
+        "citation_count": 6,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:0EnyYjriUFMC"
+      },
+      {
+        "title": "Influence of age group differences on website cultural usability",
+        "year": 2012,
+        "venue": "N/A",
+        "citation_count": 6,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:u-x6o8ySG0sC"
+      },
+      {
+        "title": "A comparative study on sensor displacement effect on realistic sensor displacement benchmark dataset",
+        "year": 2015,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:UeHWp8X0CEIC"
+      },
+      {
+        "title": "The Ethics of computer research: A survey of user acceptance towards mobile HCI research practices and factor influencing the willingness to participate and to share …",
+        "year": 2014,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:qjMakFHDy7sC"
+      },
+      {
+        "title": "Age differences in menu item selection for smartphone: The effects of icon background colors and icon symbols",
+        "year": 2019,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:Y0pCki6q_DkC"
+      },
+      {
+        "title": "An Overview of Research on the Accommodation of Culture into Web Design",
+        "year": 2012,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:IjCSPb-OGe4C"
+      },
+      {
+        "title": "A correlation study of demographic characteristics and smartphone task performance: A comparison between younger and elderly users.",
+        "year": 2022,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:ufrVoPGSRksC"
+      },
+      {
+        "title": "A design guideline for smartphone menu patterns and icon designs for children, adult, and older adult users",
+        "year": 2019,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:_FxGoFyzp5QC"
+      },
+      {
+        "title": "The influence of label font size on menu item selection for smartphone",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:2osOgNQ5qMEC"
+      },
+      {
+        "title": "Children's and adults' schemes in categorization of basic objects and mobile applications",
+        "year": 2015,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:Tyk-4Ss8FVUC"
+      },
+      {
+        "title": "Age differences in smartphone menu item selection: the effects of menu patterns, icon background colours, and icon symbols",
+        "year": 2026,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:hqOjcs7Dif8C"
+      },
+      {
+        "title": "Animal Diary: The Design and Development of a Game Application to Enhance Early Primary School Children’s Attention",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:UebtZRa9Y70C"
+      },
+      {
+        "title": "Benefits and Obstacles in Using Computational and Interactive Technologies in Education. an Insight From Teacher's Perspective (a Study on Bangkok Metropolitan Administration …",
+        "year": 2016,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:W7OEmFMy1HYC"
+      },
+      {
+        "title": "Adamu, Abdullahi",
+        "year": 2015,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:Se3iqnhoufwC"
+      },
+      {
+        "title": "HEA-OR-096",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:LkGwnXOMwfcC"
+      }
+    ]
+  },
+  {
+    "faculty_id": "prof_002",
+    "name_th": "ผศ.ดร.ประภาพร รัตนธำรง",
+    "name_en": "Asst.Prof.Dr. Prapaporn Rattanatamrong",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+      "phone": "0-2986-9256 ต่อ 225",
+      "email": "rattanat@tu.ac.th"
+    },
+    "research_interests": [
+      "Distributed Systems and Middleware",
+      "Cloud and Edge Computing",
+      "Big Data Engineering",
+      "Digital Twins",
+      "Data-Driven Decision Support Systems",
+      "Real-Time Scheduling"
+    ],
+    "education": [
+      "Ph.D. (Electrical and Computer Engineering), University of Florida, USA, 2554",
+      "M.Sc. (Computer Science), University of Southern California, USA, 2547",
+      "วศ.บ. (วิศวกรรมคอมพิวเตอร์) (เกียรตินิยมอันดับสอง), มหาวิทยาลัยเกษตรศาสตร์, ประเทศไทย, 2544"
+    ],
+    "expertise": [
+      "การออกแบบสถาปัตยกรรมของระบบสารสนเทศ (IT systems) บริการบนระบบอินเตอร์เน็ต (Internet-based services) และโครงสร้างพื้นฐานไซเบอร์ (Cyberinfrastructure) แบบกระจายศูนย์ (Distributed systems) และแบบที่อาศัยกลยุทธ์เชิงเทคนิคและศักยภาพของคลาวด์ (Cloud computing) เป็นองค์ประกอบ",
+      "ระบบในการบริหารจัดการการไหลของข้อมูล (Data workflow) เพื่อจัดเก็บ โอนย้าย และวิเคราะห์ข้อมูลทั้งในเซิร์ฟเวอร์บนคลาวด์และเอดจ์ (Cloud and Edge servers)",
+      "ระบบแสดงข้อมูลเป็นภาพ เพื่อสนับสนุนการใช้ข้อมูลประกอบการตัดสินใจขององค์กร (Dashboard and Decision support systems)"
+    ],
+    "external_profiles": {
+      "google_scholar_url": "https://scholar.google.com/citations?user=91z1Tv8AAAAJ&hl=en",
+      "researchgate_url": "https://www.researchgate.net/profile/Prapaporn-Rattanatamrong"
+    },
+    "total_publications": 42,
+    "publications": [
+      {
+        "title": "A New Mobile Application to Reduce Anxiety in Pediatric Patients Before Bone Marrow Aspiration Procedures",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 27,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:ufrVoPGSRksC"
+      },
+      {
+        "title": "Towards real-time distributed signal modeling for brain-machine interfaces",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 20,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:u5HHmVD_uO8C"
+      },
+      {
+        "title": "Overhead Study of Telegraf as a Real-Time Monitoring Agent",
+        "year": 2020,
+        "venue": "N/A",
+        "citation_count": 16,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:hqOjcs7Dif8C"
+      },
+      {
+        "title": "Decentralized Federated Learning for Agricultural Plant Diseases Identification on Edge Devices",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 15,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:YOwf2qJgpHMC"
+      },
+      {
+        "title": "EyeMath: Increasing Accessibility of Mathematics to Visually Impaired Readers",
+        "year": 2019,
+        "venue": "N/A",
+        "citation_count": 11,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:LkGwnXOMwfcC"
+      },
+      {
+        "title": "Mode transition for online scheduling of adaptive real-time systems on multiprocessors",
+        "year": 2011,
+        "venue": "N/A",
+        "citation_count": 11,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:2osOgNQ5qMEC"
+      },
+      {
+        "title": "Migrating Deep Learning Data and Applications among Kubernetes Edge Nodes",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 10,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:5nxA0vEk-isC"
+      },
+      {
+        "title": "BMI cyberworkstation: Enabling dynamic data-driven brain-machine interface research through cyberinfrastructure",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 9,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:d1gkVwhDpl0C"
+      },
+      {
+        "title": "Cyber-workstation for computational neuroscience",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 8,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:u-x6o8ySG0sC"
+      },
+      {
+        "title": "Real-time scheduling of mixture-of-experts systems with limited resources",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 7,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:9yKSN-GCB0IC"
+      },
+      {
+        "title": "Multi-Container Application Migration with Load Balanced and Adaptive Parallel TCP",
+        "year": 2019,
+        "venue": "N/A",
+        "citation_count": 6,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:Se3iqnhoufwC"
+      },
+      {
+        "title": "Fuzzy scheduling of real-time ensemble systems",
+        "year": 2014,
+        "venue": "N/A",
+        "citation_count": 6,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:W7OEmFMy1HYC"
+      },
+      {
+        "title": "Development of a Digital Twin for Smart Building over Edge-Cloud Continuum",
+        "year": 2022,
+        "venue": "N/A",
+        "citation_count": 5,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:KlAtU1dfN6UC"
+      },
+      {
+        "title": "Solving Non-IID in Federated Learning for Image Classification using GANs",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:ULOm3_A8WrAC"
+      },
+      {
+        "title": "Machine Learning Approaches for Quality Control in Pulp Packaging Manufacturers",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:Zph67rFs4hoC"
+      },
+      {
+        "title": "Dynamic scheduling of real-time mixture-of-experts systems on limited resources",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:IjCSPb-OGe4C"
+      },
+      {
+        "title": "Real-time scheduling of ensemble systems with limited resources",
+        "year": 2011,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:Tyk-4Ss8FVUC"
+      },
+      {
+        "title": "Improved real‐time scheduling of periodic tasks on multiprocessors",
+        "year": 2015,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:Y0pCki6q_DkC"
+      },
+      {
+        "title": "Model development, testing and experimentation in a CyberWorkstation for Brain-Machine Interface research",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:qjMakFHDy7sC"
+      },
+      {
+        "title": "Preserving privacy in wearable devices: a framework for sensitive activity data protection with utility retention",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:aqlVkmm33-oC"
+      },
+      {
+        "title": "Correlation Study of Global Weather Conditions and COVID-19 Transmission: A Clustering Approach",
+        "year": 2022,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:8k81kl-MbHgC"
+      },
+      {
+        "title": "Toponym Extraction in Thai Tweets Using a Hybrid Approach",
+        "year": 2020,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:roLk4NBRz8UC"
+      },
+      {
+        "title": "BMI CyberWorkstation: a cyberinfrastructure for collaborative experimental research on brain-machine interfaces",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:UeHWp8X0CEIC"
+      },
+      {
+        "title": "An Eye Tracking Dataset for Multimedia Retrieval",
+        "year": 2026,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:QIV2ME_5wuYC"
+      },
+      {
+        "title": "Privacy and Utility Preserving at the Edge: Face Anonymization with Hashed-Metadata Retrieval for Lifelogging",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:mVmsd5A6BfQC"
+      },
+      {
+        "title": "Utilising crowdsourcing and text mining to enhance information extraction from social media: A case study in handling COVID-19 supply requests in Thailand",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:M3ejUd6NZC8C"
+      },
+      {
+        "title": "Prototyping a Low-Cost Pest Detection System for CNT0718-26-1-1-1 Rice Farming",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:_kc_bZDykSQC"
+      },
+      {
+        "title": "Classifying Thai Occupation from Images using Deep Learning with Grayscale Feature Extractor",
+        "year": 2022,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:3fE2CSJIrl8C"
+      },
+      {
+        "title": "Thai Preschooler Speech Recognition for Voice Enabled Interactive Counting Exercises",
+        "year": 2022,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:MXK_kJrjxJIC"
+      },
+      {
+        "title": "enGeno: Towards enabling a medical genogram library for supporting home-visit patient diagnosis",
+        "year": 2016,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:WF5omc3nYNoC"
+      },
+      {
+        "title": "An Eye Tracking Dataset for Multimedia Retrieval",
+        "year": 2026,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:Wp0gIr-vW9MC"
+      },
+      {
+        "title": "Optimized YOLOv8–DenseNet Pipeline for Fast Cervical Cell Detection",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:9ZlFYXVOiuMC"
+      },
+      {
+        "title": "BIM MODIVIS: A Modular Framework for BIM-Based Smart Campus Data Integration and Visualization",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:4DMP91E08xMC"
+      },
+      {
+        "title": "Predicting Multiple Reading Tasks Using Eye Movement Measures",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:qxL8FJ1GzNcC"
+      },
+      {
+        "title": "Human-Computer Interaction for Decision Making in Digital Twins with Various Display Environments",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:4TOpqqG69KYC"
+      },
+      {
+        "title": "Migrating data and application between Kubernetes edge servers",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:kNdYIx-mwKoC"
+      },
+      {
+        "title": "PRAGMA Cloud Scheduler: Improving Usability of the PRAGMA Cloud Testbed",
+        "year": 2017,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:_FxGoFyzp5QC"
+      },
+      {
+        "title": "Improved real-time scheduling for periodic tasks on multiprocessors",
+        "year": 2011,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:eQOLeE2rZwMC"
+      },
+      {
+        "title": "Towards closed-loop brain-machine experiments across wide-area networks",
+        "year": 2011,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:zYLM7Y9cAGgC"
+      },
+      {
+        "title": "Model Development, Testing and Experimentation in a CyberWorkstation for Brain-Machine Interface Research",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:0EnyYjriUFMC"
+      },
+      {
+        "title": "Adaptive middleware management for Dynamic Data-Driven Brain-Machine Interface (DDDBMI)",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:UebtZRa9Y70C"
+      },
+      {
+        "title": "Performance Study of Open Source Multimedia Collaboration Software in Virtualized Environment",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=91z1Tv8AAAAJ:YsMSGLbcyi4C"
+      }
+    ]
+  },
+  {
+    "faculty_id": "prof_003",
+    "name_th": "ผศ.ดร.ทรงศักดิ์ รองวิริยะพานิช",
+    "name_en": "Asst.Prof.Dr. Songsakdi Rongviriyapanish",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 223",
+      "phone": "0-2986-9156 ต่อ 204",
+      "email": "rongviri@tu.ac.th"
+    },
+    "research_interests": [
+      "Software Engineering (Software Verification, Software Process)",
+      "Simulation Model",
+      "Software Modeling ( Formal Method )"
+    ],
+    "education": [
+      "Ph.D. (Decorat en informatique), Université de Nancy II ,FRANCE, 2543",
+      "DEA (Diplôme d’étude aprofondi specialisé en bases de données, du parallélisme et des systèmes distributes), Institut National des Télécommunications ,FRANCE, 2539",
+      "Maîtrise (Maîtrise d’informatique) , Institut Galilée, Université de Paris XIII , FRANCE, 2538",
+      "Licence (Licence d’informatique) , Institut Galilée, Université de Paris XIII , FRANCE, 2537"
+    ],
+    "expertise": [
+      "-"
+    ],
+    "external_profiles": {
+      "google_scholar_url": "https://scholar.google.com/citations?hl=th&user=w57gQ0EAAAAJ&view_op=list_works&sortby=pubdate",
+      "researchgate_url": "https://www.researchgate.net/profile/Songsak-Rongviriyapanich"
+    },
+    "total_publications": 25,
+    "publications": [
+      {
+        "title": "Using software metrics to select refactoring for long method bad smell",
+        "year": 2011,
+        "venue": "N/A",
+        "citation_count": 35,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:qjMakFHDy7sC"
+      },
+      {
+        "title": "A client perceived qos model for web services selection",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 12,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:kNdYIx-mwKoC"
+      },
+      {
+        "title": "Safety property analysis of service-oriented iot based on interval timed coloured petri nets",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 10,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:LkGwnXOMwfcC"
+      },
+      {
+        "title": "Identifying refactoring through formal model based on data flow graph",
+        "year": 2011,
+        "venue": "N/A",
+        "citation_count": 10,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:2osOgNQ5qMEC"
+      },
+      {
+        "title": "Refactoring opportunity identification methodology for removing long method smells and improving code analyzability",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 8,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:W7OEmFMy1HYC"
+      },
+      {
+        "title": "Changeability prediction model for java class based on multiple layer perceptron neural network",
+        "year": 2016,
+        "venue": "N/A",
+        "citation_count": 8,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:u-x6o8ySG0sC"
+      },
+      {
+        "title": "Variations sur le style architectural Pipe and Filter",
+        "year": 2000,
+        "venue": "N/A",
+        "citation_count": 7,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:8k81kl-MbHgC"
+      },
+      {
+        "title": "Method evaluation for software testability on object oriented code",
+        "year": 2020,
+        "venue": "N/A",
+        "citation_count": 5,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:_kc_bZDykSQC"
+      },
+      {
+        "title": "Microscopic simulation for modeling effects of motorcycles on traffic operations at signalized intersection",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 5,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:_FxGoFyzp5QC"
+      },
+      {
+        "title": "Modeling code analyzability at method level in j2ee applications",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:MXK_kJrjxJIC"
+      },
+      {
+        "title": "Automatic code locations identification for replacing temporary variable with query method",
+        "year": 2015,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:3fE2CSJIrl8C"
+      },
+      {
+        "title": "Traceability assessment model for checking traceability requirement compliance of a medical device software development process with ISO/IEC 62304",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:M3ejUd6NZC8C"
+      },
+      {
+        "title": "A Survey on the Maintenance of Software Structure in Thai Software Industries",
+        "year": 2011,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:UebtZRa9Y70C"
+      },
+      {
+        "title": "Variations on the Pipe and Filter Architectural Style",
+        "year": 1999,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:WF5omc3nYNoC"
+      },
+      {
+        "title": "การ จำแนก อนุ ประโยค อัต วิสัย จาก บทความ ภาษา ไทย ด้วย หน่วย ความ จำ ระยะ สั้น ยาว แบบ สอง ทาง",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:Wp0gIr-vW9MC"
+      },
+      {
+        "title": "Proposals for Improving the Assessment of Medical Device Software in Thailand.",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:aqlVkmm33-oC"
+      },
+      {
+        "title": "A case study of assessing PDPA compliance of the elderly care robot",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:qxL8FJ1GzNcC"
+      },
+      {
+        "title": "การพัฒนาซอฟต์แวร์เชิงคอมโพเนนต์ (Component-based Software Development)",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:Zph67rFs4hoC"
+      },
+      {
+        "title": "An effective approach to identifying and suggesting appropriate refactorings for long method bad smell removal",
+        "year": 2017,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:4TOpqqG69KYC"
+      },
+      {
+        "title": "ตำราประกอบการเรียนวิชาวิศวกรรมซอฟต์แวร์ (Introduction to software engineering)",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:KlAtU1dfN6UC"
+      },
+      {
+        "title": "Development environment based on LOTOS and architectural styles",
+        "year": 1998,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:Se3iqnhoufwC"
+      },
+      {
+        "title": "หน้าต่าง ตัวอย่าง บทความ (Preview Portal)",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:4DMP91E08xMC"
+      },
+      {
+        "title": "APSEC 2013 Tutorials, Industry Track, and Postgraduate Symposium",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:YOwf2qJgpHMC"
+      },
+      {
+        "title": "APSEC 2013 Postgraduate Symposium",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:ULOm3_A8WrAC"
+      },
+      {
+        "title": "Productivity and Maintainability in Ex-treme Programming and Waterfallbased Projects",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=w57gQ0EAAAAJ:0EnyYjriUFMC"
+      }
+    ]
+  },
+  {
+    "faculty_id": "prof_004",
+    "name_th": "ผศ.ดร.กษิดิศ ชาญเชี่ยว",
+    "name_en": "Asst.Prof.Dr. Kasidit Chanchio",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+      "phone": "0-2986-9156 ต่อ 200",
+      "email": "ckasidit@tu.ac.th"
+    },
+    "research_interests": [
+      "Fault Tolerence",
+      "Distributed and Parallel Processing",
+      "High Performance Computing",
+      "System Software"
+    ],
+    "education": [
+      "Ph. D. (Computer Science), Louisiana State University, USA. , 2543",
+      "M.S. (Computer Science), Louisiana State University, USA. , 2539",
+      "วท.บ. (ศาสตร์คอมพิวเตอร์) , มหาวิทยาลัยธรรมศาสตร์ , ประเทศไทย, 2533"
+    ],
+    "expertise": [
+      "-"
+    ],
+    "external_profiles": {
+      "google_scholar_url": "-",
+      "researchgate_url": "-"
+    },
+    "total_publications": 0,
+    "publications": []
+  }
+]
