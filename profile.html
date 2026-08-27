@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty Profile | มหาวิทยาลัยธรรมศาสตร์</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="top-accent-bar"></div>
+
+  <header>
+    <div class="container nav-wrap">
+      <a href="index.html" class="back-btn">กลับสู่หน้ารายชื่ออาจารย์</a>
+      <span class="brand-title">คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="loading-state" class="status-view">
+      <p>กำลังโหลดข้อมูลอาจารย์...</p>
+    </div>
+
+    <div id="main-content" class="profile-layout" style="display: none;">
+      <!-- Sidebar Information -->
+      <aside class="sidebar-card">
+        <div class="avatar-wrapper">
+          <div id="f-avatar" class="avatar-placeholder">TU</div>
+        </div>
+        <h1 id="f-name-th" class="faculty-name-th">-</h1>
+        <p id="f-name-en" class="faculty-name-en">-</p>
+        <span id="f-position" class="position-badge">-</span>
+
+        <div class="info-list">
+          <div class="info-item" id="item-office"><span id="f-office">-</span></div>
+          <div class="info-item" id="item-phone"><span id="f-phone">-</span></div>
+          <div class="info-item" id="item-email"><span id="f-email">-</span></div>
+        </div>
+
+        <div class="profile-links" id="f-links-section">
+          <a id="link-scholar" href="#" target="_blank" class="ext-link-btn" style="display: none;">Google Scholar</a>
+          <a id="link-rg" href="#" target="_blank" class="ext-link-btn" style="display: none;">ResearchGate Profile</a>
+        </div>
+      </aside>
+
+      <!-- Main Detail Sections -->
+      <section class="content-area">
+        <div class="card-block" id="block-interests">
+          <h2 class="block-header">สาขาความสนใจและหัวข้องานวิจัย</h2>
+          <div id="f-interests" class="chip-container"></div>
+        </div>
+
+        <div class="card-block" id="block-expertise">
+          <h2 class="block-header">ความเชี่ยวชาญทางวิชาการ</h2>
+          <ul id="f-expertise-list" class="custom-bullet-list"></ul>
+        </div>
+
+        <div class="card-block" id="block-education">
+          <h2 class="block-header">ประวัติการศึกษา</h2>
+          <ul id="f-education-list" class="custom-bullet-list"></ul>
+        </div>
+
+        <div class="card-block" id="block-publications">
+          <div class="pub-meta-header">
+            <h2 class="block-header">ผลงานทางวิชาการและงานวิจัย</h2>
+            <span id="f-pub-count" class="pub-count-badge">0 ผลงาน</span>
+          </div>
+          <ul id="f-publications-list" class="pub-list"></ul>
+        </div>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>
