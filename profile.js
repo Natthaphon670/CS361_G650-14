@@ -34,6 +34,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadingState.style.display = 'none';
     mainContent.style.display = 'grid';
+
+    // Contact Information
+    const contact = f.contact_information || {};
+    setTextOrHide('f-office', 'item-office', contact.office);
+    setTextOrHide('f-phone', 'item-phone', contact.phone);
+    setTextOrHide('f-email', 'item-email', contact.email);
+
+    // External Links
+    const profiles = f.external_profiles || {};
+    const scholarBtn = document.getElementById('link-scholar');
+    const rgBtn = document.getElementById('link-rg');
+
+    if (profiles.google_scholar_url && profiles.google_scholar_url !== '-') {
+      scholarBtn.href = profiles.google_scholar_url;
+      scholarBtn.style.display = 'inline-flex';
+    }
+    if (profiles.researchgate_url && profiles.researchgate_url !== '-') {
+      rgBtn.href = profiles.researchgate_url;
+      rgBtn.style.display = 'inline-flex';
+    }
+
     renderSections(f);
   }
 
@@ -45,21 +66,75 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function renderSections(f) {
   // Interests
-  const interests = document.getElementById('f-interests');
-  interests.innerHTML = (f.research_interests || []).map(item => `<span class="chip">${escapeHtml(item)}</span>`).join('');
+    const interestsContainer = document.getElementById('f-interests');
+    if (f.research_interests && f.research_interests.length > 0 && f.research_interests[0] !== '-') {
+      interestsContainer.innerHTML = f.research_interests
+        .map(item => `<span class="chip">${escapeHtml(item)}</span>`)
+        .join('');
+    } else {
+      document.getElementById('block-interests').style.display = 'none';
+    }
 
-  // Expertise & Education
-  document.getElementById('f-expertise-list').innerHTML = (f.expertise || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
-  document.getElementById('f-education-list').innerHTML = (f.education || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+    // Expertise
+    const expContainer = document.getElementById('f-expertise-list');
+    if (f.expertise && f.expertise.length > 0 && f.expertise[0] !== '-') {
+      expContainer.innerHTML = f.expertise
+        .map(item => `<li>${escapeHtml(item)}</li>`)
+        .join('');
+    } else {
+      document.getElementById('block-expertise').style.display = 'none';
+    }
 
-  // Publications
-  const pubContainer = document.getElementById('f-publications-list');
-  document.getElementById('f-pub-count').textContent = `${f.total_publications || 0} ผลงาน`;
-  pubContainer.innerHTML = (f.publications || []).map(pub => `
-    <li class="pub-item">
-      <div class="pub-title">${escapeHtml(pub.title)} (${pub.year || 'N/A'})</div>
-      ${pub.url ? `<a href="${escapeHtml(pub.url)}" target="_blank" class="pub-link">ดูรายละเอียดผลงาน</a>` : ''}
-    </li>
-  `).join('');
-   }
+    // Education
+    const eduContainer = document.getElementById('f-education-list');
+    if (f.education && f.education.length > 0) {
+      eduContainer.innerHTML = f.education
+        .map(item => `<li>${escapeHtml(item)}</li>`)
+        .join('');
+    } else {
+      document.getElementById('block-education').style.display = 'none';
+    }
+
+    // Publications
+    const pubContainer = document.getElementById('f-publications-list');
+    const totalPub = f.total_publications || (f.publications ? f.publications.length : 0);
+    document.getElementById('f-pub-count').textContent = `${totalPub} ผลงาน`;
+
+    if (f.publications && f.publications.length > 0) {
+      pubContainer.innerHTML = f.publications.map(pub => `
+        <li class="pub-item">
+          <div class="pub-badge-row">
+            <span class="badge-year">${pub.year ? pub.year : 'N/A'}</span>
+            ${pub.citation_count > 0 ? `<span class="badge-citation">การอ้างอิง: ${pub.citation_count} ครั้ง</span>` : ''}
+          </div>
+          <div class="pub-title">${escapeHtml(pub.title)}</div>
+          ${pub.url ? `
+            <a href="${escapeHtml(pub.url)}" target="_blank" rel="noopener noreferrer" class="pub-link">
+              ดูรายละเอียดผลงาน
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>` : ''}
+        </li>
+      `).join('');
+    } else {
+      pubContainer.innerHTML = '<li style="color: var(--text-muted); font-size: 0.9rem;">ยังไม่มีข้อมูลผลงานที่เผยแพร่</li>';
+    }
+  }
+
+  function setTextOrHide(spanId, wrapperId, val) {
+    if (!val || val === '-') {
+      document.getElementById(wrapperId).style.display = 'none';
+    } else {
+      document.getElementById(spanId).textContent = val;
+    }
+  }
+
+  function escapeHtml(str) {
+    return String(str || '').replace(/[&<>"']/g, match => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    })[match]);
+  }
 });

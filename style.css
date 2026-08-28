@@ -116,6 +116,48 @@ header {
 .pub-meta-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
 .pub-count-badge { font-size: 0.85rem; font-weight: 600; color: var(--tu-red); background: var(--tu-red-light); padding: 0.2rem 0.65rem; border-radius: 6px; }
 .pub-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
-.pub-item { padding: 1.25rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: #FAFAFA; }
+.pub-item { 
+  padding: 1.25rem; 
+  border: 1px solid var(--border-color); 
+  border-radius: var(--radius-md); 
+  background: #FAFAFA; 
+  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease; 
+}
+
 .pub-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.6rem; }
 .pub-link { font-size: 0.85rem; color: var(--tu-red); text-decoration: none; font-weight: 600; }
+
+.pub-item:hover {
+  border-color: var(--tu-red);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.pub-badge-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.badge-year {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--tu-red);
+  background: var(--tu-red-light);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.badge-citation {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #854D0E;
+  background: var(--tu-yellow-light);
+  border: 1px solid var(--tu-yellow-border);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.pub-link:hover {
+  text-decoration: underline;
+}
