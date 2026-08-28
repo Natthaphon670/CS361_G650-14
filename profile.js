@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadingState.style.display = 'none';
     mainContent.style.display = 'grid';
+    renderSections(f);
   }
 
   function escapeHtml(str) {
@@ -41,4 +42,24 @@ document.addEventListener('DOMContentLoaded', () => {
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     })[match]);
   }
+
+  function renderSections(f) {
+  // Interests
+  const interests = document.getElementById('f-interests');
+  interests.innerHTML = (f.research_interests || []).map(item => `<span class="chip">${escapeHtml(item)}</span>`).join('');
+
+  // Expertise & Education
+  document.getElementById('f-expertise-list').innerHTML = (f.expertise || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+  document.getElementById('f-education-list').innerHTML = (f.education || []).map(item => `<li>${escapeHtml(item)}</li>`).join('');
+
+  // Publications
+  const pubContainer = document.getElementById('f-publications-list');
+  document.getElementById('f-pub-count').textContent = `${f.total_publications || 0} ผลงาน`;
+  pubContainer.innerHTML = (f.publications || []).map(pub => `
+    <li class="pub-item">
+      <div class="pub-title">${escapeHtml(pub.title)} (${pub.year || 'N/A'})</div>
+      ${pub.url ? `<a href="${escapeHtml(pub.url)}" target="_blank" class="pub-link">ดูรายละเอียดผลงาน</a>` : ''}
+    </li>
+  `).join('');
+   }
 });

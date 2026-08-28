@@ -101,3 +101,21 @@ header {
   .profile-layout { grid-template-columns: 1fr; }
   .sidebar-card { position: static; }
 }
+
+.chip-container { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.chip {
+  background: var(--tu-yellow-light); color: #78350F; font-size: 0.85rem;
+  font-weight: 500; padding: 0.35rem 0.85rem; border-radius: 9999px;
+  border: 1px solid var(--tu-yellow-border);
+}
+
+.custom-bullet-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+.custom-bullet-list li { position: relative; padding-left: 1.25rem; font-size: 0.95rem; }
+.custom-bullet-list li::before { content: "•"; position: absolute; left: 0; color: var(--tu-red); font-weight: bold; }
+
+.pub-meta-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.pub-count-badge { font-size: 0.85rem; font-weight: 600; color: var(--tu-red); background: var(--tu-red-light); padding: 0.2rem 0.65rem; border-radius: 6px; }
+.pub-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+.pub-item { padding: 1.25rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: #FAFAFA; }
+.pub-title { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.6rem; }
+.pub-link { font-size: 0.85rem; color: var(--tu-red); text-decoration: none; font-weight: 600; }
