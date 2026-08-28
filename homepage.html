@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>รายชื่อคณาจารย์ | คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์</title>
+  
+  <!-- นำเข้าฟอนต์ให้ตรงกับโครงสร้างเดิม -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ตั้งค่าสีและรูปแบบพื้นฐาน */
+    :root {
+      --primary-color: #c41230;
+      --bg-color: #f9f9f9;
+      --card-bg: #ffffff;
+      --text-main: #333333;
+      --text-muted: #666666;
+    }
+
+    body {
+      font-family: 'Sarabun', sans-serif;
+      margin: 0;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+    }
+
+    /* แถบสีแดงด้านบน */
+    .top-accent-bar {
+      height: 4px;
+      background-color: var(--primary-color);
+    }
+
+    header {
+      background: var(--card-bg);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      padding: 20px 0;
+      margin-bottom: 40px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .brand-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 40px;
+      font-weight: 600;
+      font-size: 2rem;
+    }
+
+    /* ระบบ Grid สำหรับจัดเรียงการ์ดรายชื่อ */
+    .faculty-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    /* สไตล์ของการ์ดแต่ละใบ */
+    .faculty-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .faculty-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .avatar-placeholder {
+      width: 90px;
+      height: 90px;
+      background-color: #eeeeee;
+      color: #999999;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin: 0 auto 20px auto;
+    }
+
+    .faculty-name-th {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin: 0 0 5px 0;
+    }
+
+    .faculty-name-en {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin: 0 0 15px 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .position-badge {
+      display: inline-block;
+      background-color: #fdf0f2;
+      color: var(--primary-color);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 25px;
+    }
+
+    .view-profile-btn {
+      margin-top: auto;
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      background-color: var(--primary-color);
+      color: white;
+      text-decoration: none;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background-color 0.2s;
+    }
+
+    .view-profile-btn:hover {
+      background-color: #9c0e25;
+    }
+
+    #loading-state {
+      text-align: center;
+      padding: 50px;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-accent-bar"></div>
+
+  <header>
+    <div class="container">
+      <span class="brand-title">คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์</span>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="page-title">รายชื่อคณาจารย์</h1>
+    
+    <div id="loading-state">
+      <p>กำลังโหลดข้อมูลอาจารย์...</p>
+    </div>
+
+    <!-- พื้นที่สำหรับสร้างการ์ดรายชื่อผ่าน JavaScript -->
+    <div id="faculty-grid" class="faculty-grid" style="display: none;"></div>
+  </main>
+
+  <script>
+    // ฟังก์ชันหลักสำหรับดึงข้อมูล
+    async function fetchFaculties() {
+      try {
+        // ใช้ Fetch API เพื่อดึงข้อมูลจากไฟล์ faculties.json ที่ได้จาก Python
+        const response = await fetch('faculties.json');
+        const faculties = await response.json();
+        
+        renderFaculties(faculties);
+      } catch (error) {
+        console.error('ไม่สามารถดึงไฟล์ faculties.json ได้ กำลังใช้ข้อมูลสำรอง...', error);
+        
+        // ข้อมูลสำรอง (Fallback) ในกรณีที่เปิดไฟล์ HTML โดยตรงในเครื่องแล้วติดปัญหา CORS
+        const fallbackData = [
+          {
+            "faculty_id": "prof_001",
+            "name_th": "ผศ.ดร.ลัมพาพรรณ พันธ์ชูจิตร์",
+            "name_en": "Asst.Prof.Dr. Lumpapun Punchoojit",
+            "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)"
+          },
+          {
+            "faculty_id": "prof_002",
+            "name_th": "ผศ.ดร.ประภาพร รัตนธำรง",
+            "name_en": "Asst.Prof.Dr. Prapaporn Rattanatamrong",
+            "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)"
+          },
+          {
+            "faculty_id": "prof_003",
+            "name_th": "ผศ.ดร.ทรงศักดิ์ รองวิริยะพานิช",
+            "name_en": "Asst.Prof.Dr. Songsakdi Rongviriyapanish",
+            "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)"
+          },
+          {
+            "faculty_id": "prof_004",
+            "name_th": "ผศ.ดร.กษิดิศ ชาญเชี่ยว",
+            "name_en": "Asst.Prof.Dr. Kasidit Chanchio",
+            "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)"
+          }
+        ];
+        renderFaculties(fallbackData);
+      }
+    }
+
+    // ฟังก์ชันสำหรับนำข้อมูลมาสร้างเป็นการ์ด HTML
+    function renderFaculties(faculties) {
+      const grid = document.getElementById('faculty-grid');
+      const loading = document.getElementById('loading-state');
+      
+      grid.innerHTML = ''; // ล้างพื้นที่ก่อนใส่ข้อมูล
+      
+      faculties.forEach(faculty => {
+        const card = document.createElement('div');
+        card.className = 'faculty-card';
+        
+        // สร้างหน้าตาของการ์ดและใส่ตัวแปรลงไป
+        // ลิงก์ไปยังหน้าโปรไฟล์จะมีการแนบ ?id= เพื่อใช้ดึงข้อมูลต่อในหน้าถัดไป
+        card.innerHTML = `
+          <div class="avatar-placeholder">TU</div>
+          <h2 class="faculty-name-th">${faculty.name_th}</h2>
+          <p class="faculty-name-en">${faculty.name_en}</p>
+          <div class="position-badge">${faculty.academic_position}</div>
+          <a href="profile.html?id=${faculty.faculty_id}" class="view-profile-btn">ดูประวัติและผลงาน</a>
+        `;
+        
+        grid.appendChild(card);
+      });
+      
+      // ปิดข้อความกำลังโหลด และเปิดการแสดงผล Grid
+      loading.style.display = 'none';
+      grid.style.display = 'grid';
+    }
+
+    // สั่งให้เริ่มดึงข้อมูลทันทีที่โครงสร้างหน้าเว็บโหลดเสร็จ
+    document.addEventListener('DOMContentLoaded', fetchFaculties);
+  </script>
+</body>
+</html>
