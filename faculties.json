@@ -37,7 +37,7 @@
         "title": "Usability studies on mobile user interface design patterns: a systematic literature review",
         "year": 2017,
         "venue": "N/A",
-        "citation_count": 322,
+        "citation_count": 323,
         "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:d1gkVwhDpl0C"
       },
       {
@@ -526,9 +526,7 @@
       "Maîtrise (Maîtrise d’informatique) , Institut Galilée, Université de Paris XIII , FRANCE, 2538",
       "Licence (Licence d’informatique) , Institut Galilée, Université de Paris XIII , FRANCE, 2537"
     ],
-    "expertise": [
-      "-"
-    ],
+    "expertise": [],
     "external_profiles": {
       "google_scholar_url": "https://scholar.google.com/citations?hl=th&user=w57gQ0EAAAAJ&view_op=list_works&sortby=pubdate",
       "researchgate_url": "https://www.researchgate.net/profile/Songsak-Rongviriyapanich"
@@ -733,9 +731,1955 @@
       "M.S. (Computer Science), Louisiana State University, USA. , 2539",
       "วท.บ. (ศาสตร์คอมพิวเตอร์) , มหาวิทยาลัยธรรมศาสตร์ , ประเทศไทย, 2533"
     ],
-    "expertise": [
-      "-"
+    "expertise": [],
+    "external_profiles": {
+      "google_scholar_url": "-",
+      "researchgate_url": "-"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_005",
+    "name_th": "รศ.ดร.ณัฐธนนท์ หงส์วริทธิ์ธร",
+    "name_en": "Assoc.Prof.Dr. Nuttanont Hongwarittorrn",
+    "academic_position": "รองศาสตราจารย์ (Assoc.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+      "phone": "0-2986-9156 ต่อ 229",
+      "email": "nuttanon@tu.ac.th"
+    },
+    "research_interests": [
+      "Human Computer Interaction",
+      "Animated Characters",
+      "Pedagogical Agents",
+      "Individual Differences in HCI",
+      "Adaptive Interface",
+      "Usability Testing"
     ],
+    "education": [
+      "Ph.D. (Information Science), University of Pittsburgh, USA. , 2545",
+      "M.S. (Information Science), University of Pittsburgh, USA. , 2545",
+      "M.Ed. (Research Methodology), University of Pittsburgh, USA. , 2545",
+      "M.Sc. (Computer and Information Sciences), New jersey Institute of Technology, USA., 2539",
+      "ศศ.ม. (จิตวิทยาอุตสาหกรรมและองค์การ) , มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2539",
+      "วท.บ. (ศาสตร์คอมพิวเตอร์) , มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2533"
+    ],
+    "expertise": [],
+    "external_profiles": {
+      "semanticscholar_url": "https://www.semanticscholar.org/author/Nuttanont-Hongwarittorrn/8654996",
+      "researchgate_url": "https://www.researchgate.net/profile/Nuttanont-Hongwarittorrn"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_006",
+    "name_th": "ผศ.ดร.เด่นดวง ประดับสุวรรณ",
+    "name_en": "Asst.Prof.Dr. Denduang Pradubsuwun",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+      "phone": "0-2986-9156 ต่อ 203",
+      "email": "denduang@tu.ac.th"
+    },
+    "research_interests": [
+      "Formal Verification"
+    ],
+    "education": [
+      "D.Eng. (Computer Science), Tokyo Institute of Technology, Japan, 2548",
+      "วท.ม. (วิทยาการคอมพิวเตอร์) , จุฬาลงกรณ์มหาวิทยาลัย, ประเทศไทย, 2542",
+      "วท.บ. (วิทยาการคอมพิวเตอร์(เกียรตินิยมอันดับสอง)) , มหาวิทยาลัยรามคำแหง, ประเทศไทย, 2538"
+    ],
+    "expertise": [
+      "Formal verification"
+    ],
+    "external_profiles": {
+      "google_scholar_url": "-",
+      "researchgate_url": "-"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_007",
+    "name_th": "ผศ.ดร.ปกรณ์ ลี้สุทธิพรชัย",
+    "name_en": "Asst.Prof.Dr. Pakorn Leesutthipornchai",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+      "phone": "0-2986-9156 ต่อ 217",
+      "email": "pakornl@tu.ac.th"
+    },
+    "research_interests": [
+      "Machine Learning",
+      "Data Mining",
+      "Data Analytics",
+      "Association Mining Mobile and Web Applications"
+    ],
+    "education": [
+      "ปร.ด.(วิศวกรรมไฟฟ้าและคอมพิวเตอร์), มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี, ประเทศไทย, 2554",
+      "วศ.ม. (วิศวกรรมคอมพิวเตอร์), มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี, ประเทศไทย, 2550",
+      "วศ.บ. (วิศวกรรมคอมพิวเตอร์) (เกียรตินิยมอันดับสอง), มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี, ประเทศไทย, 2547"
+    ],
+    "expertise": [],
+    "external_profiles": {
+      "google_scholar_url": "-",
+      "researchgate_url": "-"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_008",
+    "name_th": "ผศ.ดร.วิลาวรรณ รักผกาวงศ์",
+    "name_en": "Asst.Prof.Dr. Wilawan Rukpakavong",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+      "phone": "0-2986-9156 ต่อ 215",
+      "email": "wilawan@cs.tu.ac.th"
+    },
+    "research_interests": [
+      "Distributed Systems",
+      "Programming Languages"
+    ],
+    "education": [
+      "Ph.D.(Computer Science) Loughborough University, UK, 2557",
+      "M.Sc.(Computer Technology), Asian Institute of Technology, ประเทศไทย, 2534",
+      "วท.บ. (ศาสตร์คอมพิวเตอร์) มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2533"
+    ],
+    "expertise": [],
+    "external_profiles": {
+      "semanticscholar_url": "https://www.semanticscholar.org/author/Wilawan-Rukpakavong/1767714",
+      "researchgate_url": "https://www.researchgate.net/profile/Wilawan-Rukpakavong"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_009",
+    "name_th": "ผศ.ดร.วรวรรณ ดีอัซ การ์บาโย",
+    "name_en": "Asst.Prof.Dr. Worawan Marurngsith",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "ประจำที่ศูนย์ลำปาง",
+      "phone": "-",
+      "email": "papong@tu.ac.th"
+    },
+    "research_interests": [
+      "Agent-based, multi-agent, and Discrete-event Simulations",
+      "High-performance computing on heterogeneous systems, GPGPU",
+      "Compiler techniques for high performance computing",
+      "Performance Evaluation of Computer Systems",
+      "Computers in Education"
+    ],
+    "education": [
+      "Ph.D. (Informatics), University of Edinburgh, UK, 2549",
+      "M.Sc. (Computer Science), University of Edinburgh, UK, 2542",
+      "วท.บ. (ศาสตร์คอมพิวเตอร์) , มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2539"
+    ],
+    "expertise": [],
+    "external_profiles": {
+      "semanticscholar_url": "https://www.semanticscholar.org/author/Worawan-Marurngsith/2669309?sort=velocity",
+      "researchgate_url": "https://www.researchgate.net/profile/Worawan-Marurngsith"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_010",
+    "name_th": "รศ.ดร.ธนาธร ทะนานทอง",
+    "name_en": "Assoc.Prof.Dr. Tanatorn Tanantong",
+    "academic_position": "รองศาสตราจารย์ (Assoc.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+      "phone": "0-2986-9156 ต่อ 217",
+      "email": "tanatorn@tu.ac.th"
+    },
+    "research_interests": [
+      "Artificial Intelligence & Data Mining & Machine Learning",
+      "Formal Ontologies and Semantic Web Technology",
+      "Body Sensor Networks & Internet of Things (IoTs)",
+      "Medical Informatics & Hospital Information Systems"
+    ],
+    "education": [
+      "Ph. D. (Computer Science), Sirindhorn International Institute of Technology, Thammasat University, Thailand, 2558",
+      "M. Eng. (Computer Engineering), Institute of Engineering, Suranaree University of Technology, Thailand, 2551",
+      "B. Eng. (Computer Engineering) , Institute of Engineering, Suranaree University of Technology, Thailand, 2548"
+    ],
+    "expertise": [
+      "การวิเคราะห์และประมวลผลสัญญาณด้านสุขภาพและการแพทย์ (อาทิเช่น สัญญาณคลื่นไฟฟ้าหัวใจ และสัญญาณตรวจจับความเร่งในระนาบ 3 มิติ )",
+      "การวิเคราะห์และสร้างเหมืองข้อมูลจากข้อมูลสื่อสังคมออนไลน์ (Social Media Analytics and Mining) เช่น ข้อมูลบน Twitter FB และ Pantip",
+      "ระบบบริหารจัดการโรงพยาบาล (อาทิเช่น ระบบบริหารจัดการคิวผู้ป่วย)",
+      "ระบบบริหารจัดการงานทะเบียนนักศึกษา"
+    ],
+    "external_profiles": {
+      "google_scholar_url": "https://scholar.google.com/citations?hl=en&user=G3WUmckAAAAJ&view_op=list_works&sortby=pubdate",
+      "researchgate_url": "https://www.researchgate.net/profile/Tanatorn-Tanantong"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_011",
+    "name_th": "ผศ.ดร.อรจิรา สิทธิศักดิ์",
+    "name_en": "Asst.Prof.Dr. Onjira Sitthisak",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+      "phone": "0-2986-9156 ต่อ 202",
+      "email": "onjira@tu.ac.th"
+    },
+    "research_interests": [
+      "Competency Modeling",
+      "Computational algorithm",
+      "E-learning",
+      "Geographic information system (GIS)",
+      "Adaptive Assessment"
+    ],
+    "education": [
+      "Ph.D. (Computer Science) University of Southampton, UK, 2009",
+      "วท.ม.(การจัดการระบบสารสนเทศ) สถาบันบัณฑิตพัฒนบริหารศาสตร์, 2545",
+      "วท.บ.(วิทยาการคอมพิวเตอร์) (เกียรตินิยมอันดับ 1) มหาวิทยาลัยสงขลานครินทร์, 2542"
+    ],
+    "expertise": [
+      "ระบบสารสนเทศภูมิศาสตร์",
+      "การประยุกต์ให้ competency modeling กับการเรียนรู้"
+    ],
+    "external_profiles": {
+      "google_scholar_url": "https://scholar.google.com/citations?user=9qwG-5sAAAAJ&hl=en",
+      "researchgate_url": "https://www.researchgate.net/profile/Onjira-Sitthisak"
+    },
+    "total_publications": 54,
+    "publications": [
+      {
+        "title": "Towards a competency model for adaptive assessment to support lifelong learning",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 53,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:_FxGoFyzp5QC"
+      },
+      {
+        "title": "Adapting health care competencies to a formal competency model",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 43,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:eQOLeE2rZwMC"
+      },
+      {
+        "title": "An evaluation of pedagogically informed parameterised questions for self‐assessment",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 41,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:ULOm3_A8WrAC"
+      },
+      {
+        "title": "Transforming a competency model to assessment items",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 27,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:hFOr9nPyWt4C"
+      },
+      {
+        "title": "Deriving e-assessment from a competency model",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 24,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:IjCSPb-OGe4C"
+      },
+      {
+        "title": "Transforming a competency model to parameterised questions in assessment",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 22,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:LkGwnXOMwfcC"
+      },
+      {
+        "title": "Adaptive learning using an integration of competence model with knowledge space theory",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 19,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:5nxA0vEk-isC"
+      },
+      {
+        "title": "A competency model for semi-automatic question generation in adaptive assessment",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 11,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:WF5omc3nYNoC"
+      },
+      {
+        "title": "Learning in Moodle using competence-based knowledge space theory and IMS QTI",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 9,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:Zph67rFs4hoC"
+      },
+      {
+        "title": "Improving the pedagogical expressiveness of IMS LD",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 7,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:roLk4NBRz8UC"
+      },
+      {
+        "title": "Integrating competence models with knowledge space theory for assessment",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 5,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:MXK_kJrjxJIC"
+      },
+      {
+        "title": "Competence Modelling and technology-enhanced learning",
+        "year": 2014,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:Tyk-4Ss8FVUC"
+      },
+      {
+        "title": "Ontology-driven automatic generation of questions from competency models",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:Y0pCki6q_DkC"
+      },
+      {
+        "title": "Perpetuating the cargo cult: Never mind the pedagogy, feel the technology",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:u-x6o8ySG0sC"
+      },
+      {
+        "title": "Interoperable assessment based on competency modelling",
+        "year": 2011,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:hqOjcs7Dif8C"
+      },
+      {
+        "title": "Extension of IMS LD for improved pedagogical expressiveness in assessment",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:2osOgNQ5qMEC"
+      },
+      {
+        "title": "Interactivity within ims learning design and question and test interoperability",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:YOwf2qJgpHMC"
+      },
+      {
+        "title": "From collaborative virtual research environment to teaching and learning",
+        "year": 2006,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:YsMSGLbcyi4C"
+      },
+      {
+        "title": "Predicting employee attrition using machine learning: A Comparative Analysis of Traditional Models and Neural Networks",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:TQgYirikUcIC"
+      },
+      {
+        "title": "An evaluation of generated question sequences based on competency modelling",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:3fE2CSJIrl8C"
+      },
+      {
+        "title": "Pedagogically informed metadata content and structure for learning and teaching",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:M3ejUd6NZC8C"
+      },
+      {
+        "title": "A study of head instabilities in TMR sensors using in high density perpendicular magnetic recoding systems",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:d1gkVwhDpl0C"
+      },
+      {
+        "title": "Ecovoyage: An AI-Based System for Personalized and Sustainable Travel Planning",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:_Qo2XoVZTnwC"
+      },
+      {
+        "title": "Using Association Mining to Improve Navigation Design in Online Lesson Mobile Application",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:e5wmG9Sq2KIC"
+      },
+      {
+        "title": "Analysis of Generated Assessment Items from the COMBA Competency Model",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:HDshCWvjkbEC"
+      },
+      {
+        "title": "แอ ป พลิ เค ชัน ต้นแบบ ระบบ ติดตาม และ ช่วยเหลือ ผู้ สูงอายุ ใน สถานการณ์ อุทกภัย",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:mB3voiENLucC"
+      },
+      {
+        "title": "แอปพลิเคชันประเมินความเสี่ยงเด็กสมาธิสั้นเบื้องต้น สำหรับครูและผู้ปกครอง",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:qxL8FJ1GzNcC"
+      },
+      {
+        "title": "รายงานวิจัยฉบับสมบูรณ์ ระบบสารสนเทศทางภูมิศาสตร์ภายใต้การตัดสินใจการจัดสรรน้ำอย่างเหมาะสมในเขตพื้นที่ชลประทานฝายไม้เสียบ จังหวัดนครศรีธรรมราช",
+        "year": 2016,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:hC7cP41nSMkC"
+      },
+      {
+        "title": "รายงานวิจัยฉบับสมบูรณ์ ระบบสนับสนุนการตัดสินใจสำหรับการค้นหาเส้นทางปลอดภัยที่เหมาะสมที่สุดใน 3 จังหวัดชายแดนภาคใต้",
+        "year": 2015,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:qUcmZB5y_30C"
+      },
+      {
+        "title": "ต้นแบบระบบสารสนเทศทางภูมิศาสตร์เพื่อการวิเคราะห์ความหลากหลายทางชีวภาพของนกในป่าเสม็ดบริเวณลุ่มน้ำทะเลสาบสงขลา",
+        "year": 2015,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:mVmsd5A6BfQC"
+      },
+      {
+        "title": "ต้นแบบระบบสนับสนุนการตัดสินใจค้นหาเส้นทางที่ปลอดภัยที่สุด กรณีศึกษา เส้นทางในจังหวัดปัตตานี",
+        "year": 2015,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:Wp0gIr-vW9MC"
+      },
+      {
+        "title": "โปรแกรมต้นแบบระบบสารสนเทศทางภูมิศาสตร์ภายใต้การตัดสินใจการจัดสรรน้ำอย่างเหมาะสมในเขตพื้นที่ชลประทานฝายไม้เสียบ จังหวัดนครศรีธรรมราช",
+        "year": 2015,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:4DMP91E08xMC"
+      },
+      {
+        "title": "ระบบสนับสนุนการตัดสินใจกับการประยุกต์ขั้นตอนวิธีระบบมดสำหรับการค้นหาเส้นทางที่เหมาะสม กรณีศึกษา เส้นทางในจังหวัดปัตตานี",
+        "year": 2015,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:aqlVkmm33-oC"
+      },
+      {
+        "title": "ต้นแบบระบบสารสนเทศภูมิศาสตร์เพื่อการตรวจสอบการกระจายตัวของนกในพื้นที่ชุ่มน้ำทะเลน้อย",
+        "year": 2014,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:9ZlFYXVOiuMC"
+      },
+      {
+        "title": "การประยุกต์การเรียนรู้แบบปรับเหมาะกับแบบทดสอบและเนื้อหา",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:dhFuZR0502QC"
+      },
+      {
+        "title": "ต้นแบบระบบสารสนเทศภูมิศาสตร์เพื่อแสดงการถือครองที่ดิน กรณีศึกษาตำบลลำสินธุ์และตำบลบ้านนา จังหวัดพัทลุง",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:QIV2ME_5wuYC"
+      },
+      {
+        "title": "Transforming Competence Structure to assessment questions and feedback for a Self-Study System",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:Se3iqnhoufwC"
+      },
+      {
+        "title": "ผลการประเมินด้านการใช้งานระบบสารสนเทศภูมิศาสตร์สำหรับพืชสมุนไพร จังหวัดพัทลุง",
+        "year": 2012,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:L8Ckcad2t8MC"
+      },
+      {
+        "title": "ผลการประเมินระบบบริหารจัดการการเรียนรู้แบบปรับเหมาะ กรณีศึกษาเรื่อง องค์ประกอบของระบบสารสนเทศ",
+        "year": 2012,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:7PzlFSSx8tAC"
+      },
+      {
+        "title": "Using open source GIS for development of Internet geographic information system: a case study for Thai herb database in Phatthalung Province.",
+        "year": 2012,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:ufrVoPGSRksC"
+      },
+      {
+        "title": "Cognitive Assessment Applying with Item Response Theory.",
+        "year": 2011,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:UebtZRa9Y70C"
+      },
+      {
+        "title": "ผลการประเมินด้านการใช้งานระบบจัดการวารสารอิเล็กทรอนิกส์ กรณีศึกษา วารสารมหาวิทยาลัยทักษิณ",
+        "year": 2011,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:IWHjjKOFINEC"
+      },
+      {
+        "title": "ผลการประเมินด้านการใช้งานระบบบริหารจัดการการเรียนรู้แบบปรับเหมาะกรณีศึกษาเรื่อง องค์ประกอบของระบบสารสนเทศ โรงเรียนสระยายโสมวิทยา",
+        "year": 2011,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:ZeXyd9-uunAC"
+      },
+      {
+        "title": "persona/scenario",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:zYLM7Y9cAGgC"
+      },
+      {
+        "title": "Questions in Assessment",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:R3hNpaxXUhUC"
+      },
+      {
+        "title": "EASiHE meeting minutes and actions 20th April",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:kNdYIx-mwKoC"
+      },
+      {
+        "title": "EASiHE meeting minutes and actions 23rd March",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:u5HHmVD_uO8C"
+      },
+      {
+        "title": "EASiHE meeting minutes and actions 16th March",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:_kc_bZDykSQC"
+      },
+      {
+        "title": "EASiHE meeting minutes and actions 23rd February",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:qjMakFHDy7sC"
+      },
+      {
+        "title": "EASiHE meeting minutes and actions 10th February",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:9yKSN-GCB0IC"
+      },
+      {
+        "title": "EASiHE meeting minutes and actions 20th January",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:KlAtU1dfN6UC"
+      },
+      {
+        "title": "Affordances of machine-processable competency modelling",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:4TOpqqG69KYC"
+      },
+      {
+        "title": "Implementing E-learning Specifications in Teaching-learning Process",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:UeHWp8X0CEIC"
+      },
+      {
+        "title": "From collaborative virtual research environment SOA to teaching and learning environment SOA",
+        "year": 2006,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=9qwG-5sAAAAJ:W7OEmFMy1HYC"
+      }
+    ]
+  },
+  {
+    "faculty_id": "prof_012",
+    "name_th": "ผศ.ดร.วิรัตน์ จารีวงศ์ไพบูลย์",
+    "name_en": "Asst.Prof.Dr. Wirat Jareevongpiboon",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+      "phone": "0-2986-9156 ต่อ 202",
+      "email": "wirat@tu.ac.th"
+    },
+    "research_interests": [
+      "Data / Process Mining",
+      "Semantics via Ontology",
+      "Ontology-Relational Mapping",
+      "Topics related to Business Intelligence"
+    ],
+    "education": [
+      "Ph.D. (Computer Science), Asian Institute of Technology, ประเทศไทย, 2556",
+      "M.B.A. (Management Information System), University of Illinois at Urbana Champaign, USA., 2541",
+      "วท.บ. (ศาสตร์คอมพิวเตอร์) (เกียรตินิยมอันดับสอง), มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2535"
+    ],
+    "expertise": [],
+    "external_profiles": {
+      "semanticscholar_url": "https://www.semanticscholar.org/author/Wirat-Jareevongpiboon/2751016",
+      "researchgate_url": "https://www.researchgate.net/profile/Wirat_Jareevongpiboon"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_013",
+    "name_th": "ผศ.ดร. เสาวลักษณ์ วรรธนาภา",
+    "name_en": "Asst.Prof.Dr. Saowaluk Watanapa",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 211",
+      "phone": "0-2986-9156 ต่อ 214",
+      "email": "wsaowalu@tu.ac.th"
+    },
+    "research_interests": [
+      "Image Processing"
+    ],
+    "education": [
+      "ปร.ด. (Information Technology), มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี, ประเทศไทย, 2551",
+      "M.Sc. (Computer Technology), Asian Institute of Technology, ประเทศไทย, 2534",
+      "วท.บ. (ศาสตร์คอมพิวเตอร์), มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2533"
+    ],
+    "expertise": [],
+    "external_profiles": {
+      "semanticscholar_url": "https://www.semanticscholar.org/author/Saowaluk-Watanapa/3120769",
+      "researchgate_url": "https://www.researchgate.net/scientific-contributions/Saowaluk-C-Watanapa-32507620"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_014",
+    "name_th": "ผศ.ดร. วนิดา พฤทธิวิทยา",
+    "name_en": "Asst.Prof.Dr. Wanida Putthividhya",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+      "phone": "0-2986-9156 ต่อ 230",
+      "email": "wanidap@cs.tu.ac.th"
+    },
+    "research_interests": [
+      "Software economics (เศรษฐศาสตร์การบริหารและการผลิตซอฟต์แวร์)",
+      "Quality of Service (QOS)",
+      "Congestion Control",
+      "Network Security and Operating systems"
+    ],
+    "education": [
+      "Ph.D. (Computer Science), Iowa State University, USA, 2549",
+      "M.S. (Computer Science), University of Southern California, USA, 2543",
+      "วท.บ. (ศาสตร์คอมพิวเตอร์) (เกียรตินิยมอันดับหนึ่งเหรียญทอง), มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2539"
+    ],
+    "expertise": [],
+    "external_profiles": {
+      "semanticscholar_url": "https://www.semanticscholar.org/author/Wanida-Putthividhya/2933236",
+      "researchgate_url": "https://www.researchgate.net/profile/Wanida_Putthividhya"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_015",
+    "name_th": "ผศ.ดร.ปกป้อง ส่องเมือง",
+    "name_en": "Asst.Prof.Dr. Pokpong Songmuang",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+      "phone": "0-2986-9156 ต่อ 213",
+      "email": "pokpongs@tu.ac.th"
+    },
+    "research_interests": [
+      "Artificial Intelligence",
+      "Data mining",
+      "Optimization algorithms",
+      "e-Testing",
+      "Social network analytics"
+    ],
+    "education": [
+      "Ph.D. (Information Science) The University of Electro-Communications, Japan, 2553",
+      "M.Eng. (Master of Engineering), Naoka University of Technology, Japan, 2549",
+      "วท.บ. (วิศวกรรมไฟฟ้า) , มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2546"
+    ],
+    "expertise": [
+      "การออกแบบและพัฒนาระบบจัดการข้อสอบและคลังข้อสอบ",
+      "การประยุกต์ใช้เทคโนโลยีปัญญาประดิษฐ์และการเรียนรู้ของเครื่องจักรเพื่อแก้ปัญหา",
+      "การวิเคราะห์เครือข่ายสังคมออนไลน์"
+    ],
+    "external_profiles": {
+      "google_scholar_url": "https://scholar.google.co.th/citations?hl=th&user=UCNA6dQAAAAJ&view_op=list_works&sortby=pubdate",
+      "researchgate_url": "https://www.researchgate.net/profile/Pokpong_Songmuang"
+    },
+    "total_publications": 131,
+    "publications": [
+      {
+        "title": "Bees algorithm for construction of multiple test forms in e-testing",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 70,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:u5HHmVD_uO8C"
+      },
+      {
+        "title": "Maximum clique algorithm and its approximation for uniform test form assembly",
+        "year": 2014,
+        "venue": "N/A",
+        "citation_count": 59,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:9yKSN-GCB0IC"
+      },
+      {
+        "title": "Computerized adaptive testing based on decision tree",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 47,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:d1gkVwhDpl0C"
+      },
+      {
+        "title": "Implement of salary prediction system to improve student motivation using data mining technique",
+        "year": 2016,
+        "venue": "N/A",
+        "citation_count": 32,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:4TOpqqG69KYC"
+      },
+      {
+        "title": "Maximum clique algorithm for uniform test forms assembly",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 26,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:2osOgNQ5qMEC"
+      },
+      {
+        "title": "Random forest for salary prediction system to improve students' motivation",
+        "year": 2016,
+        "venue": "N/A",
+        "citation_count": 23,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:_kc_bZDykSQC"
+      },
+      {
+        "title": "Improving students' motivation to study using salary prediction system",
+        "year": 2016,
+        "venue": "N/A",
+        "citation_count": 23,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:KlAtU1dfN6UC"
+      },
+      {
+        "title": "携帯電話機レスポンスアナライザを用いた遠隔授業",
+        "year": 2005,
+        "venue": "N/A",
+        "citation_count": 14,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:TFP_iSt0sucC"
+      },
+      {
+        "title": "ピアアセスメントにおける評価者特性を考慮した項目反応理論",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 11,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:3fE2CSJIrl8C"
+      },
+      {
+        "title": "A GoogLeNet performance approach for COVID-19 detection using chest X-ray images",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 7,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:1sJd4Hv_s6UC"
+      },
+      {
+        "title": "The multiple objectives flexible jobshop scheduling using reinforcement learning",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 7,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:ZHo1McVdvXMC"
+      },
+      {
+        "title": "e-Testing Management System",
+        "year": 2005,
+        "venue": "N/A",
+        "citation_count": 7,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:u-x6o8ySG0sC"
+      },
+      {
+        "title": "Missing link prediction using non-overlapped features and multiple sources of social networks",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 6,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:u_35RYKgDlwC"
+      },
+      {
+        "title": "Automatic ontology development from semi-structured data in web-portal: Towards ontology of thai rice knowledge",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 6,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:Wp0gIr-vW9MC"
+      },
+      {
+        "title": "Automated test assembly with minimum redundant questions based on bee algorithm",
+        "year": 2016,
+        "venue": "N/A",
+        "citation_count": 6,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:YOwf2qJgpHMC"
+      },
+      {
+        "title": "A method to extract the maximum number of test forms using maxclique",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 6,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:XiSMed-E-HIC"
+      },
+      {
+        "title": "e テスティングにおける得点・時間予測システムの開発",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 6,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:2P1L_qKh6hAC"
+      },
+      {
+        "title": "Development of Practice of and Integrative e-Testing System",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 6,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:YFjsv_pBGBYC"
+      },
+      {
+        "title": "Collaborative e-Learning among Teachers Using a Web Database in Special Support Education",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 6,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:8k81kl-MbHgC"
+      },
+      {
+        "title": "Hierarchical Multi-Label Classification of Library Subject Headings",
+        "year": 2022,
+        "venue": "N/A",
+        "citation_count": 5,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:rO6llkc54NcC"
+      },
+      {
+        "title": "Exploring efficiency of data mining techniques for missing link in online social network",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 5,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:mVmsd5A6BfQC"
+      },
+      {
+        "title": "AI implementations on circular economy: A systematic literature review",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:AXPGKjj_ei8C"
+      },
+      {
+        "title": "Missing value imputation on gene expression data using bee-based algorithm to improve classification performance",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:8AbLer7MMksC"
+      },
+      {
+        "title": "Automated scoring model for semi-open-ended question in scientific explanation",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:B3FOqHPlNUQC"
+      },
+      {
+        "title": "Menstrual date prediction model utilizing daily post sentiment data on social media for modeling",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:4fKUyHm3Qg0C"
+      },
+      {
+        "title": "Drug Recommendation based on drug details and Optimization using Bee Algorithm",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:08ZZubdj9fEC"
+      },
+      {
+        "title": "Improving Bees-based Imputation using Nearest Neighbor for Heuristic Function in Imputing Data",
+        "year": 2019,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:IWHjjKOFINEC"
+      },
+      {
+        "title": "最大クリーク問題を用いた複数等質テスト自動構成手法",
+        "year": 2014,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:vV6vV6tmYwMC"
+      },
+      {
+        "title": "Multiple test forms construction based on bees algorithm",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:UeHWp8X0CEIC"
+      },
+      {
+        "title": "Detecting food items with possible allergens using deep neural network",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:WbkHhVStYXYC"
+      },
+      {
+        "title": "Missing Values Imputation Framework for Mixed Datasets",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:SP6oXDckpogC"
+      },
+      {
+        "title": "Data Imputation with Genetic Algorithm and Multiple Linear Regression for Improving Performance of Prediction Model",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:UxriW0iASnsC"
+      },
+      {
+        "title": "Data generation for satellite image classification using self-supervised representation learning",
+        "year": 2022,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:D03iK_w7-QYC"
+      },
+      {
+        "title": "Development of Keyword Suggestion for Thai Document Search",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:SeFeTyx0c_EC"
+      },
+      {
+        "title": "Activity recognition using kinect and comparison of supervised learning models for activity classification",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:dhFuZR0502QC"
+      },
+      {
+        "title": "Collaborative E-Test Construction: Using Predicted Response-Time and Score Distributions to Improve Reliability",
+        "year": 2006,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:WF5omc3nYNoC"
+      },
+      {
+        "title": "Review of automated parallel test form assembly",
+        "year": 2026,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:eq2jaN3J8jMC"
+      },
+      {
+        "title": "Machine Learning Models for Speech-Based Depression Screening",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:5ugPr518TE4C"
+      },
+      {
+        "title": "Detecting defamation words from social media comments",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:l7t_Zn2s7bgC"
+      },
+      {
+        "title": "The Development and Testing of a Model for Converting American Sign Language (ASL) Sentences Using Natural Language Processing Techniques",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:K3LRdlH-MEoC"
+      },
+      {
+        "title": "Time and performance comparison on suicide detection using various feature engineering and machine learning models",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:CHSYGLWDkRkC"
+      },
+      {
+        "title": "Design and Development of Stress Monitoring System in Use Case: Twitter# Dek65",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:xtRiw3GOFMkC"
+      },
+      {
+        "title": "An Improved Short Pause Based Voice Activity Detection Using Long Short-Term Memory Recurrent Neural Network",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:R3hNpaxXUhUC"
+      },
+      {
+        "title": "Reducing waiting time in automatic captioned relay service using short pause in voice activity detection",
+        "year": 2017,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:ULOm3_A8WrAC"
+      },
+      {
+        "title": "Comparison of document clustering methods based on bees algorithm and firefly algorithm using thai documents",
+        "year": 2016,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:qxL8FJ1GzNcC"
+      },
+      {
+        "title": "Development of automated e-testing construction system with redundant item detection",
+        "year": 2012,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:UebtZRa9Y70C"
+      },
+      {
+        "title": "E-Testing Construction Support System with some Prediction Tools",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:IjCSPb-OGe4C"
+      },
+      {
+        "title": "An analysis using eye-mark recorder of the effectiveness of presentation methods for e-learning",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:qjMakFHDy7sC"
+      },
+      {
+        "title": "ベイジアンネットワークを用いた Web レコメンデーションシステムの開発",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:hqOjcs7Dif8C"
+      },
+      {
+        "title": "A book recommender system for enhancing reading engagement: a systematic review",
+        "year": 2026,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:dTyEYWd-f8wC"
+      },
+      {
+        "title": "Enhancing Job-Competency Matching: A Comparative Study of BERT-Based Approaches for Targeted Assessment",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:SdhP9T11ey4C"
+      },
+      {
+        "title": "Bert-based semantic retrieval for academic abstracts",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:XiVPGOgt02cC"
+      },
+      {
+        "title": "AI-SIPM 2024: International Workshop on Artificial Intelligence for Signal, Image Processing and Multimedia",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:sSrBHYA8nusC"
+      },
+      {
+        "title": "Weight Loss Recommendation System",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:vRqMK49ujn8C"
+      },
+      {
+        "title": "Transformation framework for explaining complex machine learning models using data enhancement techniques",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:eflP2zaiRacC"
+      },
+      {
+        "title": "Data Preparation for Reducing Computational Time with Transpose Stack Matrix for Action Recognition",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:O3NaXMp0MMsC"
+      },
+      {
+        "title": "Advances in Intelligent Informatics, Smart Technology and Natural Language Processing: Selected Revised Papers from the Joint International Symposium on Artificial Intelligence …",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:QIV2ME_5wuYC"
+      },
+      {
+        "title": "Detecting Redundant Items in Construction of Multiple Equivalent Test Forms using Latent Dirichlet Allocation.",
+        "year": 2011,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:zYLM7Y9cAGgC"
+      },
+      {
+        "title": "Deep Learning-Based Multi-Class Body Fluid Cell Type Classification: A Comparative Evaluation of Image Enhancement Techniques",
+        "year": 2026,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:ye4kPcJQO24C"
+      },
+      {
+        "title": "Scalability Analysis of Multi-Objective Metaheuristics for Assembly Line Balancing Under Soft Zoning Constraints",
+        "year": 2026,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:LjlpjdlvIbIC"
+      },
+      {
+        "title": "An Adaptive Genetic Algorithm for Congestion-Aware Global Placement in Large-Scale VLSI Designs",
+        "year": 2026,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:WqliGbK-hY8C"
+      },
+      {
+        "title": "A Personalized Course Recommendation System Using Semantic Similarity for Bridging the Skills Gap",
+        "year": 2026,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:5awf1xo2G04C"
+      },
+      {
+        "title": "A Data-Driven Approach for Predicting Term Deposit Subscriptions While Handling Missing and Extremely Imbalanced Bank Telemarketing Data",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:JoZmwDi-zQgC"
+      },
+      {
+        "title": "Time Series Interpolation of Holiday Gaps for Enhanced Stock Price Prediction",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:PELIpwtuRlgC"
+      },
+      {
+        "title": "Modeling Urban Transformation and Predicting Respiratory Disease Trends in Thailand with Machine Learning",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:bnK-pcrLprsC"
+      },
+      {
+        "title": "Enhancing Online Education Adaptability via a Recommendation System Driven by Bee Algorithm for Data Enrichment",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:D_sINldO8mEC"
+      },
+      {
+        "title": "Features Analysis of Respiratory Disease in Thailand",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:_B80troHkn4C"
+      },
+      {
+        "title": "Machine Learning on Metabolomic Profiles from Fecal to Identify Plant-Based Food Intake",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:tkaPQYYpVKoC"
+      },
+      {
+        "title": "Optimizing Escape Routes in Emergency Scenarios: A Comparative Study of Pathfinding Algorithms",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:Y5dfb0dijaUC"
+      },
+      {
+        "title": "Evaluating Salary Prediction Models for Graduates Using Dimensionality Reduction and Machine Learning Techniques",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:eMMeJKvmdy0C"
+      },
+      {
+        "title": "การ สร้าง ลา เบ ล สังเคราะห์ สำหรับ การ จำแนก ภาพถ่าย ดาวเทียม ผ่าน การ เรียน รู้ แบบ มี ผู้ สอน ด้วย การ แทน ค่า ด้วย ตัว เอง",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:VOx2b1Wkg3QC"
+      },
+      {
+        "title": "แนวทางการปรับใช้ระบบเครดิตทางสังคมในประเทศไทย: กลไกการกระตุ้นและควบคุมพฤติกรรมของผู้คน",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:LPZeul_q3PIC"
+      },
+      {
+        "title": "Bee-inspired knowledge transfer: synthesizing data for enhanced deep learning explainability",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:5Ul4iDaHHb8C"
+      },
+      {
+        "title": "การ ใช้ กราฟ ความ หมาย สำหรับ สกัด คำ สำคัญ จาก เอกสาร ใน เครื่องมือ ค้นหา ข้อมูล เชิง ลึก: Using Semantic Graph for Keyword Extraction in Vertical Search Engine",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:geHnlv5EZngC"
+      },
+      {
+        "title": "Designing a Comprehensive Analysis Framework for University Student Stress",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:tS2w5q8j5-wC"
+      },
+      {
+        "title": "Multi-Label Classification for Low-Resource Issue Tickets with BERT",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:tOudhMTPpwUC"
+      },
+      {
+        "title": "Conversation Sentiment Analysis in League of Legends Game Community",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:738O_yMBCRsC"
+      },
+      {
+        "title": "การ วิเคราะห์ ทัศนคติ เกี่ยว กับ การ จัดการ ภัย พิบัติ ใน ประเทศไทย บน ทวิ ต เตอร์",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:uWQEDVKXjbEC"
+      },
+      {
+        "title": "Publication Chair",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:kRWSkSYxWN8C"
+      },
+      {
+        "title": "บทความปริทัศน์: งานวิจัยการรู้จำการกระทำของมนุษย์ด้วยการเรียนรู้เชิงลึก",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:OU6Ihb5iCvQC"
+      },
+      {
+        "title": "Disease Screening Model and Fuzzy Hierarchy Analysis for Frequently Occurred Diseases in Children",
+        "year": 2022,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:wbdj-CoPYUoC"
+      },
+      {
+        "title": "การ แทนที่ ข้อมูล สูญหาย ด้วย วิธี การ เชิง พันธุกรรม และ การ ถดถอย เชิง เส้น พหุคูณ เพื่อ ปรับปรุง ความ แม่นยำ ของ แบบ จำลอง ทำนาย ข้อมูล",
+        "year": 2022,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:f2IySw72cVMC"
+      },
+      {
+        "title": "Improvement of Difficulty Parameter Equating base on Ability Parameter Distribution Adjustment",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:4JMBOYKVnBMC"
+      },
+      {
+        "title": "Representation of Conflicts in Non-Functional Requirement using Conceptual Graphs",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:pqnbT2bcN3wC"
+      },
+      {
+        "title": "การ จำแนก ประเภท แบบ มัลติ เลเบล สำหรับ หัวเรื่อง หนังสือ ทาง บรรณารักษศาสตร์",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:EUQCXRtRnyEC"
+      },
+      {
+        "title": "Experimental Chicken Harvester Vehicle",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:HoB7MX3m0LUC"
+      },
+      {
+        "title": "ระบบสร้างชุดข้อสอบที่มีจํานวนคําถามร่วมที่เหมาะสมสําหรับการประเมินมาตรฐาน",
+        "year": 2020,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:RHpTSmoSYBkC"
+      },
+      {
+        "title": "ระบบควบคุมเม้าส์และคีย์บอร์ดด้วยคิเน็คต์",
+        "year": 2020,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:hC7cP41nSMkC"
+      },
+      {
+        "title": "เครื่อง ลำเลียง ไก่ ระบบ สายพาน: รายงาน การ วิจัย ฉบับ สมบูรณ์",
+        "year": 2020,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:p2g8aNsByqUC"
+      },
+      {
+        "title": "การ ปรับปรุง วิธี การ ปรับ เทียบ พารามิเตอร์ ค่า ความ ยาก โดย ใช้ การ ปรับ การ กระจาย ตัว ค่า ความ สามารถ ผู้ เข้า สอบ",
+        "year": 2020,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:_xSYboBqXhAC"
+      },
+      {
+        "title": "การ ลด เวลา คำนวณ ใน เทคนิค การ เรียน รู้ เชิง ลึก สำหรับ การ รู้ จำ การ กระทำ",
+        "year": 2020,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:bFI3QPDXJZMC"
+      },
+      {
+        "title": "iSAI-NLP Committee",
+        "year": 2020,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:ns9cj8rnVeAC"
+      },
+      {
+        "title": "การ แทนที่ ข้อมูล สูญหาย ด้วย วิธี การ ฝูง ผึ้ง เทียม",
+        "year": 2019,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:pyW8ca7W8N0C"
+      },
+      {
+        "title": "Automatic Ontology Development from Semi-structured Data in Web-Portal: Towards",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:BrmTIyaxlBUC"
+      },
+      {
+        "title": "การ พยากรณ์ ลิงค์ ความ สัมพันธ์ ที่ ขาด หาย โดย ใช้ คุณสมบัติ น็ อน โอเวอร์ แล ป และ เครือ ข่าย สังคม หลาย แหล่ง",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:b0M2c_1WBrUC"
+      },
+      {
+        "title": "Maximum Clique Algorithm for Uniform Test Forms Assembly and its approximation",
+        "year": 2014,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:1qzjygNMrQYC"
+      },
+      {
+        "title": "Development of design and analysis methods for item bank for constructing multiple equivalent test forms",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:Se3iqnhoufwC"
+      },
+      {
+        "title": "e テスティングにおける複数テスト自動構成近似手法",
+        "year": 2013,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:W7OEmFMy1HYC"
+      },
+      {
+        "title": "日本とタイにおける携帯電話の絵文字認識相違",
+        "year": 2012,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:iH-uZ7U-co4C"
+      },
+      {
+        "title": "Automatically constructing multiple equivalent test forms using bees algorithm and parallel computing",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:NhqRSupF_l8C"
+      },
+      {
+        "title": "Automatically constructing multiple equivalent test forms using bees algorithm and parallel computing (新時代の学習評価--理論・システム・実践/一般)",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:35N4QoGY0k4C"
+      },
+      {
+        "title": "Automated Construction of Multiple Equivalent Test Forms for e-Testing",
+        "year": 2010,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:Zph67rFs4hoC"
+      },
+      {
+        "title": "Item Response Theory: Parameter Estimation Techniques Item Response Theory: Parameter Estimation Techniques, 2004",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:NaGl4SEjCO4C"
+      },
+      {
+        "title": "Adaptive testing system based on decision tree",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:hFOr9nPyWt4C"
+      },
+      {
+        "title": "e テスティングにおける最大クリーク抽出法を用いた等質テスト生成数の最大化法",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:NMxIlDl6LWMC"
+      },
+      {
+        "title": "Development of Score and Time Prediction System in e-Testing",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:_FxGoFyzp5QC"
+      },
+      {
+        "title": "回答時間による調査項目分類と適切性判定: インターネット調査の設計支援 (特別セッション 好みの計量)",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:isC4tDSrTZIC"
+      },
+      {
+        "title": "コミュニティ・プラザ 世界の窓 タイの教育のための ICT",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:maZDTaKrznsC"
+      },
+      {
+        "title": "携帯電話機を用いた複数クラス遠隔授業実践",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:r0BpntZqJG4C"
+      },
+      {
+        "title": "e テスティングにおける得点・時間予測システムの開発",
+        "year": 2008,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:7PzlFSSx8tAC"
+      },
+      {
+        "title": "特別支援教育における分散的知識の蓄積 (セッション N-12 (MK203) 一般セッション 教育 3)",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:JV2RwH3_ST0C"
+      },
+      {
+        "title": "F-006 ベイジアンネットワークを用いた大規模 Web 推薦システムの開発 (F 分野: 人工知能・ゲーム)",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:70eg2SAEIzsC"
+      },
+      {
+        "title": "K-034 アイマークレコーダを用いた e ラーニングにおけるポインタ提示の有効性についての分析 (K 分野: 教育工学・福祉工学・マルチメディア応用)",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:J_g5lzvAfSwC"
+      },
+      {
+        "title": "K-036 Design and Development of e-Testing Construction Support Agent",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:YsMSGLbcyi4C"
+      },
+      {
+        "title": "11-101 e ラーニングを介した特別支援教育における分散的知識の蓄積 (口頭発表論文,(10) e-ラーニング-I)",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:ldfaerwXgEUC"
+      },
+      {
+        "title": "e ラーニングを介した特別支援教育における分散的知識の蓄積",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:RYcK_YlVTxYC"
+      },
+      {
+        "title": "ベイジアンネットワークを用いた大規模 Web 推薦システムの開発",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:HDshCWvjkbEC"
+      },
+      {
+        "title": "アイマークレコーダを用いた e ラーニングにおけるポインタ提示の有効性についての分析",
+        "year": 2007,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:L8Ckcad2t8MC"
+      },
+      {
+        "title": "Effectiveness of Collaborative e-Test Construction",
+        "year": 2006,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:ufrVoPGSRksC"
+      },
+      {
+        "title": "Collaborative e-Testing Construction Using Prediction Tools To Improve Test Reliability",
+        "year": 2006,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:Tyk-4Ss8FVUC"
+      },
+      {
+        "title": "レスポンスターミナルに携帯電話機を用いた遠隔授業支援",
+        "year": 2005,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:bEWYMUwI8FkC"
+      },
+      {
+        "title": "協調型 e テスティング構成支援システム CeCs (e テスティング)",
+        "year": 2005,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:blknAaTinKkC"
+      },
+      {
+        "title": "携帯電話機を用いた複数クラス遠隔授業支援 (e-learning・e-testing)",
+        "year": 2005,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:M3NEmzRMIkIC"
+      },
+      {
+        "title": "e-Testing Management System",
+        "year": 2005,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:V3AGJWp-ZtQC"
+      },
+      {
+        "title": "決定木による e ラーニング履歴データの質的分析",
+        "year": 2003,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:j3f4tGmQtD8C"
+      },
+      {
+        "title": "Publicity Chair",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:J-pR_7NvFogC"
+      },
+      {
+        "title": "Automated Construction of Multiple Equivalent Test Forms for e-Testing",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:mvPsJ3kp5DgC"
+      },
+      {
+        "title": "Emotion Classification using Brainwave",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:fQNAKQ3IYiAC"
+      },
+      {
+        "title": "Automated Construction of Multiple Equivalent Test Forms for e-Testing",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:u9iWguZQMMsC"
+      },
+      {
+        "title": "iSAI-NLP Committee",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:yD5IFk8b50cC"
+      },
+      {
+        "title": "最大クリーク問題を用いた複数等質テスト自動構成手法",
+        "year": null,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=UCNA6dQAAAAJ:0EnyYjriUFMC"
+      }
+    ]
+  },
+  {
+    "faculty_id": "prof_016",
+    "name_th": "อาจารย์สิริกันยา นิลพานิช",
+    "name_en": "Ajarn Sirikunya Nilpanich",
+    "academic_position": "อาจารย์ (Ajarn)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 211",
+      "phone": "0-2986-9156 ต่อ 218",
+      "email": "skn@cs.tu.ac.th"
+    },
+    "research_interests": [],
+    "education": [
+      "M.Sc. (Computer Science), Syracuse University, USA., 2538",
+      "วท.บ. (ศาสตร์คอมพิวเตอร์) (เกียรตินิยมอันดับสอง), มหาวิทยาลัยธรรมศาสตร์, 2533"
+    ],
+    "expertise": [],
+    "external_profiles": {
+      "semanticscholar_url": "https://www.semanticscholar.org/author/Saowaluk-Watanapa/3120769",
+      "researchgate_url": "https://www.researchgate.net/scientific-contributions/Saowaluk-C-Watanapa-32507620"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_017",
+    "name_th": "ผศ.ดร.กฤตคม ศรีจิรานนท์",
+    "name_en": "Asst.Prof.Dr. Krittakom Srijiranon",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคารบุญชูปณิธาน ห้อง 7301/2",
+      "phone": "0-5423-7999 ต่อ 5627",
+      "email": "krittakom@cs.tu.ac.th, non_krit@tu.ac.th"
+    },
+    "research_interests": [
+      "Data Mining",
+      "Machine Learning"
+    ],
+    "education": [
+      "2021 Ph.D. (Computer Engineering) Chiang Mai University, Thailand",
+      "2015 M.Eng. (Computer Engineering) Chiang Mai University, Thailand",
+      "2014 B.Eng. (Computer Engineering) Chiang Mai University, Thailand"
+    ],
+    "expertise": [],
+    "external_profiles": {
+      "google_scholar_url": "-",
+      "researchgate_url": "-"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_018",
+    "name_th": "อาจารย์ปกรณ์ แววสว่างวงศ์",
+    "name_en": "Ajarn Pakorn Waewsawangwong",
+    "academic_position": "อาจารย์ (Ajarn)",
+    "contact_information": {
+      "office": "-",
+      "phone": "0-5423-7999 ต่อ 5627",
+      "email": "wpakorn@tu.ac.th"
+    },
+    "research_interests": [],
+    "education": [
+      "2001, MSc in Software Engineering (Distinction), University of York"
+    ],
+    "expertise": [],
+    "external_profiles": {
+      "google_scholar_url": "-",
+      "researchgate_url": "-"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_019",
+    "name_th": "ผศ.ดร.ฐาปนา บุญชู",
+    "name_en": "Asst.Prof.Dr. Thapana Boonchoo",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 222",
+      "phone": "02-564-4444 ต่อ 2157 ต่อ 222",
+      "email": "thapana@cs.tu.ac.th"
+    },
+    "research_interests": [
+      "Machine Learning/Data Mining",
+      "Human Movement Analysis",
+      "Data Clustering",
+      "Data Representation Learning",
+      "Matrix Factorization",
+      "Probabilistic Models"
+    ],
+    "education": [
+      "Ph.D. (Computer Science and Technology), Machine Learning and Data Mining Group, Institute of Computing Technology, University of Chinese Academy of Sciences, China",
+      "M.Sc. (Computer Science and Technology), Institute of High-Performance Computing, Tsinghua University, China",
+      "B.Sc. (Computer Science), First Class Honours, Thammasat University, Thailand"
+    ],
+    "expertise": [],
+    "external_profiles": {
+      "semanticscholar_url": "https://www.semanticscholar.org/author/Thapana-Boonchoo/35514166",
+      "researchgate_url": "https://www.researchgate.net/profile/Thapana-Boonchoo"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_020",
+    "name_th": "อ.ดร.นวฤกษ์ ชลารักษ์",
+    "name_en": "Ajarn Dr. Nawarerk Chalarak",
+    "academic_position": "อาจารย์ (Ajarn Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2",
+      "phone": "02-546-4444 ต่อ 2157",
+      "email": "nawarerk@tu.ac.th"
+    },
+    "research_interests": [
+      "Medical image processing",
+      "Artificial Intelligence",
+      "Data mining"
+    ],
+    "education": [
+      "B.Eng. (2006) (Computer Engineering) Suranaree University of Technology",
+      "M.Eng. (2009) (Information Management) Asian Institute of Technology",
+      "M.Sc. (2018) and Ph.D. (2021) (Knowledge Science) Japan Advanced Institute of Science and Technology."
+    ],
+    "expertise": [],
+    "external_profiles": {
+      "google_scholar_url": "https://scholar.google.com/citations?user=BWxR0bIAAAAJ&hl=en",
+      "researchgate_url": "https://www.researchgate.net/profile/Nawarerk-Chalarak"
+    },
+    "total_publications": 19,
+    "publications": [
+      {
+        "title": "The role of bridge managers in global R&D projects",
+        "year": 2017,
+        "venue": "N/A",
+        "citation_count": 12,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:9yKSN-GCB0IC"
+      },
+      {
+        "title": "Mobile-based deep learning framework for classifying common skin diseases in Thailand",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 11,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:abG-DnoFyZgC"
+      },
+      {
+        "title": "Difficulties of Global R&D Projects: a bridge manager’s perspective",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 8,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:f2IySw72cVMC"
+      },
+      {
+        "title": "A study on area assessment of psoriasis lesions using image augmentation and deep learning: Addressing the lack of thai skin disease data",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 7,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:1sJd4Hv_s6UC"
+      },
+      {
+        "title": "Global Knowledge Transfer Framework: A University-Industry Collaboration Perspective",
+        "year": 2016,
+        "venue": "N/A",
+        "citation_count": 5,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:u-x6o8ySG0sC"
+      },
+      {
+        "title": "Difficulties of global R&D projects and role of bridge managers",
+        "year": 2017,
+        "venue": "N/A",
+        "citation_count": 4,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:d1gkVwhDpl0C"
+      },
+      {
+        "title": "Competencies of bridge managers for Facilitating Global R&D Projects",
+        "year": 2023,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:EUQCXRtRnyEC"
+      },
+      {
+        "title": "Competencies of bridge managers for facilitating global R&D projects: Toward their competency development framework",
+        "year": 2019,
+        "venue": "N/A",
+        "citation_count": 3,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:aqlVkmm33-oC"
+      },
+      {
+        "title": "Competency Development Workshop for Bridge Managers in Global R&D Projects",
+        "year": 2022,
+        "venue": "N/A",
+        "citation_count": 2,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:bFI3QPDXJZMC"
+      },
+      {
+        "title": "Thailand National Technology Roadmap on Digital Industry",
+        "year": 2025,
+        "venue": "N/A",
+        "citation_count": 1,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:P5F9QuxV20EC"
+      },
+      {
+        "title": "A Semantic Clustering Framework for Discovering Latent Offense Patterns: A Case Study of Thai Police Records",
+        "year": 2026,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:KxtntwgDAa4C"
+      },
+      {
+        "title": "Deep Learning-Based Multi-Class Body Fluid Cell Type Classification: A Comparative Evaluation of Image Enhancement Techniques",
+        "year": 2026,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:nb7KW1ujOQ8C"
+      },
+      {
+        "title": "Comparison on Basic Image Augmentation Techniques for Skin Disease Image Classification Model Development",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:xtRiw3GOFMkC"
+      },
+      {
+        "title": "Dissemination of Technology Roadmap Using AI Chatbots",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:NhqRSupF_l8C"
+      },
+      {
+        "title": "Thailand's Roadmap for Capacity Building in Space Science and Technology: a Funding Agency Perspectives",
+        "year": 2024,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:CHSYGLWDkRkC"
+      },
+      {
+        "title": "Proposing R&D Bridge Manager Competency Development Framework",
+        "year": 2022,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:b0M2c_1WBrUC"
+      },
+      {
+        "title": "グローバル研究開発プロジェクトにおけるブリッジマネジャーの研究~ プロジェクトの困難とマネジャーのコンピテンシーの関係~",
+        "year": 2021,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:_xSYboBqXhAC"
+      },
+      {
+        "title": "Difficulties of Global R&D Projects and Role of",
+        "year": 2018,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:2osOgNQ5qMEC"
+      },
+      {
+        "title": "Data mining, market basket analysis: a case study of sales data",
+        "year": 2009,
+        "venue": "N/A",
+        "citation_count": 0,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=BWxR0bIAAAAJ:u5HHmVD_uO8C"
+      }
+    ]
+  },
+  {
+    "faculty_id": "prof_021",
+    "name_th": "ผศ.ดร.ศาตนาฏ กิจศิรานุวัตร",
+    "name_en": "Asst.Prof.Dr. Satanat Kitsiranuwat",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2",
+      "phone": "02-546-4444 ต่อ 2157",
+      "email": "satanat@tu.ac.th"
+    },
+    "research_interests": [
+      "Bioinformatics",
+      "Machine Learning/ Data Mining",
+      "Mathematical Modeling"
+    ],
+    "education": [],
+    "expertise": [],
+    "external_profiles": {
+      "google_scholar_url": "-",
+      "researchgate_url": "-"
+    },
+    "total_publications": 0,
+    "publications": []
+  },
+  {
+    "faculty_id": "prof_022",
+    "name_th": "อ.ดร.ภัคพร เสาร์ฝั้น",
+    "name_en": "Ajarn Dr. Pakkaporn Saophan",
+    "academic_position": "อาจารย์ (Ajarn Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2",
+      "phone": "02-546-4444 ต่อ 2157",
+      "email": "pakkp@tu.ac.th"
+    },
+    "research_interests": [
+      "HOptimization",
+      "Production Scheduling & Management",
+      "Management Mathematics",
+      "Machine Learning"
+    ],
+    "education": [
+      "Ph.D. in Knowledge Science, Japan Advanced Institute of Science and Technology (JAIST), Japan",
+      "M.Sc. in Management Mathematics, Sirindhorn International Institute of Technology (SIIT), Thammasat University, Thailand",
+      "B.Sc. in Management Mathematics (Second Class Honors), Thammasat University, Thailand"
+    ],
+    "expertise": [],
     "external_profiles": {
       "google_scholar_url": "-",
       "researchgate_url": "-"

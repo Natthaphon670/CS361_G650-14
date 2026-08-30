@@ -40,7 +40,7 @@ FACULTY_WEB_DATA = [
             "google_scholar_url": "https://scholar.google.com/citations?user=6lbEl34KcAAC&hl=th",
             "researchgate_url": "https://www.researchgate.net/publication/320986719_Usability_Studies_on_Mobile_User_Interface_Design_Patterns_A_Systematic_Literature_Review"
         },
-        "scholar_id": "6lbEl34KcAAC&hl"
+        "scholar_id": "6lbEl34KcAAC"
     },
     
     {
@@ -107,8 +107,8 @@ FACULTY_WEB_DATA = [
             "Simulation Model",
             "Software Modeling ( Formal Method )"
         ],
-        "expertise": ["-"],
-        "selected_publications": ["-"],
+        "expertise": [],
+        "selected_publications": [],
         "external_profiles": {
             "google_scholar_url": "https://scholar.google.com/citations?hl=th&user=w57gQ0EAAAAJ&view_op=list_works&sortby=pubdate",
             "researchgate_url": "https://www.researchgate.net/profile/Songsak-Rongviriyapanich"
@@ -136,14 +136,550 @@ FACULTY_WEB_DATA = [
             "M.S. (Computer Science), Louisiana State University, USA. , 2539",
             "วท.บ. (ศาสตร์คอมพิวเตอร์) , มหาวิทยาลัยธรรมศาสตร์ , ประเทศไทย, 2533"
         ],
-        "expertise": ["-"],
-        "selected_publications": ["-"],
+        "expertise": [],
+        "selected_publications": [],
         "external_profiles": {
             "google_scholar_url": "-",
             "researchgate_url": "-"
         },
         "scholar_id": "-"
-    }
+    },
+    
+    {
+  "id": "prof_005",
+  "name_th": "รศ.ดร.ณัฐธนนท์ หงส์วริทธิ์ธร",
+  "name_en": "Assoc.Prof.Dr. Nuttanont Hongwarittorrn",
+  "academic_position": "รองศาสตราจารย์ (Assoc.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+    "phone": "0-2986-9156 ต่อ 229",
+    "email": "nuttanon@tu.ac.th"
+  },
+  "education": [
+    "Ph.D. (Information Science), University of Pittsburgh, USA. , 2545",
+    "M.S. (Information Science), University of Pittsburgh, USA. , 2545",
+    "M.Ed. (Research Methodology), University of Pittsburgh, USA. , 2545",
+    "M.Sc. (Computer and Information Sciences), New jersey Institute of Technology, USA., 2539",
+    "ศศ.ม. (จิตวิทยาอุตสาหกรรมและองค์การ) , มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2539",
+    "วท.บ. (ศาสตร์คอมพิวเตอร์) , มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2533"
+  ],
+  "research_interests": [
+    "Human Computer Interaction",
+    "Animated Characters",
+    "Pedagogical Agents",
+    "Individual Differences in HCI",
+    "Adaptive Interface",
+    "Usability Testing"
+  ],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "semanticscholar_url": "https://www.semanticscholar.org/author/Nuttanont-Hongwarittorrn/8654996",
+    "researchgate_url": "https://www.researchgate.net/profile/Nuttanont-Hongwarittorrn"
+  },
+  "scholar_id": "-"
+},
+    
+    {
+  "id": "prof_006",
+  "name_th": "ผศ.ดร.เด่นดวง ประดับสุวรรณ",
+  "name_en": "Asst.Prof.Dr. Denduang Pradubsuwun",
+  "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+    "phone": "0-2986-9156 ต่อ 203",
+    "email": "denduang@tu.ac.th"
+  },
+  "education": [
+    "D.Eng. (Computer Science), Tokyo Institute of Technology, Japan, 2548",
+    "วท.ม. (วิทยาการคอมพิวเตอร์) , จุฬาลงกรณ์มหาวิทยาลัย, ประเทศไทย, 2542",
+    "วท.บ. (วิทยาการคอมพิวเตอร์(เกียรตินิยมอันดับสอง)) , มหาวิทยาลัยรามคำแหง, ประเทศไทย, 2538"
+  ],
+  "research_interests": [
+    "Formal Verification"
+  ],
+  "expertise": [
+    "Formal verification"
+  ],
+  "selected_publication": [],
+  "external_profiles": {
+    "google_scholar_url": "-",
+    "researchgate_url": "-"
+  },
+  "scholar_id": "-"
+},
+    
+    {
+  "id": "prof_007",
+  "name_th": "ผศ.ดร.ปกรณ์ ลี้สุทธิพรชัย",
+  "name_en": "Asst.Prof.Dr. Pakorn Leesutthipornchai",
+  "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+    "phone": "0-2986-9156 ต่อ 217",
+    "email": "pakornl@tu.ac.th"
+  },
+  "education": [
+    "ปร.ด.(วิศวกรรมไฟฟ้าและคอมพิวเตอร์), มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี, ประเทศไทย, 2554",
+    "วศ.ม. (วิศวกรรมคอมพิวเตอร์), มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี, ประเทศไทย, 2550",
+    "วศ.บ. (วิศวกรรมคอมพิวเตอร์) (เกียรตินิยมอันดับสอง), มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี, ประเทศไทย, 2547"
+  ],
+  "research_interests": [
+    "Machine Learning",
+    "Data Mining",
+    "Data Analytics",
+    "Association Mining Mobile and Web Applications"
+  ],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "google_scholar_url": "-",
+    "researchgate_url": "-"
+  },
+  "scholar_id": "-"
+},
+    
+    {
+  "id": "prof_008",
+  "name_th": "ผศ.ดร.วิลาวรรณ รักผกาวงศ์",
+  "name_en": "Asst.Prof.Dr. Wilawan Rukpakavong",
+  "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+    "phone": "0-2986-9156 ต่อ 215",
+    "email": "wilawan@cs.tu.ac.th"
+  },
+  "education": [
+    "Ph.D.(Computer Science) Loughborough University, UK, 2557",
+    "M.Sc.(Computer Technology), Asian Institute of Technology, ประเทศไทย, 2534",
+    "วท.บ. (ศาสตร์คอมพิวเตอร์) มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2533"
+  ],
+  "research_interests": [
+    "Distributed Systems",
+    "Programming Languages"
+  ],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "semanticscholar_url": "https://www.semanticscholar.org/author/Wilawan-Rukpakavong/1767714",
+    "researchgate_url": "https://www.researchgate.net/profile/Wilawan-Rukpakavong"
+  },
+  "scholar_id": "-"
+},
+    
+    {
+  "id": "prof_009",
+  "name_th": "ผศ.ดร.วรวรรณ ดีอัซ การ์บาโย",
+  "name_en": "Asst.Prof.Dr. Worawan Marurngsith",
+  "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+  "contact_info": {
+    "office": "ประจำที่ศูนย์ลำปาง",
+    "phone": "-",
+    "email": "papong@tu.ac.th"
+  },
+  "education": [
+    "Ph.D. (Informatics), University of Edinburgh, UK, 2549",
+    "M.Sc. (Computer Science), University of Edinburgh, UK, 2542",
+    "วท.บ. (ศาสตร์คอมพิวเตอร์) , มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2539"
+  ],
+  "research_interests": [
+    "Agent-based, multi-agent, and Discrete-event Simulations",
+    "High-performance computing on heterogeneous systems, GPGPU",
+    "Compiler techniques for high performance computing",
+    "Performance Evaluation of Computer Systems",
+    "Computers in Education"
+  ],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "semanticscholar_url": "https://www.semanticscholar.org/author/Worawan-Marurngsith/2669309?sort=velocity",
+    "researchgate_url": "https://www.researchgate.net/profile/Worawan-Marurngsith"
+  },
+  "scholar_id": "-"
+},
+    
+    {
+  "id": "prof_010",
+  "name_th": "รศ.ดร.ธนาธร ทะนานทอง",
+  "name_en": "Assoc.Prof.Dr. Tanatorn Tanantong",
+  "academic_position": "รองศาสตราจารย์ (Assoc.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+    "phone": "0-2986-9156 ต่อ 217",
+    "email": "tanatorn@tu.ac.th"
+  },
+  "education": [
+    "Ph. D. (Computer Science), Sirindhorn International Institute of Technology, Thammasat University, Thailand, 2558",
+    "M. Eng. (Computer Engineering), Institute of Engineering, Suranaree University of Technology, Thailand, 2551",
+    "B. Eng. (Computer Engineering) , Institute of Engineering, Suranaree University of Technology, Thailand, 2548"
+  ],
+  "research_interests": [
+    "Artificial Intelligence & Data Mining & Machine Learning",
+    "Formal Ontologies and Semantic Web Technology",
+    "Body Sensor Networks & Internet of Things (IoTs)",
+    "Medical Informatics & Hospital Information Systems"
+  ],
+  "expertise": [
+    "การวิเคราะห์และประมวลผลสัญญาณด้านสุขภาพและการแพทย์ (อาทิเช่น สัญญาณคลื่นไฟฟ้าหัวใจ และสัญญาณตรวจจับความเร่งในระนาบ 3 มิติ )",
+    "การวิเคราะห์และสร้างเหมืองข้อมูลจากข้อมูลสื่อสังคมออนไลน์ (Social Media Analytics and Mining) เช่น ข้อมูลบน Twitter FB และ Pantip",
+    "ระบบบริหารจัดการโรงพยาบาล (อาทิเช่น ระบบบริหารจัดการคิวผู้ป่วย)",
+    "ระบบบริหารจัดการงานทะเบียนนักศึกษา"
+  ],
+  "selected_publication": [],
+  "external_profiles": {
+    "google_scholar_url": "https://scholar.google.com/citations?hl=en&user=G3WUmckAAAAJ&view_op=list_works&sortby=pubdate",
+    "researchgate_url": "https://www.researchgate.net/profile/Tanatorn-Tanantong"
+  },
+  "scholar_id": "G3WUmckAAAAJ"
+},
+    
+    {
+  "id": "prof_011",
+  "name_th": "ผศ.ดร.อรจิรา สิทธิศักดิ์",
+  "name_en": "Asst.Prof.Dr. Onjira Sitthisak",
+  "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+    "phone": "0-2986-9156 ต่อ 202",
+    "email": "onjira@tu.ac.th"
+  },
+  "education": [
+    "Ph.D. (Computer Science) University of Southampton, UK, 2009",
+    "วท.ม.(การจัดการระบบสารสนเทศ) สถาบันบัณฑิตพัฒนบริหารศาสตร์, 2545",
+    "วท.บ.(วิทยาการคอมพิวเตอร์) (เกียรตินิยมอันดับ 1) มหาวิทยาลัยสงขลานครินทร์, 2542"
+  ],
+  "research_interests": [
+    "Competency Modeling",
+    "Computational algorithm",
+    "E-learning",
+    "Geographic information system (GIS)",
+    "Adaptive Assessment"
+  ],
+  "expertise": [
+    "ระบบสารสนเทศภูมิศาสตร์",
+    "การประยุกต์ให้ competency modeling กับการเรียนรู้"
+  ],
+  "selected_publication": [],
+  "external_profiles": {
+    "google_scholar_url": "https://scholar.google.com/citations?user=9qwG-5sAAAAJ&hl=en",
+    "researchgate_url": "https://www.researchgate.net/profile/Onjira-Sitthisak"
+  },
+  "scholar_id": "9qwG-5sAAAAJ"
+},
+    
+    {
+  "id": "prof_012",
+  "name_th": "ผศ.ดร.วิรัตน์ จารีวงศ์ไพบูลย์",
+  "name_en": "Asst.Prof.Dr. Wirat Jareevongpiboon",
+  "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+    "phone": "0-2986-9156 ต่อ 202",
+    "email": "wirat@tu.ac.th"
+  },
+  "education": [
+    "Ph.D. (Computer Science), Asian Institute of Technology, ประเทศไทย, 2556",
+    "M.B.A. (Management Information System), University of Illinois at Urbana Champaign, USA., 2541",
+    "วท.บ. (ศาสตร์คอมพิวเตอร์) (เกียรตินิยมอันดับสอง), มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2535"
+  ],
+  "research_interests": [
+    "Data / Process Mining",
+    "Semantics via Ontology",
+    "Ontology-Relational Mapping",
+    "Topics related to Business Intelligence"
+  ],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "semanticscholar_url": "https://www.semanticscholar.org/author/Wirat-Jareevongpiboon/2751016",
+    "researchgate_url": "https://www.researchgate.net/profile/Wirat_Jareevongpiboon"
+  },
+  "scholar_id": "-"
+},
+    
+    {
+  "id": "prof_013",
+  "name_th": "ผศ.ดร. เสาวลักษณ์ วรรธนาภา",
+  "name_en": "Asst.Prof.Dr. Saowaluk Watanapa",
+  "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2 ห้อง 211",
+    "phone": "0-2986-9156 ต่อ 214",
+    "email": "wsaowalu@tu.ac.th"
+  },
+  "education": [
+    "ปร.ด. (Information Technology), มหาวิทยาลัยเทคโนโลยีพระจอมเกล้าธนบุรี, ประเทศไทย, 2551",
+    "M.Sc. (Computer Technology), Asian Institute of Technology, ประเทศไทย, 2534",
+    "วท.บ. (ศาสตร์คอมพิวเตอร์), มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2533"
+  ],
+  "research_interests": [
+    "Image Processing"
+  ],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "semanticscholar_url": "https://www.semanticscholar.org/author/Saowaluk-Watanapa/3120769",
+    "researchgate_url": "https://www.researchgate.net/scientific-contributions/Saowaluk-C-Watanapa-32507620"
+  },
+  "scholar_id": "-"
+},
+    
+    {
+  "id": "prof_014",
+  "name_th": "ผศ.ดร. วนิดา พฤทธิวิทยา",
+  "name_en": "Asst.Prof.Dr. Wanida Putthividhya",
+  "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+    "phone": "0-2986-9156 ต่อ 230",
+    "email": "wanidap@cs.tu.ac.th"
+  },
+  "education": [
+    "Ph.D. (Computer Science), Iowa State University, USA, 2549",
+    "M.S. (Computer Science), University of Southern California, USA, 2543",
+    "วท.บ. (ศาสตร์คอมพิวเตอร์) (เกียรตินิยมอันดับหนึ่งเหรียญทอง), มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2539"
+  ],
+  "research_interests": [
+    "Software economics (เศรษฐศาสตร์การบริหารและการผลิตซอฟต์แวร์)",
+    "Quality of Service (QOS)",
+    "Congestion Control",
+    "Network Security and Operating systems"
+  ],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "semanticscholar_url": "https://www.semanticscholar.org/author/Wanida-Putthividhya/2933236",
+    "researchgate_url": "https://www.researchgate.net/profile/Wanida_Putthividhya"
+  },
+  "scholar_id": "-"
+},
+    
+    {
+  "id": "prof_015",
+  "name_th": "ผศ.ดร.ปกป้อง ส่องเมือง",
+  "name_en": "Asst.Prof.Dr. Pokpong Songmuang",
+  "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2 ห้อง 210",
+    "phone": "0-2986-9156 ต่อ 213",
+    "email": "pokpongs@tu.ac.th"
+  },
+  "education": [
+    "Ph.D. (Information Science) The University of Electro-Communications, Japan, 2553",
+    "M.Eng. (Master of Engineering), Naoka University of Technology, Japan, 2549",
+    "วท.บ. (วิศวกรรมไฟฟ้า) , มหาวิทยาลัยธรรมศาสตร์, ประเทศไทย, 2546"
+  ],
+  "research_interests": [
+    "Artificial Intelligence",
+    "Data mining",
+    "Optimization algorithms",
+    "e-Testing",
+    "Social network analytics"
+  ],
+  "expertise": [
+    "การออกแบบและพัฒนาระบบจัดการข้อสอบและคลังข้อสอบ",
+    "การประยุกต์ใช้เทคโนโลยีปัญญาประดิษฐ์และการเรียนรู้ของเครื่องจักรเพื่อแก้ปัญหา",
+    "การวิเคราะห์เครือข่ายสังคมออนไลน์"
+  ],
+  "selected_publication": [],
+  "external_profiles": {
+    "google_scholar_url": "https://scholar.google.co.th/citations?hl=th&user=UCNA6dQAAAAJ&view_op=list_works&sortby=pubdate",
+    "researchgate_url": "https://www.researchgate.net/profile/Pokpong_Songmuang"
+  },
+  "scholar_id": "UCNA6dQAAAAJ"
+},
+    
+    {
+  "id": "prof_016",
+  "name_th": "อาจารย์สิริกันยา นิลพานิช",
+  "name_en": "Ajarn Sirikunya Nilpanich",
+  "academic_position": "อาจารย์ (Ajarn)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2 ห้อง 211",
+    "phone": "0-2986-9156 ต่อ 218",
+    "email": "skn@cs.tu.ac.th"
+  },
+  "education": [
+    "M.Sc. (Computer Science), Syracuse University, USA., 2538",
+    "วท.บ. (ศาสตร์คอมพิวเตอร์) (เกียรตินิยมอันดับสอง), มหาวิทยาลัยธรรมศาสตร์, 2533"
+  ],
+  "research_interests": [],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "semanticscholar_url": "https://www.semanticscholar.org/author/Saowaluk-Watanapa/3120769",
+    "researchgate_url": "https://www.researchgate.net/scientific-contributions/Saowaluk-C-Watanapa-32507620"
+  },
+  "scholar_id": "-"
+},
+    
+    {
+  "id": "prof_017",
+  "name_th": "ผศ.ดร.กฤตคม ศรีจิรานนท์",
+  "name_en": "Asst.Prof.Dr. Krittakom Srijiranon",
+  "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคารบุญชูปณิธาน ห้อง 7301/2",
+    "phone": "0-5423-7999 ต่อ 5627",
+    "email": "krittakom@cs.tu.ac.th, non_krit@tu.ac.th"
+  },
+  "education": [
+    "2021 Ph.D. (Computer Engineering) Chiang Mai University, Thailand",
+    "2015 M.Eng. (Computer Engineering) Chiang Mai University, Thailand",
+    "2014 B.Eng. (Computer Engineering) Chiang Mai University, Thailand"
+  ],
+  "research_interests": [
+    "Data Mining",
+    "Machine Learning"
+  ],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "google_scholar_url": "-",
+    "researchgate_url": "-"
+  },
+  "scholar_id": "-"
+},
+
+{
+  "id": "prof_018",
+  "name_th": "อาจารย์ปกรณ์ แววสว่างวงศ์",
+  "name_en": "Ajarn Pakorn Waewsawangwong",
+  "academic_position": "อาจารย์ (Ajarn)",
+  "contact_info": {
+    "office": "-",
+    "phone": "0-5423-7999 ต่อ 5627",
+    "email": "wpakorn@tu.ac.th"
+  },
+  "education": [
+    "2001, MSc in Software Engineering (Distinction), University of York"
+  ],
+  "research_interests": [],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "google_scholar_url": "-",
+    "researchgate_url": "-"
+  },
+  "scholar_id": "-"
+},
+
+{
+  "id": "prof_019",
+  "name_th": "ผศ.ดร.ฐาปนา บุญชู",
+  "name_en": "Asst.Prof.Dr. Thapana Boonchoo",
+  "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2 ห้อง 222",
+    "phone": "02-564-4444 ต่อ 2157 ต่อ 222",
+    "email": "thapana@cs.tu.ac.th"
+  },
+  "education": [
+    "Ph.D. (Computer Science and Technology), Machine Learning and Data Mining Group, Institute of Computing Technology, University of Chinese Academy of Sciences, China",
+    "M.Sc. (Computer Science and Technology), Institute of High-Performance Computing, Tsinghua University, China",
+    "B.Sc. (Computer Science), First Class Honours, Thammasat University, Thailand"
+  ],
+  "research_interests": [
+    "Machine Learning/Data Mining",
+    "Human Movement Analysis",
+    "Data Clustering",
+    "Data Representation Learning",
+    "Matrix Factorization",
+    "Probabilistic Models"
+  ],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "semanticscholar_url": "https://www.semanticscholar.org/author/Thapana-Boonchoo/35514166",
+    "researchgate_url": "https://www.researchgate.net/profile/Thapana-Boonchoo"
+  },
+  "scholar_id": "-"
+},
+
+{
+  "id": "prof_020",
+  "name_th": "อ.ดร.นวฤกษ์ ชลารักษ์",
+  "name_en": "Ajarn Dr. Nawarerk Chalarak",
+  "academic_position": "อาจารย์ (Ajarn Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2",
+    "phone": "02-546-4444 ต่อ 2157",
+    "email": "nawarerk@tu.ac.th"
+  },
+  "education": [
+    "B.Eng. (2006) (Computer Engineering) Suranaree University of Technology",
+    "M.Eng. (2009) (Information Management) Asian Institute of Technology",
+    "M.Sc. (2018) and Ph.D. (2021) (Knowledge Science) Japan Advanced Institute of Science and Technology."
+  ],
+  "research_interests": [
+    "Medical image processing",
+    "Artificial Intelligence",
+    "Data mining"
+  ],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "google_scholar_url": "https://scholar.google.com/citations?user=BWxR0bIAAAAJ&hl=en",
+    "researchgate_url": "https://www.researchgate.net/profile/Nawarerk-Chalarak"
+  },
+  "scholar_id": "BWxR0bIAAAAJ"
+},
+
+{
+  "id": "prof_021",
+  "name_th": "ผศ.ดร.ศาตนาฏ กิจศิรานุวัตร",
+  "name_en": "Asst.Prof.Dr. Satanat Kitsiranuwat",
+  "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2",
+    "phone": "02-546-4444 ต่อ 2157",
+    "email": "satanat@tu.ac.th"
+  },
+  "education": [],
+  "research_interests": [
+    "Bioinformatics",
+    "Machine Learning/ Data Mining",
+    "Mathematical Modeling"
+  ],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "google_scholar_url": "-",
+    "researchgate_url": "-"
+  },
+  "scholar_id": "-"
+},
+
+{
+  "id": "prof_022",
+  "name_th": "อ.ดร.ภัคพร เสาร์ฝั้น",
+  "name_en": "Ajarn Dr. Pakkaporn Saophan",
+  "academic_position": "อาจารย์ (Ajarn Dr.)",
+  "contact_info": {
+    "office": "อาคาร LC-2 ชั้น 2",
+    "phone": "02-546-4444 ต่อ 2157",
+    "email": "pakkp@tu.ac.th"
+  },
+  "education": [
+    "Ph.D. in Knowledge Science, Japan Advanced Institute of Science and Technology (JAIST), Japan",
+    "M.Sc. in Management Mathematics, Sirindhorn International Institute of Technology (SIIT), Thammasat University, Thailand",
+    "B.Sc. in Management Mathematics (Second Class Honors), Thammasat University, Thailand"
+  ],
+  "research_interests": [
+    "HOptimization",
+    "Production Scheduling & Management",
+    "Management Mathematics",
+    "Machine Learning"
+  ],
+  "expertise": [],
+  "selected_publication": [],
+  "external_profiles": {
+    "google_scholar_url": "-",
+    "researchgate_url": "-"
+  },
+  "scholar_id": "-"
+}
+     
 ]
 
 def extract_scholar_id(url_or_id):
