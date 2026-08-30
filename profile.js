@@ -43,12 +43,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // External Links
     const profiles = f.external_profiles || {};
+    const semanticBtn = document.getElementById('link-semantic');
     const scholarBtn = document.getElementById('link-scholar');
     const rgBtn = document.getElementById('link-rg');
 
     if (profiles.google_scholar_url && profiles.google_scholar_url !== '-') {
       scholarBtn.href = profiles.google_scholar_url;
       scholarBtn.style.display = 'inline-flex';
+    }
+    if (profiles.semanticscholar_url && profiles.semanticscholar_url !== '-') {
+      semanticBtn.href = profiles.semanticscholar_url;
+      semanticBtn.style.display = 'inline-flex';
     }
     if (profiles.researchgate_url && profiles.researchgate_url !== '-') {
       rgBtn.href = profiles.researchgate_url;
