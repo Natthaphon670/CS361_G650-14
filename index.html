@@ -85,8 +85,8 @@
     }
 
     .avatar-placeholder {
-      width: 90px;
-      height: 90px;
+      width: 160px;
+      height:  160px; 
       background-color: #eeeeee;
       color: #999999;
       border-radius: 50%;
@@ -181,35 +181,6 @@
         renderFaculties(faculties);
       } catch (error) {
         console.error('ไม่สามารถดึงไฟล์ faculties.json ได้ กำลังใช้ข้อมูลสำรอง...', error);
-        
-        // ข้อมูลสำรอง (Fallback) ในกรณีที่เปิดไฟล์ HTML โดยตรงในเครื่องแล้วติดปัญหา CORS
-        const fallbackData = [
-          {
-            "faculty_id": "prof_001",
-            "name_th": "ผศ.ดร.ลัมพาพรรณ พันธ์ชูจิตร์",
-            "name_en": "Asst.Prof.Dr. Lumpapun Punchoojit",
-            "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)"
-          },
-          {
-            "faculty_id": "prof_002",
-            "name_th": "ผศ.ดร.ประภาพร รัตนธำรง",
-            "name_en": "Asst.Prof.Dr. Prapaporn Rattanatamrong",
-            "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)"
-          },
-          {
-            "faculty_id": "prof_003",
-            "name_th": "ผศ.ดร.ทรงศักดิ์ รองวิริยะพานิช",
-            "name_en": "Asst.Prof.Dr. Songsakdi Rongviriyapanish",
-            "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)"
-          },
-          {
-            "faculty_id": "prof_004",
-            "name_th": "ผศ.ดร.กษิดิศ ชาญเชี่ยว",
-            "name_en": "Asst.Prof.Dr. Kasidit Chanchio",
-            "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)"
-          }
-        ];
-        renderFaculties(fallbackData);
       }
     }
 
@@ -223,11 +194,25 @@
       faculties.forEach(faculty => {
         const card = document.createElement('div');
         card.className = 'faculty-card';
+       // จัดการเรื่องรูปภาพ
+        // 1. ดึงตัวเลขรหัสอาจารย์ เช่น "prof_001" เป็น "001"
+        const profNumber = faculty.faculty_id ? faculty.faculty_id.replace('prof_', '') : '001';
+        
+        // 2. กำหนดนามสกุลไฟล์ (.png สำหรับ 022 นอกนั้น .jpg)
+        const ext = profNumber === '022' ? '.png' : '.jpg';
+        const imgPath = `https://faculty-output-and-workload-management-system-g14.s3.us-east-1.amazonaws.com/profile_image/prof_img_${profNumber}${ext}`;
+        
+        // 3. สร้างตัวอักษรย่อสำหรับกรณีที่โหลดรูปไม่สำเร็จ
+        const initials = faculty.name_en ? faculty.name_en.split(' ').pop().substring(0, 2).toUpperCase() : 'TU';
         
         // สร้างหน้าตาของการ์ดและใส่ตัวแปรลงไป
         // ลิงก์ไปยังหน้าโปรไฟล์จะมีการแนบ ?id= เพื่อใช้ดึงข้อมูลต่อในหน้าถัดไป
         card.innerHTML = `
-          <div class="avatar-placeholder">TU</div>
+          <div class="avatar-placeholder" style="overflow: hidden;">
+            <img src="${imgPath}" alt="${faculty.name_th}" 
+                 style="width: 90%; height: 100%; object-fit: cover; display: block;" 
+                 onerror="this.onerror=null; this.parentNode.innerHTML='${initials}';">
+          </div>
           <h2 class="faculty-name-th">${faculty.name_th}</h2>
           <p class="faculty-name-en">${faculty.name_en}</p>
           <div class="position-badge">${faculty.academic_position}</div>

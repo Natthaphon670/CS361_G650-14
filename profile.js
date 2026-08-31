@@ -29,8 +29,21 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('f-name-en').textContent = f.name_en || '-';
     document.getElementById('f-position').textContent = f.academic_position || 'อาจารย์';
     
+    // ส่วนที่แก้ไข: การจัดการรูปภาพ Avatar
+    const avatarContainer = document.getElementById('f-avatar');
     const initials = f.name_en ? f.name_en.split(' ').pop().substring(0, 2).toUpperCase() : 'TU';
-    document.getElementById('f-avatar').textContent = initials;
+    
+    // ดึงตัวเลขรหัสอาจารย์ออกมา เช่น จาก "prof_001" เป็น "001"
+    const profNumber = f.faculty_id ? f.faculty_id.replace('prof_', '') : '001';
+    
+    // กำหนดนามสกุลไฟล์ (จากโครงสร้างไฟล์ prof_img_022 เป็น .png นอกนั้นเป็น .jpg)
+    const ext = profNumber === '022' ? '.png' : '.jpg';
+    const imgPath = `https://faculty-output-and-workload-management-system-g14.s3.us-east-1.amazonaws.com/profile_image/prof_img_${profNumber}${ext}`;
+
+    // สร้างแท็ก img และใส่ onerror เพื่อให้แสดงตัวอักษรย่อแทนหากโหลดรูปไม่สำเร็จ
+    avatarContainer.innerHTML = `<img src="${imgPath}" alt="${escapeHtml(f.name_th)}" 
+      style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" 
+      onerror="this.onerror=null; this.parentNode.innerHTML='${initials}';">`;
 
     loadingState.style.display = 'none';
     mainContent.style.display = 'grid';
@@ -61,12 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     renderSections(f);
-  }
-
-  function escapeHtml(str) {
-    return String(str || '').replace(/[&<>"']/g, match => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    })[match]);
   }
 
   function renderSections(f) {
