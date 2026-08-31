@@ -106,11 +106,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('f-pub-count').textContent = `${totalPub} ผลงาน`;
 
     if (f.publications && f.publications.length > 0) {
-      pubContainer.innerHTML = f.publications.map(pub => `
+    pubContainer.innerHTML = f.publications.map(pub => `
         <li class="pub-item">
           <div class="pub-badge-row">
             <span class="badge-year">${pub.year ? pub.year : 'N/A'}</span>
             ${pub.citation_count > 0 ? `<span class="badge-citation">การอ้างอิง: ${pub.citation_count} ครั้ง</span>` : ''}
+            ${pub.source ? `<span class="badge-source">${escapeHtml(pub.source)}</span>` : ''}
           </div>
           <div class="pub-title">${escapeHtml(pub.title)}</div>
           ${pub.url ? `
@@ -119,8 +120,8 @@ document.addEventListener('DOMContentLoaded', () => {
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             </a>` : ''}
         </li>
-      `).join('');
-    } else {
+    `).join('');
+  } else {
       pubContainer.innerHTML = '<li style="color: var(--text-muted); font-size: 0.9rem;">ยังไม่มีข้อมูลผลงานที่เผยแพร่</li>';
     }
   }

@@ -1,6 +1,7 @@
 import json
 import time
 import re
+import requests # เพิ่มไลบรารี requests สำหรับ Semantic Scholar API
 from scholarly import scholarly
 
 # 1. รายการข้อมูลพื้นฐานของอาจารย์ที่เก็บรวบรวมได้จากหน้าเว็บคณะ (ตรงตามโครงสร้างในรูปภาพ)
@@ -686,7 +687,7 @@ def extract_scholar_id(url_or_id):
     """
     ดึง Scholar ID จาก URL หรือสตริงก์ ID
     """
-    if not url_or_id:
+    if not url_or_id or url_or_id == "-":
         return None
     if "user=" in url_or_id:
         match = re.search(r'user=([^&]+)', url_or_id)
@@ -695,7 +696,19 @@ def extract_scholar_id(url_or_id):
         return url_or_id
     return None
 
-def fetch_publication_data(scholar_id, name_en=""):
+def extract_semantic_scholar_id(url):
+    """
+    ดึง Author ID จาก URL ของ Semantic Scholar
+    """
+    if not url or url == "-":
+        return None
+    # ค้นหาตัวเลขที่เป็น ID ต่อท้าย URL เช่น /author/Name/123456
+    match = re.search(r'/author/(?:[^/]+/)?(\d+)', url)
+    if match:
+        return match.group(1)
+    return None
+
+def fetch_publication_data_google(scholar_id, name_en=""):
     """
     ดึงข้อมูลงานวิจัยจาก Google Scholar โดยใช้ scholarly
     """
@@ -705,21 +718,21 @@ def fetch_publication_data(scholar_id, name_en=""):
     # หากไม่ได้ใส่ Scholar ID ระบบจะพยายามค้นหาจากชื่อภาษาอังกฤษให้โดยอัตโนมัติ
     if not target_id and name_en:
         try:
-            print(f"  --> ไม่พบ Scholar ID, กำลังค้นหาจากชื่อ: '{name_en}'...")
+            print(f"  --> [Google Scholar] ไม่พบ Scholar ID, กำลังค้นหาจากชื่อ: '{name_en}'...")
             search_query = scholarly.search_author(name_en)
             author_node = next(search_query, None)
             if author_node:
                 target_id = author_node.get('scholar_id')
-                print(f"  --> พบ Scholar ID อัตโนมัติ: {target_id}")
+                print(f"  --> [Google Scholar] พบ Scholar ID อัตโนมัติ: {target_id}")
         except Exception as e:
-            print(f"  --> ค้นหาชื่อไม่พบหรือเกิดข้อผิดพลาด: {e}")
+            print(f"  --> [Google Scholar] ค้นหาชื่อไม่พบหรือเกิดข้อผิดพลาด: {e}")
 
     if not target_id:
-        print("  --> [คำเตือน] ไม่มีข้อมูล Google Scholar ID ข้ามการดึงงานวิจัย")
+        print("  --> [Google Scholar] [คำเตือน] ไม่มีข้อมูล Google Scholar ID ข้ามการดึงงานวิจัย")
         return publications
 
     try:
-        print(f"  --> กำลังดึงผลงานวิจัยจาก Google Scholar (ID: {target_id})...")
+        print(f"  --> [Google Scholar] กำลังดึงผลงานวิจัยจาก Google Scholar (ID: {target_id})...")
         author = scholarly.search_author_id(target_id)
         author_data = scholarly.fill(author, sections=['publications'])
         
@@ -730,14 +743,53 @@ def fetch_publication_data(scholar_id, name_en=""):
                 "year": int(pub_bib.get('pub_year')) if pub_bib.get('pub_year') and pub_bib.get('pub_year').isdigit() else None,
                 "venue": pub_bib.get('venue', 'N/A'),
                 "citation_count": pub.get('num_citations', 0),
-                "url": pub.get('pub_url', f"https://scholar.google.com/citations?view_op=view_citation&citation_for_view={pub.get('author_pub_id')}")
+                "url": pub.get('pub_url', f"https://scholar.google.com/citations?view_op=view_citation&citation_for_view={pub.get('author_pub_id')}"),
+                "source": "Google Scholar" # ระบุแหล่งที่มาเพื่อให้รวมข้อมูลได้ง่าย
             }
             publications.append(pub_item)
             time.sleep(0.3)
             
     except Exception as e:
-        print(f"  --> [Warning] ไม่สามารถดึงข้อมูลจาก Scholar ID: {target_id} ได้ ({e})")
+        print(f"  --> [Google Scholar] [Warning] ไม่สามารถดึงข้อมูลจาก Scholar ID: {target_id} ได้ ({e})")
         
+    return publications
+
+def fetch_publication_data_semantic(semantic_url):
+    """
+    ดึงข้อมูลงานวิจัยจาก Semantic Scholar ผ่าน REST API
+    """
+    publications = []
+    author_id = extract_semantic_scholar_id(semantic_url)
+    
+    if not author_id:
+        print("  --> [Semantic Scholar] [คำเตือน] ไม่มีข้อมูล Semantic Scholar ID ข้ามการดึงงานวิจัย")
+        return publications
+        
+    try:
+        print(f"  --> [Semantic Scholar] กำลังดึงผลงานวิจัยจาก Semantic Scholar (ID: {author_id})...")
+        url = f"https://api.semanticscholar.org/graph/v1/author/{author_id}?fields=papers.title,papers.year,papers.venue,papers.citationCount,papers.url"
+        
+        response = requests.get(url, timeout=15)
+        if response.status_code == 200:
+            data = response.json()
+            papers = data.get("papers", [])
+            
+            for paper in papers:
+                pub_item = {
+                    "title": paper.get("title", "N/A"),
+                    "year": paper.get("year"),
+                    "venue": paper.get("venue") if paper.get("venue") else "N/A",
+                    "citation_count": paper.get("citationCount", 0),
+                    "url": paper.get("url", ""),
+                    "source": "Semantic Scholar" # ระบุแหล่งที่มาเพื่อให้รวมข้อมูลได้ง่าย
+                }
+                publications.append(pub_item)
+        else:
+            print(f"  --> [Semantic Scholar] [Warning] API ตอบกลับด้วยรหัสข้อผิดพลาด: {response.status_code}")
+            
+    except Exception as e:
+        print(f"  --> [Semantic Scholar] [Warning] ไม่สามารถดึงข้อมูลจาก Semantic Scholar ได้ ({e})")
+
     return publications
 
 def main():
@@ -749,11 +801,22 @@ def main():
     for prof in FACULTY_WEB_DATA:
         print(f"กำลังประมวลผล: {prof['name_th']} ({prof['name_en']})")
         
-        # ดึงผลงานวิจัยจาก Google Scholar
-        scholar_id_to_use = prof.get('scholar_id') or prof.get('external_profiles', {}).get('google_scholar_url', '')
-        pubs = fetch_publication_data(scholar_id_to_use, prof['name_en'])
+        external_profiles = prof.get('external_profiles', {})
+        all_publications = []
         
-        # จัดโครงสร้างข้อมูลรวม (Nested JSON Schema ตามโครงสร้างเว็บคณะ + Google Scholar)
+        # 1. ดึงผลงานวิจัยจาก Google Scholar
+        scholar_id_to_use = prof.get('scholar_id') or external_profiles.get('google_scholar_url', '')
+        if scholar_id_to_use and scholar_id_to_use != "-":
+            gs_pubs = fetch_publication_data_google(scholar_id_to_use, prof['name_en'])
+            all_publications.extend(gs_pubs)
+            
+        # 2. ดึงผลงานวิจัยจาก Semantic Scholar
+        semantic_url = external_profiles.get('semanticscholar_url', '')
+        if semantic_url and semantic_url != "-":
+            ss_pubs = fetch_publication_data_semantic(semantic_url)
+            all_publications.extend(ss_pubs)
+        
+        # จัดโครงสร้างข้อมูลรวม (Nested JSON Schema ตามโครงสร้างเว็บคณะ + ผลงานวิจัย)
         faculty_entry = {
             "faculty_id": prof.get('id'),
             "name_th": prof.get('name_th'),
@@ -763,13 +826,13 @@ def main():
             "research_interests": prof.get('research_interests', []),
             "education": prof.get('education', []),
             "expertise": prof.get('expertise', []),
-            "external_profiles": prof.get('external_profiles', {}),
-            "total_publications": len(pubs),
-            "publications": pubs
+            "external_profiles": external_profiles,
+            "total_publications": len(all_publications),
+            "publications": all_publications
         }
         
         faculties_data.append(faculty_entry)
-        print(f"  --> สำเร็จ! ดึงงานวิจัยได้ทั้งหมด {len(pubs)} รายการ\n")
+        print(f"  --> สำเร็จ! ดึงงานวิจัยรวมทั้งสิ้น {len(all_publications)} รายการ\n")
         time.sleep(1.0)
 
     # บันทึกเป็นไฟล์ faculties.json

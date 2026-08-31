@@ -2,6 +2,7 @@
   --tu-red: #C8102E;
   --tu-red-hover: #9B0014;
   --tu-red-light: rgba(200, 16, 46, 0.08);
+  --tu-red-border: #bb1b1b9d;
   --tu-yellow: #FDB913;
   --tu-yellow-light: #FFF9E6;
   --tu-yellow-border: #FCE183;
@@ -154,6 +155,16 @@ header {
   color: #854D0E;
   background: var(--tu-yellow-light);
   border: 1px solid var(--tu-yellow-border);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+.badge-source {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #854D0E;
+  background: var(--tu-yellow-light);
+  border: 1px solid var(--tu-red-border);
   padding: 0.15rem 0.5rem;
   border-radius: 4px;
 }
