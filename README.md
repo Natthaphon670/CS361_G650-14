@@ -52,3 +52,9 @@
     ├── profile.html     (หน้าแสดงประวัติและผลงาน)
     ├── faculties.json   (ไฟล์ข้อมูลรวมประวัติและผลงาน)
     └── profile_image/          (รูปภาพโปรไฟล์อาจารย์)
+```
+ลิงค์ achitecture diagram
+https://miro.com/app/board/uXjVHtdmkhM=/?share_link_id=966448347516&fbclid=PAT01DUAUEaLVwZG9mAmV4dG4DYWVtAjEwAHNydGMGYXBwX2lkDzU2NzA2NzM0MzM1MjQyNwABp_kdq9PrwhOGp3sUE64z1Judva4NVS_Yxzm9WH1XQwNqZi0HJaR6KEmLfZX5_aem_5B2gx4cIFRuiOWqodc3KdQ
+
+ลิงค์หน้าเว็บ
+http://faculty-output-and-workload-management-system-g14.s3-website-us-east-1.amazonaws.com/index.html
