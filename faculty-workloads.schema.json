@@ -1,0 +1,82 @@
+{
+  "title": "Faculty Workload Schema",
+  "description": "โครงสร้างข้อมูลสำหรับจัดเก็บภาระงานและผลงานของอาจารย์",
+  "type": "object",
+  "properties": {
+    "faculty_id": {
+      "type": "string",
+      "description": "รหัสอ้างอิงอาจารย์"
+    },
+    "academic_year": {
+      "type": "integer",
+      "description": "ปีการศึกษา เช่น 2567"
+    },
+    "semester": {
+      "type": "integer",
+      "description": "ภาคการศึกษา (1, 2, 3)"
+    },
+    "evaluation_period": {
+      "type": "string",
+      "description": "ช่วงเวลาผลงาน เช่น 1 มกราคม 2568 - 30 มิถุนายน 2568"
+    },
+    "workloads": {
+      "type": "object",
+      "properties": {
+        "teaching": {
+          "type": "array",
+          "description": "หมวด 1: งานสอน (วิชาบรรยาย/ปฏิบัติการ)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "course_code": { "type": "string", "description": "รหัสวิชา เช่น CS222" },
+              "course_type": { "type": "string", "description": "ชนิดวิชา เช่น วิชาบรรยาย, วิชาปฏิบัติการ" },
+              "credits": { "type": "number", "description": "จำนวนหน่วยกิต เช่น 3.0" },
+              "hours": { "type": "integer", "description": "จำนวนชั่วโมง เช่น 45" },
+              "teaching_ratio": { "type": "number", "description": "น้ำหนัก/สัดส่วนการสอน เช่น 1" }
+            }
+          }
+        },
+        "student_advising": {
+          "type": "array",
+          "description": "หมวด 1 และ 3: การดูแลนักศึกษา (ซีเนียร์โปรเจกต์, สหกิจศึกษา, วิทยานิพนธ์, อาจารย์ที่ปรึกษาทั่วไป)",
+          "items": {
+            "type": "object",
+            "properties": {
+              "advising_type": { "type": "string", "description": "ประเภท เช่น ซีเนียร์โปรเจกต์, สหกิจศึกษา, วิทยานิพนธ์, อาจารย์ที่ปรึกษาทั่วไป" },
+              "course_code": { "type": "string", "description": "รหัสวิชา เช่น CS403, CS800" },
+              "student_or_project_detail": { "type": "string", "description": "รายละเอียด เช่น ชื่อนักศึกษาหรือจำนวนเรื่อง" },
+              "role": { "type": "string", "description": "หน้าที่ เช่น อาจารย์ที่ปรึกษาหลัก, อาจารย์ที่ปรึกษาร่วม" },
+              "count_or_credits": { "type": "number", "description": "จำนวนเรื่อง หรือ จำนวนหน่วยกิตที่ลงทะเบียน" }
+            }
+          }
+        },
+        "academic_outputs": {
+          "type": "array",
+          "description": "หมวด 2: งานวิจัยและงานวิชาการ",
+          "items": {
+            "type": "object",
+            "properties": {
+              "output_type": { "type": "string", "description": "ประเภทผลงาน เช่น บทความวิจัย Tier 1, แบบบรรยาย, หนังสือหรือตำรา" },
+              "title": { "type": "string", "description": "ชื่อเรื่อง หรือ ชื่อผลงาน" },
+              "participation_percentage": { "type": "number", "description": "% การมีส่วนร่วม เช่น 20" },
+              "category": { "type": "string", "description": "หมวดหมู่หลัก เช่น วารสารวิชาการ, ที่ประชุมวิชาการ, หนังสือ/ตำรา" }
+            }
+          }
+        },
+        "services_and_admin": {
+          "type": "array",
+          "description": "หมวด 3 และ 4: งานบริการวิชาการและงานบริหาร",
+          "items": {
+            "type": "object",
+            "properties": {
+              "service_category": { "type": "string", "description": "ประเภทงาน เช่น งานบริหารวิชาการ, คณะทำงานระดับสาขา/คณะ, บริการวิชาการแก่สังคม, ผู้ประเมินผลงาน" },
+              "role": { "type": "string", "description": "หน้าที่ เช่น ผู้ประสานงานวิชา, ประธาน/เลขานุการ, วิทยากร, ผู้ประเมินระดับนานาชาติ" },
+              "detail": { "type": "string", "description": "รายละเอียด เช่น CS222, ปรับปรุงหลักสูตร 2570, CENTRA8 Project 5" }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": ["faculty_id", "academic_year", "semester", "workloads"]
+}
