@@ -287,3 +287,38 @@ header {
   color: var(--text-muted);
   font-size: 1.1rem;
 }
+
+/* Search Box */
+.search-box-wrap {
+  max-width: 520px;
+  margin: 0 auto 2.5rem;
+  padding: 0 1rem;
+}
+
+.custom-input,
+#faculty-search {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 0.95rem;
+  padding: 0.75rem 1.25rem;
+  color: var(--text-main);
+  background-color: var(--surface);
+  border: 1.5px solid var(--border-color);
+  border-radius: 9999px; 
+  outline: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease-in-out;
+}
+
+.custom-input::placeholder,
+#faculty-search::placeholder {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.custom-input:focus,
+#faculty-search:focus {
+  border-color: var(--tu-red);
+  box-shadow: 0 0 0 3px var(--tu-red-light);
+  background-color: #FFFFFF;
+}
