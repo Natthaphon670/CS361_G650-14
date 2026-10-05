@@ -5,23 +5,38 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadingState = document.getElementById('loading-state');
   const mainContent = document.getElementById('main-content');
 
-  fetch('faculties.json')
-    .then(res => {
-      if (!res.ok) throw new Error('Network error');
+  let currentFaculty = null;
+  let facultyOutputs = [];
+
+  // ดึงข้อมูล faculties.json และ faculties-workloads-mock.json พร้อมกัน
+  Promise.all([
+    fetch('faculties.json').then(res => {
+      if (!res.ok) throw new Error('Cannot load faculties.json');
       return res.json();
-    })
-    .then(data => {
-      const faculty = data.find(f => f.faculty_id === facultyId);
-      if (!faculty) {
-        loadingState.innerHTML = `<p style="color: var(--tu-red);">ไม่พบข้อมูลอาจารย์รหัส: ${escapeHtml(facultyId)}</p>`;
-        return;
-      }
-      renderFacultyBasic(faculty);
-    })
-    .catch(err => {
-      console.error(err);
-      loadingState.innerHTML = `<p style="color: var(--tu-red);">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>`;
-    });
+    }),
+    fetch('faculties-workloads-mock.json').then(res => {
+      if (!res.ok) return [];
+      return res.json();
+    }).catch(() => [])
+  ])
+  .then(([faculties, allWorkloads]) => {
+    currentFaculty = faculties.find(f => f.faculty_id === facultyId);
+    if (!currentFaculty) {
+      loadingState.innerHTML = `<p style="color: var(--tu-red);">ไม่พบข้อมูลอาจารย์รหัส: ${escapeHtml(facultyId)}</p>`;
+      return;
+    }
+
+    // กรองเฉพาะข้อมูลภาระงานของอาจารย์ท่านนี้
+    facultyOutputs = allWorkloads.filter(item => item.faculty_id === facultyId);
+
+    renderFacultyBasic(currentFaculty);
+    initRepositoryEvents();
+    renderRepositoryOutputs();
+  })
+  .catch(err => {
+    console.error(err);
+    loadingState.innerHTML = `<p style="color: var(--tu-red);">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>`;
+  });
 
   function renderFacultyBasic(f) {
     document.title = `${f.name_th} | มหาวิทยาลัยธรรมศาสตร์`;
@@ -29,18 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('f-name-en').textContent = f.name_en || '-';
     document.getElementById('f-position').textContent = f.academic_position || 'อาจารย์';
     
-    // ส่วนที่แก้ไข: การจัดการรูปภาพ Avatar
+    // รูปภาพ Avatar จาก S3 พร้อม Fallback เป็นตัวอักษรย่อ
     const avatarContainer = document.getElementById('f-avatar');
     const initials = f.name_en ? f.name_en.split(' ').pop().substring(0, 2).toUpperCase() : 'TU';
-    
-    // ดึงตัวเลขรหัสอาจารย์ออกมา เช่น จาก "prof_001" เป็น "001"
     const profNumber = f.faculty_id ? f.faculty_id.replace('prof_', '') : '001';
-    
-    // กำหนดนามสกุลไฟล์ (จากโครงสร้างไฟล์ prof_img_022 เป็น .png นอกนั้นเป็น .jpg)
     const ext = profNumber === '022' ? '.png' : '.jpg';
     const imgPath = `https://faculty-output-and-workload-management-system-g14.s3.us-east-1.amazonaws.com/profile_image/prof_img_${profNumber}${ext}`;
 
-    // สร้างแท็ก img และใส่ onerror เพื่อให้แสดงตัวอักษรย่อแทนหากโหลดรูปไม่สำเร็จ
     avatarContainer.innerHTML = `<img src="${imgPath}" alt="${escapeHtml(f.name_th)}" 
       style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;" 
       onerror="this.onerror=null; this.parentNode.innerHTML='${initials}';">`;
@@ -48,23 +58,23 @@ document.addEventListener('DOMContentLoaded', () => {
     loadingState.style.display = 'none';
     mainContent.style.display = 'grid';
 
-    // Contact Information
+    // ข้อมูลติดต่อ
     const contact = f.contact_information || {};
     setTextOrHide('f-office', 'item-office', contact.office);
     setTextOrHide('f-phone', 'item-phone', contact.phone);
     setTextOrHide('f-email', 'item-email', contact.email);
 
-    // External Links
+    // ลิงก์ภายนอก
     const profiles = f.external_profiles || {};
-    const semanticBtn = document.getElementById('link-semantic');
     const scholarBtn = document.getElementById('link-scholar');
+    const semanticBtn = document.getElementById('link-semantic');
     const rgBtn = document.getElementById('link-rg');
 
     if (profiles.google_scholar_url && profiles.google_scholar_url !== '-') {
       scholarBtn.href = profiles.google_scholar_url;
       scholarBtn.style.display = 'inline-flex';
     }
-    if (profiles.semanticscholar_url && profiles.semanticscholar_url !== '-') {
+    if (semanticBtn && profiles.semanticscholar_url && profiles.semanticscholar_url !== '-') {
       semanticBtn.href = profiles.semanticscholar_url;
       semanticBtn.style.display = 'inline-flex';
     }
@@ -77,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function renderSections(f) {
-  // Interests
+    // ความสนใจงานวิจัย
     const interestsContainer = document.getElementById('f-interests');
     if (f.research_interests && f.research_interests.length > 0 && f.research_interests[0] !== '-') {
       interestsContainer.innerHTML = f.research_interests
@@ -87,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('block-interests').style.display = 'none';
     }
 
-    // Expertise
+    // ความเชี่ยวชาญ
     const expContainer = document.getElementById('f-expertise-list');
     if (f.expertise && f.expertise.length > 0 && f.expertise[0] !== '-') {
       expContainer.innerHTML = f.expertise
@@ -97,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('block-expertise').style.display = 'none';
     }
 
-    // Education
+    // ประวัติการศึกษา
     const eduContainer = document.getElementById('f-education-list');
     if (f.education && f.education.length > 0) {
       eduContainer.innerHTML = f.education
@@ -106,48 +116,177 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
       document.getElementById('block-education').style.display = 'none';
     }
+  }
 
-    // Publications
-    const pubContainer = document.getElementById('f-publications-list');
-    const totalPub = f.total_publications || (f.publications ? f.publications.length : 0);
-    document.getElementById('f-pub-count').textContent = `${totalPub} ผลงาน`;
+  
+  function initRepositoryEvents() {
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        const targetId = btn.getAttribute('data-tab');
+        const targetPane = document.getElementById(targetId);
+        if (targetPane) targetPane.classList.add('active');
+      });
+    });
 
-    if (f.publications && f.publications.length > 0) {
-    pubContainer.innerHTML = f.publications.map(pub => `
-        <li class="pub-item">
-          <div class="pub-badge-row">
-            <span class="badge-year">${pub.year ? pub.year : 'N/A'}</span>
-            ${pub.citation_count > 0 ? `<span class="badge-citation">การอ้างอิง: ${pub.citation_count} ครั้ง</span>` : ''}
-            ${pub.source ? `<span class="badge-source">${escapeHtml(pub.source)}</span>` : ''}
+    const termSelect = document.getElementById('select-term');
+    const searchInput = document.getElementById('repo-search');
+
+    if (termSelect) termSelect.addEventListener('change', renderRepositoryOutputs);
+    if (searchInput) searchInput.addEventListener('input', renderRepositoryOutputs);
+  }
+
+  function renderRepositoryOutputs() {
+    const termSelect = document.getElementById('select-term');
+    const searchInput = document.getElementById('repo-search');
+
+    const selectedTerm = termSelect ? termSelect.value : 'all';
+    const query = searchInput ? searchInput.value.toLowerCase().trim() : '';
+
+    // กรองตามภาค/ปีการศึกษา
+    let filteredRecords = facultyOutputs;
+    if (selectedTerm !== 'all') {
+      const [sem, year] = selectedTerm.split('/');
+      filteredRecords = facultyOutputs.filter(o => 
+        String(o.semester) === String(sem) && String(o.academic_year) === String(year)
+      );
+    }
+
+    let teachingList = [];
+    let advisingList = [];
+    let researchList = [];
+    let servicesList = [];
+
+    // ดึงข้อมูลจาก faculties-workloads-mock.json
+    filteredRecords.forEach(rec => {
+      const termLabel = `${rec.semester}/${rec.academic_year}`;
+      const wl = rec.workloads || {};
+
+      (wl.teaching || []).forEach(item => teachingList.push({ ...item, term: termLabel }));
+      (wl.student_advising || []).forEach(item => advisingList.push({ ...item, term: termLabel }));
+      (wl.services_and_admin || []).forEach(item => servicesList.push({ ...item, term: termLabel }));
+
+      // หมวดงานวิจัย/วิชาการ: แม็ปตาม faculties-workloads-mock.json
+      (wl.academic_outputs || []).forEach(item => {
+        researchList.push({
+          title: item.title,
+          type: item.output_type || 'บทความวิจัย',
+          category: item.category || 'งานวิชาการ',
+          percent: item.participation_percentage,
+          term: termLabel,
+          source: 'แบบรายงานภาระงาน',
+          citation_count: 0,
+          url: ''
+        });
+      });
+    });
+
+    // แสดงงานวิจัยจาก faculties.json (Google Scholar / Semantic Scholar) เสริมเมื่อเลือกดูทั้งหมด
+    if (selectedTerm === 'all' && currentFaculty && currentFaculty.publications) {
+      currentFaculty.publications.forEach(pub => {
+        researchList.push({
+          title: pub.title,
+          type: pub.venue && pub.venue !== 'N/A' ? pub.venue : 'งานวิจัยที่ได้รับการตีพิมพ์',
+          category: pub.source || 'ฐานข้อมูลวิชาการ',
+          term: pub.year ? String(pub.year) : 'ผลงานตีพิมพ์',
+          source: pub.source || 'Scholar',
+          citation_count: pub.citation_count || 0,
+          url: pub.url || ''
+        });
+      });
+    }
+
+    // หมวดงานสอน
+    const tContainer = document.getElementById('list-teaching');
+    if (tContainer) {
+      const filteredT = teachingList.filter(i => (i.course_code + (i.course_type || '') + (i.detail || '')).toLowerCase().includes(query));
+      tContainer.innerHTML = filteredT.length ? filteredT.map(i => `
+        <li class="repo-card-item">
+          <div class="repo-badge-row">
+            <span class="badge-term">${escapeHtml(i.term)}</span>
+            <span class="badge-credit">${i.credits || 0} หน่วยกิต (${i.hours || 45} ชม.)</span>
           </div>
-          <div class="pub-title">${escapeHtml(pub.title)}</div>
-          ${pub.url ? `
-            <a href="${escapeHtml(pub.url)}" target="_blank" rel="noopener noreferrer" class="pub-link">
-              ดูรายละเอียดผลงาน
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            </a>` : ''}
+          <div class="repo-title"><strong>${escapeHtml(i.course_code)}</strong>: ${escapeHtml(i.course_type || 'วิชาบรรยาย')}</div>
+          <div class="repo-sub-info">สัดส่วนการสอน: ${i.teaching_ratio || 1}</div>
         </li>
-    `).join('');
-  } else {
-      pubContainer.innerHTML = '<li style="color: var(--text-muted); font-size: 0.9rem;">ยังไม่มีข้อมูลผลงานที่เผยแพร่</li>';
+      `).join('') : '<p class="empty-note">ไม่มีข้อมูลในหมวดนี้</p>';
+    }
+
+    // หมวดการดูแลนักศึกษา
+    const advContainer = document.getElementById('list-advising');
+    if (advContainer) {
+      const filteredAdv = advisingList.filter(i => ((i.advising_type || '') + (i.student_or_project_detail || '') + (i.role || '')).toLowerCase().includes(query));
+      advContainer.innerHTML = filteredAdv.length ? filteredAdv.map(i => `
+        <li class="repo-card-item">
+          <div class="repo-badge-row">
+            <span class="badge-term">${escapeHtml(i.term)}</span>
+            <span class="badge-credit">${escapeHtml(i.advising_type || 'การดูแลนักศึกษา')}</span>
+          </div>
+          <div class="repo-title">${i.course_code && i.course_code !== '-' ? `<strong>${escapeHtml(i.course_code)}</strong> ` : ''}${escapeHtml(i.student_or_project_detail || '-')}</div>
+          <div class="repo-sub-info">บทบาท: ${escapeHtml(i.role || 'อาจารย์ที่ปรึกษา')} | จำนวนเรื่อง/หน่วยกิต: ${i.count_or_credits || 1}</div>
+        </li>
+      `).join('') : '<p class="empty-note">ไม่มีข้อมูลในหมวดนี้</p>';
+    }
+
+    // หมวดงานวิจัย/วิชาการ
+    const resContainer = document.getElementById('list-research');
+    if (resContainer) {
+      const filteredRes = researchList.filter(i => 
+        ((i.title || '') + (i.type || '') + (i.category || '')).toLowerCase().includes(query)
+      );
+      resContainer.innerHTML = filteredRes.length ? filteredRes.map(i => `
+        <li class="repo-card-item">
+          <div class="repo-badge-row">
+            <span class="badge-term">${escapeHtml(i.term)}</span>
+            <span class="badge-credit">${escapeHtml(i.category)}</span>
+            ${i.percent ? `<span class="badge-source">สัดส่วน ${i.percent}%</span>` : ''}
+            ${i.citation_count > 0 ? `<span class="badge-source">อ้างอิง ${i.citation_count} ครั้ง</span>` : ''}
+          </div>
+          <div class="repo-title">${escapeHtml(i.title)}</div>
+          <div class="repo-sub-info">ประเภท: ${escapeHtml(i.type)} | แหล่งอ้างอิง: ${escapeHtml(i.source)}</div>
+          ${i.url ? `
+            <div style="margin-top: 0.5rem;">
+              <a href="${escapeHtml(i.url)}" target="_blank" rel="noopener noreferrer" style="color: var(--tu-red); font-size: 0.85rem; font-weight: 600; text-decoration: none;">
+                เปิดดูผลงานวิจัย ↗
+              </a>
+            </div>` : ''}
+        </li>
+      `).join('') : '<p class="empty-note">ไม่มีข้อมูลในหมวดนี้</p>';
+    }
+
+    // หมวดงานบริการและบริหาร
+    const srvContainer = document.getElementById('list-services');
+    if (srvContainer) {
+      const filteredSrv = servicesList.filter(i => ((i.detail || '') + (i.service_category || '') + (i.role || '')).toLowerCase().includes(query));
+      srvContainer.innerHTML = filteredSrv.length ? filteredSrv.map(i => `
+        <li class="repo-card-item">
+          <div class="repo-badge-row">
+            <span class="badge-term">${escapeHtml(i.term)}</span>
+            <span class="badge-credit">${escapeHtml(i.service_category || 'งานบริการ/บริหาร')}</span>
+          </div>
+          <div class="repo-title">${escapeHtml(i.detail || '-')}</div>
+          <div class="repo-sub-info">บทบาท/หน้าที่: ${escapeHtml(i.role || '-')}</div>
+        </li>
+      `).join('') : '<p class="empty-note">ไม่มีข้อมูลในหมวดนี้</p>';
     }
   }
 
   function setTextOrHide(spanId, wrapperId, val) {
+    const wrap = document.getElementById(wrapperId);
     if (!val || val === '-') {
-      document.getElementById(wrapperId).style.display = 'none';
+      if (wrap) wrap.style.display = 'none';
     } else {
-      document.getElementById(spanId).textContent = val;
+      const span = document.getElementById(spanId);
+      if (span) span.textContent = val;
     }
   }
 
   function escapeHtml(str) {
     return String(str || '').replace(/[&<>"']/g, match => ({
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#39;'
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     })[match]);
   }
 });
