@@ -1,0 +1,8 @@
+{
+  "name": "cs361-g650-14",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:repository": "node workload-repository.test.mjs"
+  }
+}

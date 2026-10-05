@@ -1,3 +1,5 @@
+import { loadWorkloadRepository } from './workload-repository.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const facultyId = urlParams.get('id') || 'prof_001';
@@ -8,26 +10,23 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentFaculty = null;
   let facultyOutputs = [];
 
-  // ดึงข้อมูล faculties.json และ faculties-workloads-mock.json พร้อมกัน
+  // ใช้ Workload Repository Module (Issue #3) เป็นตัวกลางสำหรับข้อมูลภาระงาน
   Promise.all([
     fetch('faculties.json').then(res => {
       if (!res.ok) throw new Error('Cannot load faculties.json');
       return res.json();
     }),
-    fetch('faculties-workloads-mock.json').then(res => {
-      if (!res.ok) return [];
-      return res.json();
-    }).catch(() => [])
+    loadWorkloadRepository()
   ])
-  .then(([faculties, allWorkloads]) => {
+  .then(([faculties, workloadRepository]) => {
     currentFaculty = faculties.find(f => f.faculty_id === facultyId);
     if (!currentFaculty) {
       loadingState.innerHTML = `<p style="color: var(--tu-red);">ไม่พบข้อมูลอาจารย์รหัส: ${escapeHtml(facultyId)}</p>`;
       return;
     }
 
-    // กรองเฉพาะข้อมูลภาระงานของอาจารย์ท่านนี้
-    facultyOutputs = allWorkloads.filter(item => item.faculty_id === facultyId);
+    // Repository เป็นผู้จัดการการกรองตาม faculty_id
+    facultyOutputs = workloadRepository.getByFaculty(facultyId);
 
     renderFacultyBasic(currentFaculty);
     initRepositoryEvents();
