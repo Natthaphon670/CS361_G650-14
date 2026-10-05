@@ -172,3 +172,118 @@ header {
 .pub-link:hover {
   text-decoration: underline;
 }
+
+header {
+  background: var(--surface);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  padding: 20px 0;
+  margin-bottom: 40px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.brand-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--tu-red);
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 40px;
+  font-weight: 600;
+  font-size: 2rem;
+}
+
+/* Faculty Grid & Card  */
+.faculty-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.faculty-card {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.faculty-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+.avatar-placeholder {
+  width: 160px;
+  height:  160px; 
+  background-color: #eeeeee;
+  color: #999999;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0 auto 20px auto;
+}
+
+.faculty-name-th {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 5px 0;
+}
+
+.faculty-name-en {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin: 0 0 15px 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.position-badge {
+  display: inline-block;
+  background-color: #fdf0f2;
+  color: var(--primary-color);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 25px;
+}
+
+.view-profile-btn {
+  margin-top: auto;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--tu-red);
+  color: white;
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.view-profile-btn:hover {
+  background-color: #9c0e25;
+}
+
+#loading-state {
+  text-align: center;
+  padding: 50px;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
