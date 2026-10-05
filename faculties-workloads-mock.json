@@ -1,0 +1,310 @@
+[
+  {
+    "faculty_id": "prof_001",
+    "academic_year": 2566,
+    "semester": 1,
+    "evaluation_period": "1 กรกฎาคม 2566 - 31 ธันวาคม 2566",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS213", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "ซีเนียร์โปรเจกต์", "course_code": "CS403", "student_or_project_detail": "2 เรื่อง", "role": "อาจารย์ที่ปรึกษาหลัก", "count_or_credits": 2 }
+      ],
+      "academic_outputs": [
+        { "output_type": "บทความวิจัย", "title": "A correlation study of demographic characteristics and smartphone task performance", "participation_percentage": 50, "category": "วารสารวิชาการระดับนานาชาติ" }
+      ],
+      "services_and_admin": [
+        { "service_category": "งานบริหารวิชาการ", "role": "ผู้ประสานงานวิชา", "detail": "CS213" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_001",
+    "academic_year": 2566,
+    "semester": 2,
+    "evaluation_period": "1 มกราคม 2567 - 30 มิถุนายน 2567",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS313", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "วิทยานิพนธ์", "course_code": "CS800", "student_or_project_detail": "นายสมชาย ใจดี", "role": "ที่ปรึกษาหลัก", "count_or_credits": 3 }
+      ],
+      "academic_outputs": [],
+      "services_and_admin": [
+        { "service_category": "คณะทำงานระดับสาขา", "role": "ประธาน", "detail": "คณะกรรมการปรับปรุงหลักสูตร HCI" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_001",
+    "academic_year": 2567,
+    "semester": 1,
+    "evaluation_period": "1 กรกฎาคม 2567 - 31 ธันวาคม 2567",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS213", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "อาจารย์ที่ปรึกษาทั่วไป", "course_code": "-", "student_or_project_detail": "นักศึกษาปริญญาตรี", "role": "อาจารย์ที่ปรึกษาทั่วไป", "count_or_credits": 1 }
+      ],
+      "academic_outputs": [
+        { "output_type": "แบบบรรยาย", "title": "Age differences in smartphone menu item selection", "participation_percentage": 100, "category": "การนำเสนอผลงานในที่ประชุมระดับนานาชาติ" }
+      ],
+      "services_and_admin": [
+        { "service_category": "บริการวิชาการแก่สังคม", "role": "วิทยากร", "detail": "อบรมการออกแบบ UX/UI สำหรับหน่วยงานภายนอก" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_001",
+    "academic_year": 2567,
+    "semester": 2,
+    "evaluation_period": "1 มกราคม 2568 - 30 มิถุนายน 2568",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS413", "course_type": "วิชาปฏิบัติการ", "credits": 1.0, "hours": 30, "teaching_ratio": 0.6 }
+      ],
+      "student_advising": [
+        { "advising_type": "สหกิจศึกษา", "course_code": "CS304", "student_or_project_detail": "3 เรื่อง", "role": "อาจารย์ที่ปรึกษา", "count_or_credits": 3 }
+      ],
+      "academic_outputs": [],
+      "services_and_admin": [
+        { "service_category": "การเป็นผู้ประเมินผลงาน", "role": "ระดับนานาชาติ", "detail": "ผู้ประเมินบทความงานประชุมวิชาการ HCI" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_002",
+    "academic_year": 2566,
+    "semester": 1,
+    "evaluation_period": "1 กรกฎาคม 2566 - 31 ธันวาคม 2566",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS222", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "วิทยานิพนธ์", "course_code": "CS800", "student_or_project_detail": "นายกฤษณพล ไพเราะ", "role": "ที่ปรึกษาร่วม", "count_or_credits": 6 }
+      ],
+      "academic_outputs": [
+        { "output_type": "บทความวิจัย Q1", "title": "Decentralized Federated Learning for Agricultural Plant Diseases Identification on Edge Devices", "participation_percentage": 40, "category": "วารสารวิชาการระดับนานาชาติ" }
+      ],
+      "services_and_admin": [
+        { "service_category": "งานบริหารวิชาการ", "role": "ผู้ประสานงานวิชาที่มีผู้สอน 1 คน", "detail": "CS222" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_002",
+    "academic_year": 2566,
+    "semester": 2,
+    "evaluation_period": "1 มกราคม 2567 - 30 มิถุนายน 2567",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS232", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "ซีเนียร์โปรเจกต์", "course_code": "CS403", "student_or_project_detail": "1 เรื่อง", "role": "อาจารย์ที่ปรึกษาหลัก", "count_or_credits": 1 }
+      ],
+      "academic_outputs": [
+        { "output_type": "แบบบรรยาย", "title": "Machine Learning Approaches for Quality Control in Pulp Packaging Manufacturers", "participation_percentage": 20, "category": "การนำเสนอผลงานในที่ประชุมระดับนานาชาติ" }
+      ],
+      "services_and_admin": [
+        { "service_category": "คณะทำงานระดับสาขา", "role": "กรรมการ", "detail": "กรรมการสอบประมวลความรู้ ป.โท" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_002",
+    "academic_year": 2567,
+    "semester": 1,
+    "evaluation_period": "1 กรกฎาคม 2567 - 31 ธันวาคม 2567",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS333", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "สหกิจศึกษา", "course_code": "CS304", "student_or_project_detail": "2 เรื่อง", "role": "อาจารย์ที่ปรึกษา", "count_or_credits": 2 }
+      ],
+      "academic_outputs": [
+        { "output_type": "บทความวิจัย Tier 1", "title": "Preserving privacy in wearable devices: a framework for sensitive activity data protection", "participation_percentage": 30, "category": "วารสารวิชาการระดับนานาชาติ" }
+      ],
+      "services_and_admin": [
+        { "service_category": "งานบริหารวิชาการ", "role": "ผู้ประสานงานวิชาที่มีผู้สอนรวม 5 คนขึ้นไป", "detail": "CS333" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_002",
+    "academic_year": 2567,
+    "semester": 2,
+    "evaluation_period": "1 มกราคม 2568 - 30 มิถุนายน 2568",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS222", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 },
+        { "course_code": "CS232", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "อาจารย์ที่ปรึกษาทั่วไป", "course_code": "-", "student_or_project_detail": "นักศึกษาปริญญาตรี", "role": "อาจารย์ที่ปรึกษาทั่วไป", "count_or_credits": 1 }
+      ],
+      "academic_outputs": [
+        { "output_type": "บทความวิจัย", "title": "Privacy and Utility Preserving at the Edge", "participation_percentage": 25, "category": "วารสารวิชาการระดับนานาชาติ" }
+      ],
+      "services_and_admin": [
+        { "service_category": "บริการวิชาการแก่สังคม", "role": "วิทยากร", "detail": "CS232 (ภาคพิเศษ)" },
+        { "service_category": "การเป็นผู้ประเมินผลงาน", "role": "ระดับนานาชาติ", "detail": "CENTRA8 Project 5" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_003",
+    "academic_year": 2566,
+    "semester": 1,
+    "evaluation_period": "1 กรกฎาคม 2566 - 31 ธันวาคม 2566",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS314", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "ซีเนียร์โปรเจกต์", "course_code": "CS403", "student_or_project_detail": "2 เรื่อง", "role": "อาจารย์ที่ปรึกษาหลัก", "count_or_credits": 2 }
+      ],
+      "academic_outputs": [
+        { "output_type": "บทความวิจัย", "title": "Proposals for Improving the Assessment of Medical Device Software in Thailand", "participation_percentage": 50, "category": "การนำเสนอผลงานในที่ประชุมระดับชาติ" }
+      ],
+      "services_and_admin": [
+        { "service_category": "งานบริหารวิชาการ", "role": "ผู้ประสานงานวิชา", "detail": "CS314" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_003",
+    "academic_year": 2566,
+    "semester": 2,
+    "evaluation_period": "1 มกราคม 2567 - 30 มิถุนายน 2567",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS414", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "วิทยานิพนธ์", "course_code": "CS800", "student_or_project_detail": "นางสาววิลาสินี ดีสมมุติ", "role": "ที่ปรึกษาหลัก", "count_or_credits": 3 }
+      ],
+      "academic_outputs": [
+        { "output_type": "บทความวิจัย Q2", "title": "Traceability assessment model for checking traceability requirement compliance of a medical device software development process with ISO/IEC 62304", "participation_percentage": 30, "category": "วารสารวิชาการระดับนานาชาติ" }
+      ],
+      "services_and_admin": [
+        { "service_category": "คณะทำงานระดับสาขา", "role": "กรรมการ", "detail": "กรรมการสอบโครงร่างวิทยานิพนธ์" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_003",
+    "academic_year": 2567,
+    "semester": 1,
+    "evaluation_period": "1 กรกฎาคม 2567 - 31 ธันวาคม 2567",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS314", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "อาจารย์ที่ปรึกษาทั่วไป", "course_code": "-", "student_or_project_detail": "นักศึกษาปริญญาตรี", "role": "อาจารย์ที่ปรึกษาทั่วไป", "count_or_credits": 1 }
+      ],
+      "academic_outputs": [],
+      "services_and_admin": [
+        { "service_category": "บริการวิชาการแก่สังคม", "role": "วิทยากร", "detail": "บรรยายหัวข้อ Software Verification" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_003",
+    "academic_year": 2567,
+    "semester": 2,
+    "evaluation_period": "1 มกราคม 2568 - 30 มิถุนายน 2568",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS414", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "สหกิจศึกษา", "course_code": "CS304", "student_or_project_detail": "4 เรื่อง", "role": "อาจารย์ที่ปรึกษา", "count_or_credits": 4 }
+      ],
+      "academic_outputs": [],
+      "services_and_admin": [
+        { "service_category": "การเป็นผู้ประเมินผลงาน", "role": "ระดับนานาชาติ", "detail": "ผู้ประเมินบทความการประชุมวิชาการ Software Engineering" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_004",
+    "academic_year": 2566,
+    "semester": 1,
+    "evaluation_period": "1 กรกฎาคม 2566 - 31 ธันวาคม 2566",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS212", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 },
+        { "course_code": "CS212", "course_type": "วิชาปฏิบัติการ", "credits": 1.0, "hours": 30, "teaching_ratio": 0.6 }
+      ],
+      "student_advising": [
+        { "advising_type": "ซีเนียร์โปรเจกต์", "course_code": "CS403", "student_or_project_detail": "3 เรื่อง", "role": "อาจารย์ที่ปรึกษาหลัก", "count_or_credits": 3 }
+      ],
+      "academic_outputs": [],
+      "services_and_admin": [
+        { "service_category": "งานบริหารวิชาการ", "role": "ผู้ประสานงานวิชา", "detail": "CS212" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_004",
+    "academic_year": 2566,
+    "semester": 2,
+    "evaluation_period": "1 มกราคม 2567 - 30 มิถุนายน 2567",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS412", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "อาจารย์ที่ปรึกษาทั่วไป", "course_code": "-", "student_or_project_detail": "นักศึกษาปริญญาตรี", "role": "อาจารย์ที่ปรึกษาทั่วไป", "count_or_credits": 1 }
+      ],
+      "academic_outputs": [],
+      "services_and_admin": [
+        { "service_category": "คณะทำงานระดับสาขา", "role": "กรรมการ", "detail": "คณะกรรมการดูแลระบบเครือข่ายของสาขา" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_004",
+    "academic_year": 2567,
+    "semester": 1,
+    "evaluation_period": "1 กรกฎาคม 2567 - 31 ธันวาคม 2567",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS312", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 }
+      ],
+      "student_advising": [
+        { "advising_type": "สหกิจศึกษา", "course_code": "CS304", "student_or_project_detail": "5 เรื่อง", "role": "อาจารย์ที่ปรึกษา", "count_or_credits": 5 }
+      ],
+      "academic_outputs": [],
+      "services_and_admin": [
+        { "service_category": "คณะทำงานระดับคณะ", "role": "กรรมการ", "detail": "คณะทำงานพัฒนาระบบสารสนเทศคณะวิทยาศาสตร์และเทคโนโลยี" }
+      ]
+    }
+  },
+  {
+    "faculty_id": "prof_004",
+    "academic_year": 2567,
+    "semester": 2,
+    "evaluation_period": "1 มกราคม 2568 - 30 มิถุนายน 2568",
+    "workloads": {
+      "teaching": [
+        { "course_code": "CS412", "course_type": "วิชาบรรยาย", "credits": 3.0, "hours": 45, "teaching_ratio": 1 },
+        { "course_code": "CS312", "course_type": "วิชาปฏิบัติการ", "credits": 1.0, "hours": 30, "teaching_ratio": 0.6 }
+      ],
+      "student_advising": [
+        { "advising_type": "ซีเนียร์โปรเจกต์", "course_code": "CS403", "student_or_project_detail": "2 เรื่อง", "role": "อาจารย์ที่ปรึกษาร่วม", "count_or_credits": 2 }
+      ],
+      "academic_outputs": [],
+      "services_and_admin": [
+        { "service_category": "งานบริหารวิชาการ", "role": "ผู้ประสานงานวิชาฝึกงาน", "detail": "CS304" }
+      ]
+    }
+  }
+]
