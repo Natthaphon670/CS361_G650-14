@@ -65,12 +65,54 @@
           <ul id="f-education-list" class="custom-bullet-list"></ul>
         </div>
 
-        <div class="card-block" id="block-publications">
-          <div class="pub-meta-header">
-            <h2 class="block-header">ผลงานทางวิชาการและงานวิจัย</h2>
-            <span id="f-pub-count" class="pub-count-badge">0 ผลงาน</span>
+        <!-- ส่วนที่เพิ่มใหม่สำหรับ Issue #6: คลังภาระงาน 4 หมวดหมู่ -->
+        <div class="card-block" id="block-workload-repository">
+          <div class="repo-header-bar">
+            <div>
+              <h2 class="block-header" style="margin-bottom: 0.25rem;">ภาระงานและผลงานวิชาการ</h2>
+              <p style="font-size: 0.85rem; color: var(--text-muted);">ข้อมูลภาระงานตามแบบฟอร์มรายงานผลการปฏิบัติงาน</p>
+            </div>
+            
+            <!-- ตัวเลือกปีการศึกษา / ภาคการศึกษา -->
+            <div class="repo-filter-box">
+              <label for="select-term" style="font-size: 0.85rem; font-weight: 600;">ภาค/ปีการศึกษา:</label>
+              <select id="select-term" class="custom-select">
+                <option value="all" selected>ทั้งหมด (All Terms)</option>
+                <option value="2/2567">2/2567</option>
+                <option value="1/2567">1/2567</option>
+                <option value="2/2566">2/2566</option>
+              </select>
+            </div>
           </div>
-          <ul id="f-publications-list" class="pub-list"></ul>
+
+          <!-- แถบ 4 หมวดหมู่งาน -->
+          <div class="tab-nav">
+            <button type="button" class="tab-btn active" data-tab="tab-teaching">1. งานสอน</button>
+            <button type="button" class="tab-btn" data-tab="tab-advising">2. การดูแลนักศึกษา</button>
+            <button type="button" class="tab-btn" data-tab="tab-research">3. งานวิจัย/วิชาการ</button>
+            <button type="button" class="tab-btn" data-tab="tab-services">4. งานบริการและบริหาร</button>
+          </div>
+
+          <!-- ช่องค้นหาภายในผลงานของอาจารย์ท่านนี้ -->
+          <div class="search-input-wrap">
+            <input type="text" id="repo-search" placeholder="ค้นหาตามรหัสวิชา, ชื่องาน, หรือบทบาท..." class="custom-input">
+          </div>
+
+          <!-- พื้นที่แสดงผลรายการของแต่ละแท็บ -->
+          <div class="tab-contents">
+            <div id="tab-teaching" class="tab-pane active">
+              <ul id="list-teaching" class="repo-data-list"></ul>
+            </div>
+            <div id="tab-advising" class="tab-pane">
+              <ul id="list-advising" class="repo-data-list"></ul>
+            </div>
+            <div id="tab-research" class="tab-pane">
+              <ul id="list-research" class="repo-data-list"></ul>
+            </div>
+            <div id="tab-services" class="tab-pane">
+              <ul id="list-services" class="repo-data-list"></ul>
+            </div>
+          </div>
         </div>
       </section>
     </div>

@@ -288,7 +288,7 @@ header {
   font-size: 1.1rem;
 }
 
-/* Search Box */
+/* Index.html Search Box */
 .search-box-wrap {
   max-width: 520px;
   margin: 0 auto 2.5rem;
@@ -321,4 +321,152 @@ header {
   border-color: var(--tu-red);
   box-shadow: 0 0 0 3px var(--tu-red-light);
   background-color: #FFFFFF;
+}
+
+/* หัวข้อและแถบเลือกปีการศึกษา */
+.repo-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.repo-filter-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.custom-select {
+  font-family: inherit;
+  font-size: 0.875rem;
+  padding: 0.45rem 0.85rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md, 10px);
+  background-color: var(--surface);
+  color: var(--text-main);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.custom-select:focus {
+  border-color: var(--tu-red);
+}
+
+/* ช่องค้นหาภายในผลงานของอาจารย์ */
+.search-input-wrap {
+  margin-bottom: 1.25rem;
+}
+
+/* แถบเมนูแท็บ 4 หมวดหมู่งาน */
+.tab-nav {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid var(--border-color);
+  margin-bottom: 1.25rem;
+  overflow-x: auto;
+}
+
+.tab-btn {
+  font-family: inherit;
+  background: none;
+  border: none;
+  padding: 0.65rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  color: var(--tu-red);
+}
+
+.tab-btn.active {
+  color: var(--tu-red);
+  border-bottom-color: var(--tu-red);
+}
+
+/* ควบคุมการเปิด/ปิดเนื้อหาของแท็บ */
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+/* การ์ดรายการภาระงานแต่ละชิ้น */
+.repo-data-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.repo-card-item {
+  background: #FAFAFA;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md, 10px);
+  padding: 1.1rem;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.repo-card-item:hover {
+  border-color: var(--tu-red);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.repo-badge-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.45rem;
+}
+
+.badge-term {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--tu-red);
+  background: var(--tu-red-light);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+}
+
+.badge-credit {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #854D0E;
+  background: var(--tu-yellow-light);
+  border: 1px solid var(--tu-yellow-border);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+}
+
+.repo-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.35rem;
+  line-height: 1.4;
+}
+
+.repo-sub-info {
+  font-size: 0.825rem;
+  color: var(--text-muted);
+}
+
+.empty-note {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 2.5rem 1rem;
 }
