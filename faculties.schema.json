@@ -1,0 +1,102 @@
+นี่คือสรุปโครงสร้าง Attribute สำหรับตาราง FacultyProfiles บน DynamoDB โดยอ้างอิงและคงรูปแบบให้สอดคล้องกับไฟล์ faculties.json เดิม เพื่อให้ง่ายต่อการนำไปใช้งานต่อครับ:
+
+faculty_id (String): [Partition Key] รหัสประจำตัวอาจารย์ (เช่น "prof_001")
+
+name_th (String): ชื่อ-นามสกุลภาษาไทย
+
+name_en (String): ชื่อ-นามสกุลภาษาอังกฤษ
+
+academic_position (String): ตำแหน่งทางวิชาการ
+
+contact_information (Map / Object): ข้อมูลการติดต่อ ประกอบด้วย:
+
+	office (String): ห้องพักอาจารย์
+
+	phone (String): เบอร์โทรศัพท์
+
+	email (String): อีเมล
+
+research_interests (List of Strings): รายการความสนใจหรืองานวิจัยที่เชี่ยวชาญ (จัดเก็บเป็นอาร์เรย์ของข้อความ)
+
+education (List of Strings): ประวัติการศึกษา (จัดเก็บเป็นอาร์เรย์ของข้อความ)
+
+expertise (List of Strings): ความเชี่ยวชาญทางวิชาการโดยละเอียด (จัดเก็บเป็นอาร์เรย์ของข้อความ)
+
+external_profiles (Map / Object): ลิงก์ไปยังโปรไฟล์ภายนอก ประกอบด้วย:
+
+	google_scholar_url (String): ลิงก์ Google Scholar
+
+	researchgate_url (String): ลิงก์ ResearchGate
+
+total_publications (Number): จำนวนผลงานตีพิมพ์ทั้งหมด
+
+publications (List of Maps): รายการผลงานตีพิมพ์ จัดเก็บเป็นอาร์เรย์ของ Object โดยแต่ละรายการประกอบด้วย:
+
+	title (String): ชื่อผลงาน
+
+	year (Number / Null): ปีที่ตีพิมพ์
+
+	venue (String): สถานที่ตีพิมพ์หรือนำเสนอ
+
+	citation_count (Number): จำนวนการอ้างอิง
+
+	url (String): ลิงก์ไปยังผลงาน
+
+	source (String): แหล่งที่มาของข้อมูล (เช่น "Google Scholar")
+
+
+ตัวอย่างข้อมูล
+
+[
+  {
+    "faculty_id": "prof_001",
+    "name_th": "ผศ.ดร.ลัมพาพรรณ พันธ์ชูจิตร์",
+    "name_en": "Asst.Prof.Dr. Lumpapun Punchoojit",
+    "academic_position": "ผู้ช่วยศาสตราจารย์ (Asst.Prof.Dr.)",
+    "contact_information": {
+      "office": "อาคาร LC-2 ชั้น 2 ห้อง 224",
+      "phone": "02-546-4444 ต่อ 2157 ต่อ 224",
+      "email": "lumpapun_p@sci.tu.ac.th"
+    },
+    "research_interests": [
+      "Human-Computer Interaction",
+      "Child-Computer Interaction",
+      "Human and Psychological factors in designing UX/UI",
+      "UX/UI research methods",
+      "Mobile Usability"
+    ],
+    "education": [
+      "Ph.D. (Computer Science), Faculty of Science and Technology, Thammasat University , 2019",
+      "M.Sc. (Information Technology) ,Faculty of Information Technology, King Mongkut’s University of Technology North Bangkok, 2013",
+      "B.Sc. (Computer Science), Mahidol University International College , 2009"
+    ],
+    "expertise": [
+      "วิจัยด้านการปฏิสัมพันธ์ระหว่างมนุษย์และคอมพิวเตอร์ และระหว่างเด็กและคอมพิวเตอร์ ศึกษาในเชิงทฤษฎี วัดผลและประเมินผล รวมถึงการประยุกต์ใช้ทฤษฎีในการสร้างผลิตภัณฑ์ต่าง ๆ",
+      "วิจัยด้านมนุษยปัจจัยและปัจจัยเชิงจิตวิทยาที่มีอิทธิพลต่อการออกแบบส่วนต่อประสานและประสบการณ์ผู้ใช้",
+      "การประยุกต์ใช้วิธีวิจัยรูปแบบต่าง ๆ ในการออกแบบส่วนต่อประสานและประสบการณ์ผู้ใช้",
+      "งานวิจัยด้านความยากง่ายในการใช้งานอุปกรณ์สื่อสารแบบเคลื่อนที่"
+    ],
+    "external_profiles": {
+      "google_scholar_url": "https://scholar.google.com/citations?user=6lbEl34KcAAC&hl=th",
+      "researchgate_url": "https://www.researchgate.net/publication/320986719_Usability_Studies_on_Mobile_User_Interface_Design_Patterns_A_Systematic_Literature_Review"
+    },
+    "total_publications": 2,
+    "publications": [
+      {
+        "title": "Usability studies on mobile user interface design patterns: a systematic literature review",
+        "year": 2017,
+        "venue": "N/A",
+        "citation_count": 323,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:d1gkVwhDpl0C",
+        "source": "Google Scholar"
+      },
+      {
+        "title": "Research ethics in human-computer interaction: a review of ethical concerns in the past five years",
+        "year": 2015,
+        "venue": "N/A",
+        "citation_count": 17,
+        "url": "https://scholar.google.com/citations?view_op=view_citation&citation_for_view=6lbEl34KcAAC:9yKSN-GCB0IC",
+        "source": "Google Scholar"
+      },
+    ]
+  },
