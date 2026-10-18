@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard สาขาวิชา - คณะวิทยาศาสตร์และเทคโนโลยี มธ.</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="background:#f8fafc; margin:0;">
+    <div id="auth-header-slot"></div>
+
+    <main class="tu-dashboard-container">
+        <div style="margin-bottom:1.5rem;">
+            <h2 style="margin:0; font-size:1.5rem; color:#1e293b;">ระบบตรวจสอบภาระงานสาขาวิชา (Staff / Admin)</h2>
+            <p style="margin:0.25rem 0 0; color:#64748b; font-size:0.9rem;">
+                คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์
+            </p>
+        </div>
+
+        <!-- สถิติภาพรวม -->
+        <div class="tu-stats-grid">
+            <div class="tu-stat-box" style="border-left:4px solid #f59e0b;">
+                <span style="font-size:0.85rem; color:#64748b; font-weight:600;">รอการตรวจสอบ (Pending Review)</span>
+                <div class="tu-stat-num" id="stat-pending" style="color:#d97706;">0</div>
+            </div>
+            <div class="tu-stat-box" style="border-left:4px solid #16a34a;">
+                <span style="font-size:0.85rem; color:#64748b; font-weight:600;">อนุมัติแล้ว (Approved)</span>
+                <div class="tu-stat-num" id="stat-approved" style="color:#16a34a;">0</div>
+            </div>
+            <div class="tu-stat-box" style="border-left:4px solid #dc2626;">
+                <span style="font-size:0.85rem; color:#64748b; font-weight:600;">ส่งกลับแก้ไข (Rejected)</span>
+                <div class="tu-stat-num" id="stat-rejected" style="color:#dc2626;">0</div>
+            </div>
+        </div>
+
+        <!-- ตัวกรอง -->
+        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:1rem; margin-bottom:1rem; display:flex; gap:0.75rem;">
+            <select id="filter-status" class="tu-select-sm">
+                <option value="">-- ทุกสถานะ --</option>
+                <option value="Pending_Review" selected>รอการตรวจสอบ (Pending Review)</option>
+                <option value="Approved">อนุมัติแล้ว (Approved)</option>
+                <option value="Rejected">ส่งกลับแก้ไข (Rejected)</option>
+            </select>
+            <select id="filter-category" class="tu-select-sm">
+                <option value="">-- ทุกหมวดหมู่ --</option>
+                <option value="Teaching">การสอน (Teaching)</option>
+                <option value="Research">งานวิจัย (Research)</option>
+                <option value="Academic Service">บริการวิชาการ (Academic Service)</option>
+                <option value="Professional Development">พัฒนาวิชาชีพ (Professional Development)</option>
+            </select>
+            <button class="tu-btn tu-btn-sm" onclick="renderTable()">ค้นหา</button>
+        </div>
+
+        <!-- ตารางตรวจสอบรายการ -->
+        <div class="tu-table-box">
+            <table class="tu-table">
+                <thead>
+                    <tr>
+                        <th>อาจารย์ผู้ส่ง</th>
+                        <th>หมวดงาน</th>
+                        <th>หัวข้อภาระงาน</th>
+                        <th>หลักฐานแนบ</th>
+                        <th>สถานะ</th>
+                        <th style="text-align:right;">การดำเนินการ</th>
+                    </tr>
+                </thead>
+                <tbody id="dashboard-tbody"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <script src="auth.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

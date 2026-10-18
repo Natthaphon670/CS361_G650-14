@@ -288,4 +288,243 @@ document.addEventListener('DOMContentLoaded', () => {
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     })[match]);
   }
+
 });
+
+// ============================================================
+// Workload Management (แก้ไขปัญหาปุ่มกดไม่ติด + ดึงข้อมูลวิชาจริง)
+// ============================================================
+const urlParams = new URLSearchParams(window.location.search);
+const pageFacultyId = urlParams.get("id") || "prof_003";
+
+// 1. ผูกฟังก์ชันเข้ากับ window ทันที ป้องกันปัญหา type="module"
+window.openWorkloadModal = function() {
+    let modal = document.getElementById("workload-modal");
+    if (!modal) {
+        injectWorkloadModal(); // ดักกรณีใน HTML ไม่มี Modal ให้สร้างให้อัตโนมัติ
+        modal = document.getElementById("workload-modal");
+    }
+    modal.style.display = "flex";
+};
+
+window.closeWorkloadModal = function() {
+    const modal = document.getElementById("workload-modal");
+    if (modal) modal.style.display = "none";
+};
+
+window.submitForReview = function(id) {
+    const all = JSON.parse(sessionStorage.getItem("mock_workloads") || "[]");
+    const target = all.find(w => String(w.id || w.workload_id) === String(id));
+    if (target) {
+        target.workflow_status = "Pending_Review";
+        sessionStorage.setItem("mock_workloads", JSON.stringify(all));
+        renderWorkloads();
+        alert("ส่งภาระงานเพื่อรอการตรวจสอบเรียบร้อยแล้ว");
+    }
+};
+
+window.removeWorkload = function(id) {
+    if (!confirm("ต้องการลบรายการภาระงานนี้หรือไม่?")) return;
+    let all = JSON.parse(sessionStorage.getItem("mock_workloads") || "[]");
+    all = all.filter(w => String(w.id || w.workload_id) !== String(id));
+    sessionStorage.setItem("mock_workloads", JSON.stringify(all));
+    renderWorkloads();
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+    // ผูก Event Listener กับปุ่มโดยตรง
+    const btnAdd = document.getElementById("btn-add-workload");
+    if (btnAdd) {
+        btnAdd.onclick = window.openWorkloadModal;
+        btnAdd.style.display = "inline-flex"; // แสดงปุ่มให้กดบันทึกได้เสมอ
+    }
+
+    await renderWorkloads();
+    bindFormSubmit();
+});
+
+// ดึงข้อมูลวิชาหรือหัวข้อจริง ไม่ให้ขึ้น "ไม่มีชื่อหัวข้อ"
+function extractWorkloadDetails(item) {
+    let category = item.category || item.workload_type || item.type;
+    let title = item.title || item.title_th || item.course_name || item.course_name_th || item.name || item.topic;
+    let desc = item.description || item.detail || item.course_id || "-";
+
+    // กรณีข้อมูลซ้อนอยู่ในอาเรย์ teaching, research, academic_service
+    if (!title) {
+        if (Array.isArray(item.teaching) && item.teaching.length > 0) {
+            category = category || "การสอน (Teaching)";
+            const t = item.teaching[0];
+            title = t.course_name || t.course_name_th || t.name || (t.course_id ? `รายวิชา ${t.course_id}` : null);
+            desc = t.course_id ? `รหัสวิชา: ${t.course_id} (${t.credits || 3} หน่วยกิต)` : desc;
+        } else if (Array.isArray(item.research) && item.research.length > 0) {
+            category = category || "งานวิจัย (Research)";
+            const r = item.research[0];
+            title = r.title || r.title_th || r.name || r.project_name;
+            desc = r.fund || r.journal || desc;
+        } else if (Array.isArray(item.academic_service) && item.academic_service.length > 0) {
+            category = category || "บริการวิชาการ (Academic Service)";
+            title = item.academic_service[0].title || item.academic_service[0].name;
+        } else if (Array.isArray(item.professional_development) && item.professional_development.length > 0) {
+            category = category || "พัฒนาวิชาชีพ (Professional Development)";
+            title = item.professional_development[0].title || item.professional_development[0].name;
+        }
+    }
+
+    return {
+        category: category || "ภาระงาน",
+        title: title || "ภาระงานวิชาการประจำปี",
+        desc: desc,
+        year: item.academic_year || "2568",
+        status: item.workflow_status || item.status || "Draft",
+        evidence: item.evidence_name || item.evidence_key || null
+    };
+}
+
+async function getStoredWorkloads() {
+    if (!sessionStorage.getItem("mock_workloads") || sessionStorage.getItem("mock_workloads") === "[]") {
+        try {
+            const res = await fetch("faculties-workloads-mock.json");
+            const data = await res.json();
+            sessionStorage.setItem("mock_workloads", JSON.stringify(data));
+        } catch (e) {
+            console.error("Failed to load workloads", e);
+        }
+    }
+    return JSON.parse(sessionStorage.getItem("mock_workloads") || "[]");
+}
+
+async function renderWorkloads() {
+    const listContainer = document.getElementById("workload-list-container");
+    if (!listContainer) return;
+
+    const all = await getStoredWorkloads();
+    const targetId = String(pageFacultyId).trim().toLowerCase();
+
+    // กรองภาระงานตาม ID ของอาจารย์หน้านี้
+    const myWorkloads = all.filter(w => {
+        const itemFacId = String(w.faculty_id || "").trim().toLowerCase();
+        return itemFacId === targetId ||
+               itemFacId.replace("prof_img_", "prof_") === targetId.replace("prof_img_", "prof_");
+    });
+
+    if (myWorkloads.length === 0) {
+        listContainer.innerHTML = `<p style="color:#64748b; text-align:center; padding:1.5rem;">ยังไม่มีรายการภาระงาน</p>`;
+        return;
+    }
+
+    listContainer.innerHTML = myWorkloads.map(item => {
+        const info = extractWorkloadDetails(item);
+        const itemId = item.id || item.workload_id || ("wl_" + Math.random().toString(36).substr(2, 9));
+
+        return `
+            <div class="tu-item-row" style="border:1px solid #e2e8f0; border-radius:8px; padding:1rem 1.25rem; margin-bottom:0.75rem; display:flex; justify-content:space-between; align-items:center; background:#fff;">
+                <div>
+                    <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.35rem;">
+                        <span class="tu-badge" style="background:#fef2f2; color:#c51a2e; border:1px solid #fecaca; padding:2px 8px; border-radius:12px; font-size:0.75rem; font-weight:600;">${info.category}</span>
+                        <span style="font-size:0.8rem; color:#64748b;">ปีการศึกษา ${info.year}</span>
+                    </div>
+                    <h4 style="margin:0 0 0.25rem 0; font-size:1.05rem; color:#1e293b;">${info.title}</h4>
+                    <p style="margin:0; font-size:0.85rem; color:#64748b;">${info.desc}</p>
+                    ${info.evidence ? `<p style="margin:0.35rem 0 0; font-size:0.8rem; color:#16a34a;">📎 หลักฐาน: ${info.evidence}</p>` : ''}
+                </div>
+
+                <div style="display:flex; align-items:center; gap:0.6rem;">
+                    <span class="tu-badge tu-badge-${info.status.toLowerCase()}" style="padding:4px 10px; border-radius:12px; font-size:0.75rem; font-weight:600;">
+                        ${info.status}
+                    </span>
+
+                    ${info.status === 'Draft' ? `
+                        <button class="tu-btn tu-btn-sm" style="background:#d97706; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;" onclick="window.submitForReview('${itemId}')">ส่งตรวจ</button>
+                        <button class="tu-btn tu-btn-danger tu-btn-sm" style="background:#dc2626; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;" onclick="window.removeWorkload('${itemId}')">ลบ</button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+function bindFormSubmit() {
+    const form = document.getElementById("workload-form");
+    if (!form) return;
+
+    form.onsubmit = async (e) => {
+        e.preventDefault();
+        const file = document.getElementById("wl-file")?.files[0];
+
+        const newItem = {
+            id: "wl_" + Date.now(),
+            faculty_id: pageFacultyId,
+            category: document.getElementById("wl-category").value,
+            title: document.getElementById("wl-title").value,
+            description: document.getElementById("wl-desc").value,
+            academic_year: document.getElementById("wl-year").value,
+            semester: document.getElementById("wl-semester").value,
+            workflow_status: "Draft",
+            evidence_name: file ? file.name : null
+        };
+
+        const all = await getStoredWorkloads();
+        all.unshift(newItem);
+        sessionStorage.setItem("mock_workloads", JSON.stringify(all));
+
+        window.closeWorkloadModal();
+        renderWorkloads();
+        form.reset();
+        alert("บันทึกภาระงานฉบับร่างเรียบร้อยแล้ว");
+    };
+}
+
+// สคริปต์สำรองฉุกเฉิน: สร้าง Modal ให้อัตโนมัติหากไม่มีอยู่ใน HTML
+function injectWorkloadModal() {
+    const div = document.createElement("div");
+    div.id = "workload-modal";
+    div.className = "tu-modal";
+    div.style.cssText = "display:none; position:fixed; inset:0; background:rgba(15,23,42,0.6); z-index:9999; justify-content:center; align-items:center;";
+    div.innerHTML = `
+        <div style="background:#fff; border-radius:10px; width:100%; max-width:500px; padding:1.75rem; box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);">
+            <h3 style="margin-top:0; font-size:1.15rem; color:#1e293b; border-bottom:1px solid #e2e8f0; padding-bottom:0.75rem;">บันทึกรายการภาระงาน</h3>
+            <form id="workload-form">
+                <div style="margin-bottom:1rem;">
+                    <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:0.35rem;">หมวดหมู่ภาระงาน</label>
+                    <select id="wl-category" class="tu-form-control" required style="width:100%; padding:0.5rem;">
+                        <option value="Teaching">การสอน (Teaching)</option>
+                        <option value="Research">งานวิจัย (Research)</option>
+                        <option value="Academic Service">บริการวิชาการ (Academic Service)</option>
+                        <option value="Professional Development">พัฒนาวิชาชีพ (Professional Development)</option>
+                    </select>
+                </div>
+                <div style="margin-bottom:1rem;">
+                    <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:0.35rem;">หัวข้อ / ชื่องาน / รหัสวิชา</label>
+                    <input type="text" id="wl-title" class="tu-form-control" placeholder="เช่น บรรยายวิชา CS361" required style="width:100%; padding:0.5rem; box-sizing:border-box;">
+                </div>
+                <div style="margin-bottom:1rem;">
+                    <label style="display:block; font-size:0.85rem; font-weight:600; margin-bottom:0.35rem;">รายละเอียดประกอบ</label>
+                    <textarea id="wl-desc" class="tu-form-control" rows="3" style="width:100%; padding:0.5rem; box-sizing:border-box;"></textarea>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+                    <div>
+                        <label style="display:block; font-size:0.85rem; font-weight:600;">ปีการศึกษา</label>
+                        <input type="text" id="wl-year" value="2568" required style="width:100%; padding:0.5rem; box-sizing:border-box;">
+                    </div>
+                    <div>
+                        <label style="display:block; font-size:0.85rem; font-weight:600;">ภาคการศึกษา</label>
+                        <select id="wl-semester" style="width:100%; padding:0.5rem;">
+                            <option value="1">ภาคเรียนที่ 1</option>
+                            <option value="2">ภาคเรียนที่ 2</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="margin-bottom:1rem;">
+                    <label style="display:block; font-size:0.85rem; font-weight:600;">แนบไฟล์หลักฐาน (PDF/รูปภาพ)</label>
+                    <input type="file" id="wl-file" style="width:100%;">
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1.25rem;">
+                    <button type="button" class="tu-btn tu-btn-secondary" onclick="window.closeWorkloadModal()" style="padding:6px 12px; cursor:pointer;">ยกเลิก</button>
+                    <button type="submit" class="tu-btn" style="background:#c51a2e; color:#fff; border:none; padding:6px 14px; border-radius:4px; cursor:pointer;">บันทึก (Save Draft)</button>
+                </div>
+            </form>
+        </div>
+    `;
+    document.body.appendChild(div);
+    bindFormSubmit();
+}

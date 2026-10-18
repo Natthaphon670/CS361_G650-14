@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div id="auth-header-slot"></div>
 
   <div class="top-accent-bar"></div>
 
@@ -116,7 +117,79 @@
         </div>
       </section>
     </div>
+    
+    <!-- กล่องแสดงภาระงาน 4 หมวดของอาจารย์ -->
+    <div class="tu-workload-wrapper">
+        <div class="tu-card">
+            <div class="tu-card-header">
+                <div>
+                    <h3 style="margin:0; font-size:1.25rem; color:#1e293b;">ภาระงานและผลงานวิชาการ (Workloads)</h3>
+                    <p style="margin:0.25rem 0 0; color:#64748b; font-size:0.875rem;">
+                        ผลงาน 4 หมวด (การสอน, วิจัย, บริการวิชาการ, พัฒนาวิชาชีพ)
+                    </p>
+                </div>
+                <!-- ปุ่มเพิ่มงาน: จะแสดงผลเฉพาะอาจารย์ที่เป็นเจ้าของประวัตินี้เท่านั้น -->
+                <button id="btn-add-workload" class="tu-btn" style="display:none;" onclick="openWorkloadModal()">
+                    + บันทึกภาระงาน
+                </button>
+            </div>
+            <div id="workload-list-container"></div>
+        </div>
+    </div>
+
+    <!-- Modal ฟอร์มบันทึกภาระงาน -->
+    <div id="workload-modal" class="tu-modal">
+        <div class="tu-modal-box">
+            <h3 style="margin-top:0; font-size:1.15rem; color:#1e293b; border-bottom:1px solid #e2e8f0; padding-bottom:0.75rem;">
+                บันทึกรายการภาระงาน
+            </h3>
+            <form id="workload-form">
+                <div class="tu-form-group">
+                    <label>หมวดหมู่ภาระงาน</label>
+                    <select id="wl-category" class="tu-form-control" required>
+                        <option value="Teaching">การสอน (Teaching)</option>
+                        <option value="Research">งานวิจัย (Research)</option>
+                        <option value="Academic Service">บริการวิชาการ (Academic Service)</option>
+                        <option value="Professional Development">พัฒนาวิชาชีพ (Professional Development)</option>
+                    </select>
+                </div>
+                <div class="tu-form-group">
+                    <label>หัวข้อ / ชื่องาน / รายวิชา</label>
+                    <input type="text" id="wl-title" class="tu-form-control" placeholder="เช่น บรรยายวิชา CS361 หรือ บทความวิจัยตีพิมพ์" required>
+                </div>
+                <div class="tu-form-group">
+                    <label>รายละเอียดเพิ่มเติม</label>
+                    <textarea id="wl-desc" class="tu-form-control" rows="3" placeholder="ระบุผลลัพธ์หรือรายละเอียดสังเขป"></textarea>
+                </div>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
+                    <div class="tu-form-group">
+                        <label>ปีการศึกษา</label>
+                        <input type="text" id="wl-year" class="tu-form-control" value="2568" required>
+                    </div>
+                    <div class="tu-form-group">
+                        <label>ภาคการศึกษา</label>
+                        <select id="wl-semester" class="tu-form-control">
+                            <option value="1">ภาคเรียนที่ 1</option>
+                            <option value="2">ภาคเรียนที่ 2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="tu-form-group">
+                    <label>ไฟล์หลักฐานแนบ (Evidence)</label>
+                    <input type="file" id="wl-file" class="tu-form-control">
+                </div>
+                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1.25rem;">
+                    <button type="button" class="tu-btn tu-btn-secondary" onclick="closeWorkloadModal()">ยกเลิก</button>
+                    <button type="submit" class="tu-btn">บันทึกฉบับร่าง (Save Draft)</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
   </main>
   <script type="module" src="profile.js"></script>
+  <script src="auth.js"></script>
+  <script src="profile.js"></script
 </body>
 </html>
