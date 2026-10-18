@@ -238,4 +238,4 @@ CS361_G650-14/
 
 ## Web Application
 
-[เปิดหน้าเว็บระบบ]([http://faculty-output-and-workload-management-system-g14.s3-website-us-east-1.amazonaws.com/index.html](https://staging.dxac2u26txfej.amplifyapp.com/?code=60bdec11-9f78-4add-a467-8d81a9e5e8b4))
+[เปิดหน้าเว็บระบบ](https://staging.dxac2u26txfej.amplifyapp.com/?code=60bdec11-9f78-4add-a467-8d81a9e5e8b4)
