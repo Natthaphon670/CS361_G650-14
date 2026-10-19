@@ -1,22 +1,22 @@
 const APP_CONFIG = {
-    useMock: true,   // เปลี่ยนเป็น false เพื่อใช้ AWS จริง
+    useMock: false,   // เปลี่ยนเป็น false เพื่อใช้ AWS จริง
 
     auth: {
         // 1) Cognito > User pool > App integration > Domain
-        cognitoDomain: "/https://us-east-107xfu83b2.auth.us-east-1.amazoncognito.com",
+        cognitoDomain: "https://us-east-107xfu83b2.auth.us-east-1.amazoncognito.com",
         // 2) Cognito > User pool > App clients > Client ID
-        clientId: "/1tan8hvjbkc911j4ligl4rr9ik",
+        clientId: "1tan8hvjbkc911j4ligl4rr9ik",
         scope: "openid email profile",
 
         redirectUri: new URL("index.html", window.location.href).href,
-        logoutUri: new URL("index.html", window.location.href).href,
+        logoutUri: "https://main.d2eorbfslu1s80.amplifyapp.com/index.html",
 
         apiTokenType: "id"
     },
 
     api: {
         // 3) API Gateway > Stages > prod > Invoke URL (ไม่ต้องมี / ท้ายสุด)
-        baseUrl: "/https://qzleoa96f4.execute-api.us-east-1.amazonaws.com/prod"
+        baseUrl: "https://qzleoa96f4.execute-api.us-east-1.amazonaws.com/prod"
     },
 
     evidence: {

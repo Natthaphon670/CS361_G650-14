@@ -1,5 +1,4 @@
 const MOCK_USERS = {
-    // อาจารย์ทุกคนใน faculties.json ถูกเพิ่มเข้ามาอัตโนมัติ (ดู loadMockFaculty)
     staff: { username: "staff_cs", name: "เจ้าหน้าที่ภาควิชา (Staff)", groups: ["Staff"], faculty_id: null },
     admin: { username: "admin_dean", name: "หัวหน้าภาควิชา (Admin)", groups: ["Admin"], faculty_id: null }
 };
@@ -12,7 +11,6 @@ const Auth = (() => {
     const K_PKCE = "auth.pkce";
     const K_RETURN = "auth.return_to";
 
-    
     const store = {
         get(k) { try { return JSON.parse(sessionStorage.getItem(k)); } catch { return null; } },
         set(k, v) { sessionStorage.setItem(k, JSON.stringify(v)); },
@@ -33,7 +31,6 @@ const Auth = (() => {
         return new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str)));
     }
 
-    
     function decodeJwt(token) {
         try {
             const part = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
@@ -63,7 +60,6 @@ const Auth = (() => {
         return !!(t && t.id_token && t.expires_at && Date.now() < t.expires_at - 10_000);
     }
 
-    
     async function login(returnTo = window.location.href) {
         if (isMock) return; 
         if (!window.crypto?.subtle) {
@@ -139,7 +135,6 @@ const Auth = (() => {
         return callbackPromise;
     }
 
-    
     function getUser() {
         if (isMock) return store.get(K_USER);
         const t = store.get(K_TOKENS);
@@ -147,7 +142,6 @@ const Auth = (() => {
         return userFromIdToken(t.id_token);
     }
 
-    
     function getToken() {
         if (isMock) return getUser() ? "mock-token" : null;
         const t = store.get(K_TOKENS);
@@ -166,7 +160,6 @@ const Auth = (() => {
         store.del(K_TOKENS);
         store.del(K_USER);
         if (isMock) {
-            // โหมดจำลอง: คงข้อมูลภาระงานไว้ เพื่อสลับผู้ใช้ (อาจารย์ ↔ Staff) แล้วยังเห็นรายการที่เพิ่งส่ง
             window.location.href = "index.html";
             return;
         }
@@ -177,7 +170,6 @@ const Auth = (() => {
         window.location.assign(url.toString());
     }
 
-   
     function hasRole(roles = []) {
         const u = getUser();
         return !!u && (u.groups || []).some(r => roles.includes(r));
@@ -190,7 +182,6 @@ const Auth = (() => {
     }
     const primaryRole = u => ["Admin", "Staff", "Faculty"].find(r => (u?.groups || []).includes(r)) || (u?.groups?.[0] ?? "ผู้ใช้");
 
-    
     function applyRoleVisibility(root = document) {
         root.querySelectorAll("[data-roles]").forEach(el => {
             const roles = el.dataset.roles.split(/\s+/).filter(Boolean);
@@ -198,7 +189,6 @@ const Auth = (() => {
         });
     }
 
-   
     function showBlocked(title, message, withLogin) {
         const main = document.querySelector("main") || document.body;
         main.innerHTML = `
@@ -213,7 +203,6 @@ const Auth = (() => {
         document.getElementById("blocked-login")?.addEventListener("click", () => login(window.location.href));
     }
 
-  
     async function guard(roles = []) {
         await ready;
         const u = getUser();
@@ -229,7 +218,6 @@ const Auth = (() => {
         return true;
     }
 
-    
     function renderNav() {
         const slot = document.getElementById("auth-header-slot");
         if (!slot) return;
@@ -273,7 +261,6 @@ const Auth = (() => {
         applyRoleVisibility(slot);
     }
 
-    // โหมดจำลอง: สร้างผู้ใช้ "อาจารย์" ให้ครบทุกคนจาก faculties.json
     async function loadMockFaculty() {
         if (!isMock) return;
         try {
