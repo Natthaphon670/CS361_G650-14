@@ -7,8 +7,8 @@ const Api = (() => {
     const EVIDENCE = APP_CONFIG.evidence;
 
     
-    async function request(method, path, { query, body } = {}) {
-        const url = new URL(APP_CONFIG.api.baseUrl.replace(/\/$/, "") + path);
+    async function request(method, path, { query, body, baseUrl = APP_CONFIG.api.baseUrl } = {}) {
+        const url = new URL(baseUrl.replace(/\/$/, "") + path);
         Object.entries(query || {}).forEach(([k, v]) => {
             if (v !== undefined && v !== null && v !== "") url.searchParams.set(k, v);
         });
@@ -57,6 +57,7 @@ const Api = (() => {
         },
         async uploadEvidence(file, { faculty_id, term_id }) {
             const { upload_url, key } = await request("POST", "/evidence/upload-url", {
+                baseUrl: APP_CONFIG.evidence.apiBaseUrl,
                 body: { faculty_id, term_id, file_name: file.name, content_type: file.type, size: file.size }
             });
             let res;
@@ -69,7 +70,10 @@ const Api = (() => {
             return key;
         },
         async getEvidenceUrl(key) {
-            const data = await request("GET", "/evidence/download-url", { query: { key } });
+            const data = await request("GET", "/evidence/download-url", {
+                baseUrl: APP_CONFIG.evidence.apiBaseUrl,
+                query: { key }
+            });
             return data.download_url;
         }
     };

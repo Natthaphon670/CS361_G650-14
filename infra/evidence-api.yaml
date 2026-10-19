@@ -1,0 +1,110 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Authenticated API for issuing short-lived private S3 evidence URLs (CS361 G650-14).
+
+Parameters:
+  EvidenceBucketName:
+    Type: String
+    Description: Existing private evidence bucket created by infra/evidence-bucket.yaml
+  CognitoUserPoolId:
+    Type: String
+    Description: Cognito User Pool ID in this AWS Region
+  CognitoAppClientId:
+    Type: String
+    Description: Cognito app client ID used by the web application
+  WebAppOrigin:
+    Type: String
+    Default: http://localhost:3000
+    Description: Exact web application origin; set production origin when deploying
+
+Globals:
+  Function:
+    Runtime: nodejs22.x
+    Architectures: [arm64]
+    MemorySize: 256
+    Timeout: 10
+    Environment:
+      Variables:
+        EVIDENCE_BUCKET: !Ref EvidenceBucketName
+        UPLOAD_URL_TTL_SECONDS: '600'
+        DOWNLOAD_URL_TTL_SECONDS: '900'
+        MAX_FILE_BYTES: '10485760'
+
+Resources:
+  EvidenceHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: prod
+      CorsConfiguration:
+        AllowOrigins:
+          - !Ref WebAppOrigin
+        AllowHeaders:
+          - authorization
+          - content-type
+        AllowMethods:
+          - GET
+          - POST
+          - OPTIONS
+        MaxAge: 300
+      Auth:
+        Authorizers:
+          EvidenceCognitoAuthorizer:
+            JwtConfiguration:
+              issuer: !Sub 'https://cognito-idp.${AWS::Region}.amazonaws.com/${CognitoUserPoolId}'
+              audience:
+                - !Ref CognitoAppClientId
+            IdentitySource: '$request.header.Authorization'
+
+  GenerateUploadUrlFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Authorize faculty ownership and issue a short-lived S3 PUT URL.
+      CodeUri: ../lambda/generate-upload-url/
+      Handler: index.handler
+      Events:
+        UploadUrl:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref EvidenceHttpApi
+            Path: /evidence/upload-url
+            Method: POST
+            Auth:
+              Authorizer: EvidenceCognitoAuthorizer
+      Policies:
+        - Statement:
+            - Sid: PutEvidenceObjects
+              Effect: Allow
+              Action: s3:PutObject
+              Resource: !Sub 'arn:${AWS::Partition}:s3:::${EvidenceBucketName}/evidence/*'
+
+  GenerateDownloadUrlFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Enforce faculty ownership or Staff/Admin role before issuing a S3 GET URL.
+      CodeUri: ../lambda/generate-download-url/
+      Handler: index.handler
+      Events:
+        DownloadUrl:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref EvidenceHttpApi
+            Path: /evidence/download-url
+            Method: GET
+            Auth:
+              Authorizer: EvidenceCognitoAuthorizer
+      Policies:
+        - Statement:
+            - Sid: ReadEvidenceObjects
+              Effect: Allow
+              Action:
+                - s3:GetObject
+              Resource: !Sub 'arn:${AWS::Partition}:s3:::${EvidenceBucketName}/evidence/*'
+
+Outputs:
+  EvidenceApiBaseUrl:
+    Description: Base URL to configure as APP_CONFIG.evidence.apiBaseUrl
+    Value: !Sub 'https://${EvidenceHttpApi}.execute-api.${AWS::Region}.${AWS::URLSuffix}/prod'
+  UploadUrlRoute:
+    Value: /evidence/upload-url
+  DownloadUrlRoute:
+    Value: /evidence/download-url
