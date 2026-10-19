@@ -18,7 +18,7 @@ const APP_CONFIG = {
     // Keep the existing Workloads API separate from the Issue #4 Evidence API.
     // The Issue #4 SAM template creates only the evidence routes, not /workloads.
     api: {
-        baseUrl: "https://<your-workloads-api-id>.execute-api.us-east-1.amazonaws.com/prod"
+        baseUrl: "https://qzleoa96f4.execute-api.us-east-1.amazonaws.com/prod"
     },
 
     evidence: {
