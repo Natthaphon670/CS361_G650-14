@@ -1,7 +1,6 @@
-
 (() => {
     const $ = id => document.getElementById(id);
-    const EDITABLE = ["Draft", "Rejected"];
+    const EDITABLE = ["Draft", "Rejected", "Pending_Review", "Approved"];   // เจ้าของเพิ่ม/แก้ภาระงานได้ทุกสถานะ ไม่จำกัด
     const PUB_PAGE = 10;
 
     let faculty = null;
@@ -140,7 +139,7 @@
 
     function renderSubtitle() {
         const el = $("wl-subtitle");
-        if (isOwner()) el.textContent = "ภาระงานของคุณ — แก้ไขได้เมื่อสถานะเป็นฉบับร่างหรือถูกส่งกลับ";
+        if (isOwner()) el.textContent = "ภาระงานของคุณ — เพิ่ม/แก้ไขได้ไม่จำกัด (เมื่อเพิ่มแล้วจะขึ้นเป็น “รอการตรวจสอบ” ที่ Dashboard)";
         else if (isStaff()) el.textContent = "มุมมองสำหรับผู้ตรวจสอบ — อนุมัติ/ส่งกลับได้ที่หน้า Dashboard";
         else el.textContent = "แสดงเฉพาะภาระงานที่ได้รับการอนุมัติแล้ว";
         $("btn-new-term").hidden = !isOwner();
@@ -161,10 +160,8 @@
         let html = `<div class="term-status">
             <div>${statusBadge(rec.workflow_status)}
                 <span class="muted-text">รอบประเมิน: ${escapeHtml(rec.evaluation_period || "-")}</span></div>`;
-        if (isOwner() && canEditRecord(rec)) {
+        if (isOwner() && ["Draft", "Rejected"].includes(rec.workflow_status)) {
             html += `<button type="button" class="tu-btn tu-btn-sm" id="btn-submit-review" ${countItems(rec) === 0 ? "disabled title=\"ต้องมีอย่างน้อย 1 รายการ\"" : ""}>ส่งตรวจ (Submit for Review)</button>`;
-        } else if (isOwner()) {
-            html += `<span class="muted-text">ภาคนี้ถูกล็อกการแก้ไข (${escapeHtml(STATUS[rec.workflow_status]?.label || "")})</span>`;
         }
         html += `</div>`;
         if (rec.workflow_status === "Rejected" && rec.review_comment && canSeeStatus()) {
@@ -192,7 +189,7 @@
         const cat = getCategory(activeCat);
         const query = $("repo-search").value.toLowerCase().trim();
         const rec = currentRecord();
-        $("btn-add-item").hidden = !(rec && canEditRecord(rec));
+        $("btn-add-item").hidden = !(isOwner() && (rec ? canEditRecord(rec) : records.length > 0));
 
         const rows = [];
         scopeRecords().forEach(r => (r.workloads?.[cat.key] || []).forEach((item, idx) => rows.push({ r, item, idx })));
@@ -228,7 +225,10 @@
         $("repo-search").addEventListener("input", renderList);
         $("btn-more-pubs").addEventListener("click", () => { pubShown += PUB_PAGE; renderPublications(); });
         $("btn-new-term").addEventListener("click", openTermModal);
-        $("btn-add-item").addEventListener("click", () => openItemForm(activeCat, null));
+        $("btn-add-item").addEventListener("click", () => {
+            if (!currentRecord() && records.length) { selectedTerm = records[0].term_id; renderWorkloads(); }   // มุมมอง "ทั้งหมด" → เพิ่มในภาคล่าสุด (เปลี่ยนภาคได้ที่ตัวเลือกด้านบน)
+            openItemForm(activeCat, null);
+        });
         $("item-form").addEventListener("submit", onSaveItem);
         $("term-form").addEventListener("submit", onCreateTerm);
 
@@ -355,7 +355,7 @@
 
             await persist(rec, workloads);
             closeModal($("item-modal"));
-            toast("บันทึกรายการเรียบร้อยแล้ว", "success");
+            toast("บันทึกเรียบร้อยแล้ว — สถานะ: รอการตรวจสอบ", "success");
         } catch (err) {
             showFormError(err.message);
         } finally {
@@ -365,7 +365,12 @@
 
     async function persist(rec, workloads) {
         const res = await Api.saveWorkload({ ...rec, workloads });
-        const saved = res && res.faculty_id ? res : { ...rec, workloads };
+        let saved = res && res.faculty_id ? res : { ...rec, workloads };
+        // เพิ่ม/แก้ภาระงานแล้ว → ขึ้นเป็น "รอการตรวจสอบ" ที่ Dashboard ทันที (ไม่ต้องกดส่งตรวจแยก)
+        if (saved.workflow_status !== "Pending_Review" && countItems(saved) > 0) {
+            const sub = await Api.submitForReview(saved.faculty_id, saved.term_id);
+            saved = sub && sub.workflow_status ? sub : { ...saved, workflow_status: "Pending_Review" };
+        }
         records = records.map(r => r.term_id === rec.term_id ? saved : r);
         renderWorkloads();
     }

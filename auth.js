@@ -1,10 +1,5 @@
-
-
 const MOCK_USERS = {
-    prof_001: { username: "lumpapun", name: "ผศ.ดร.ลัมพาพรรณ พันธ์ชูจิตร์", groups: ["Faculty"], faculty_id: "prof_001" },
-    prof_002: { username: "prapaporn", name: "ผศ.ดร.ประภาพร รัตนธำรง", groups: ["Faculty"], faculty_id: "prof_002" },
-    prof_003: { username: "songsakdi", name: "ผศ.ดร.ทรงศักดิ์ รองวิริยะพานิช", groups: ["Faculty"], faculty_id: "prof_003" },
-    prof_004: { username: "kasidit", name: "ผศ.ดร.กษิดิศ ชาญเชี่ยว", groups: ["Faculty"], faculty_id: "prof_004" },
+    // อาจารย์ทุกคนใน faculties.json ถูกเพิ่มเข้ามาอัตโนมัติ (ดู loadMockFaculty)
     staff: { username: "staff_cs", name: "เจ้าหน้าที่ภาควิชา (Staff)", groups: ["Staff"], faculty_id: null },
     admin: { username: "admin_dean", name: "หัวหน้าภาควิชา (Admin)", groups: ["Admin"], faculty_id: null }
 };
@@ -170,12 +165,13 @@ const Auth = (() => {
     function logout() {
         store.del(K_TOKENS);
         store.del(K_USER);
-        store.del("mock_workloads_v2");      
-        store.del("mock_evidence_v1");
         if (isMock) {
+            // โหมดจำลอง: คงข้อมูลภาระงานไว้ เพื่อสลับผู้ใช้ (อาจารย์ ↔ Staff) แล้วยังเห็นรายการที่เพิ่งส่ง
             window.location.href = "index.html";
             return;
         }
+        store.del("mock_workloads_v2"); store.del("mock_workloads_v3");
+        store.del("mock_evidence_v1");
         const url = new URL(`${A.cognitoDomain}/logout`);
         url.search = new URLSearchParams({ client_id: A.clientId, logout_uri: A.logoutUri }).toString();
         window.location.assign(url.toString());
@@ -277,7 +273,24 @@ const Auth = (() => {
         applyRoleVisibility(slot);
     }
 
-    const ready = handleCallback();
+    // โหมดจำลอง: สร้างผู้ใช้ "อาจารย์" ให้ครบทุกคนจาก faculties.json
+    async function loadMockFaculty() {
+        if (!isMock) return;
+        try {
+            const list = await (await fetch("faculties.json")).json();
+            const staffAdmin = { staff: MOCK_USERS.staff, admin: MOCK_USERS.admin };
+            Object.keys(MOCK_USERS).forEach(k => delete MOCK_USERS[k]);
+            list.forEach(f => {
+                MOCK_USERS[f.faculty_id] = {
+                    username: f.faculty_id, name: f.name_th || f.faculty_id,
+                    groups: ["Faculty"], faculty_id: f.faculty_id
+                };
+            });
+            Object.assign(MOCK_USERS, staffAdmin);
+        } catch (e) { console.error("โหลดรายชื่ออาจารย์สำหรับโหมดจำลองไม่ได้", e); }
+    }
+
+    const ready = handleCallback().then(loadMockFaculty);
     document.addEventListener("DOMContentLoaded", async () => { await ready; renderNav(); });
 
     return {

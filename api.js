@@ -1,4 +1,3 @@
-
 class ApiError extends Error {
     constructor(message, status = 0) { super(message); this.name = "ApiError"; this.status = status; }
 }
@@ -76,7 +75,7 @@ const Api = (() => {
     };
 
     
-    const K_DATA = "mock_workloads_v2";
+    const K_DATA = "mock_workloads_v3";
     const K_EVID = "mock_evidence_v1";
     const readJson = (k, d) => { try { return JSON.parse(sessionStorage.getItem(k)) ?? d; } catch { return d; } };
     function writeJson(k, v) {
@@ -85,14 +84,6 @@ const Api = (() => {
     }
 
     
-    const SEED_STATUS = {
-        "prof_001#2567#2": "Pending_Review",
-        "prof_002#2567#2": "Pending_Review",
-        "prof_004#2567#2": "Pending_Review",
-        "prof_003#2567#2": "Draft",
-        "prof_004#2567#1": "Rejected"
-    };
-
     async function loadAll() {
         let data = readJson(K_DATA, null);
         if (data) return data;
@@ -102,16 +93,13 @@ const Api = (() => {
         const now = new Date().toISOString();
         data = raw.map(r => {
             const term_id = makeTermId(r.academic_year, r.semester);
-            const status = r.workflow_status || SEED_STATUS[`${r.faculty_id}#${term_id}`] || "Approved";
+            // ข้อมูลเดิมจากไฟล์ถือว่าอนุมัติแล้ว (ตรงกับ migrate_workloads_to_dynamo.py) ไม่สร้างสถานะสมมติ
+            const status = r.workflow_status || "Approved";
             const rec = {
                 ...r, term_id, workflow_status: status,
                 workloads: { ...emptyWorkloads(), ...(r.workloads || {}) },
                 created_at: now, updated_at: now
             };
-            if (status === "Rejected") {
-                rec.review_comment = "กรุณาแนบหลักฐานงานสอนและระบุรายละเอียดงานบริการให้ครบถ้วน";
-                rec.reviewed_by = "เจ้าหน้าที่ภาควิชา (Staff)"; rec.reviewed_at = now;
-            }
             return rec;
         });
         writeJson(K_DATA, data);
@@ -148,8 +136,6 @@ const Api = (() => {
             const idx = all.findIndex(a => sameKey(a, rec.faculty_id, rec.term_id));
             let saved;
             if (idx >= 0) {
-                if (!["Draft", "Rejected"].includes(all[idx].workflow_status))
-                    throw new ApiError("ภาระงานที่ส่งตรวจ/อนุมัติแล้วไม่สามารถแก้ไขได้", 409);
                 saved = { ...all[idx], workloads: { ...emptyWorkloads(), ...rec.workloads }, updated_at: now };
                 all[idx] = saved;
             } else {
@@ -172,7 +158,7 @@ const Api = (() => {
             const all = await loadAll();
             const rec = all.find(a => sameKey(a, fid, tid));
             if (!rec) throw new ApiError("ไม่พบข้อมูล", 404);
-            if (!["Draft", "Rejected"].includes(rec.workflow_status)) throw new ApiError("สถานะปัจจุบันส่งตรวจไม่ได้", 409);
+            if (rec.workflow_status === "Pending_Review") throw new ApiError("สถานะปัจจุบันส่งตรวจไม่ได้", 409);
             if (countItems(rec) === 0) throw new ApiError("ยังไม่มีรายการภาระงาน", 400);
             rec.workflow_status = "Pending_Review";
             rec.updated_at = new Date().toISOString();
