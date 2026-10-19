@@ -264,3 +264,98 @@ def delete_workload_handler(event, context):
         return create_response(auth_err.status_code, {'error': 'Forbidden', 'message': auth_err.message})
     except Exception as e:
         return create_response(500, {'error': f'เกิดข้อผิดพลาดในการลบข้อมูล: {str(e)}'})
+
+# =============================================================================
+# TASK 4: Lambda Function - UpdateWorkloadStatus (Workflow Management)
+# POST /workloads/{faculty_id}/{term_id}/status
+# Body: { "workflow_status": "Pending_Review" | "Approved" | "Rejected", "review_comment": "..." }
+# =============================================================================
+def update_workload_status_handler(event, context):
+    try:
+        user_info = get_user_claims(event)
+        path_params = event.get('pathParameters') or {}
+        target_faculty_id = path_params.get('faculty_id')
+        target_term_id = path_params.get('term_id')
+
+        if not target_faculty_id or not target_term_id:
+            return create_response(400, {'message': 'กรุณาระบุ faculty_id และ term_id'})
+
+        body_raw = event.get('body')
+        if not body_raw:
+            return create_response(400, {'message': 'ไม่พบ Request body'})
+
+        try:
+            body = json.loads(body_raw)
+        except json.JSONDecodeError:
+            return create_response(400, {'message': 'รูปแบบ JSON ไม่ถูกต้อง'})
+
+        new_status = body.get('workflow_status')
+        comment = body.get('review_comment', '')
+
+        if new_status not in ['Pending_Review', 'Approved', 'Rejected']:
+            return create_response(400, {'message': 'workflow_status ต้องเป็น Pending_Review, Approved หรือ Rejected เท่านั้น'})
+
+        # ---------------------------------------------------------------------
+        # 1. ดึงข้อมูลปัจจุบันเพื่อตรวจสอบ State ว่าเปลี่ยนสถานะได้หรือไม่
+        # ---------------------------------------------------------------------
+        response = table.get_item(Key={'faculty_id': target_faculty_id, 'term_id': target_term_id})
+        existing_item = response.get('Item')
+
+        if not existing_item:
+            return create_response(404, {'message': 'ไม่พบรายการภาระงานที่ต้องการเปลี่ยนสถานะ'})
+
+        current_status = existing_item.get('workflow_status', 'Draft')
+        now_iso = datetime.now(timezone.utc).isoformat()
+
+        # เตรียมคำสั่งอัปเดต DynamoDB
+        update_expr = "SET workflow_status = :s, updated_at = :u"
+        expr_values = {":s": new_status, ":u": now_iso}
+
+        # ---------------------------------------------------------------------
+        # 2. Logic สำหรับอาจารย์: Submit งาน (Draft / Rejected -> Pending_Review)
+        # ---------------------------------------------------------------------
+        if new_status == 'Pending_Review':
+            # BOLA Check: ต้องเป็นเจ้าของงานเท่านั้น ถึงจะกดส่งได้
+            verify_bola(user_info, target_faculty_id) 
+
+            if current_status not in ['Draft', 'Rejected']:
+                return create_response(409, {'message': f'ไม่อนุญาตให้ส่งตรวจ เนื่องจากสถานะปัจจุบันคือ "{current_status}"'})
+
+        # ---------------------------------------------------------------------
+        # 3. Logic สำหรับเจ้าหน้าที่: ตรวจงาน (Pending_Review -> Approved / Rejected)
+        # ---------------------------------------------------------------------
+        elif new_status in ['Approved', 'Rejected']:
+            # BFLA Check: ป้องกันอาจารย์อนุมัติงานตัวเอง บังคับว่าต้องเป็น Staff/Admin เท่านั้น!
+            verify_bfla(user_info, allowed_groups=['Staff', 'Admin'])
+
+            if current_status != 'Pending_Review':
+                return create_response(409, {'message': f'ไม่สามารถตรวจงานได้ เนื่องจากสถานะปัจจุบันไม่ใช่รอการตรวจสอบ (ปัจจุบัน: "{current_status}")'})
+            
+            # บังคับใส่เหตุผลหากกด Rejected (ตีกลับ)
+            if new_status == 'Rejected' and not comment.strip():
+                return create_response(400, {'message': 'กรุณาระบุเหตุผล (review_comment) ในการส่งกลับแก้ไข'})
+
+            # Audit Trail: บันทึกร่องรอยว่าใครเป็นคนอนุมัติ/ตีกลับ และทำเมื่อไหร่
+            update_expr += ", reviewed_by = :rb, reviewed_at = :ra, review_comment = :rc"
+            expr_values[":rb"] = user_info.get('username', 'Unknown Staff')
+            expr_values[":ra"] = now_iso
+            expr_values[":rc"] = comment
+
+        # ---------------------------------------------------------------------
+        # 4. บันทึกการเปลี่ยนแปลงลง DynamoDB (Atomic Update)
+        # ---------------------------------------------------------------------
+        table.update_item(
+            Key={'faculty_id': target_faculty_id, 'term_id': target_term_id},
+            UpdateExpression=update_expr,
+            ExpressionAttributeValues=expr_values
+        )
+
+        return create_response(200, {
+            'message': f'เปลี่ยนสถานะภาระงานเป็น {new_status} สำเร็จ',
+            'workflow_status': new_status
+        })
+
+    except AuthorizationError as auth_err:
+        return create_response(auth_err.status_code, {'error': 'Forbidden', 'message': auth_err.message})
+    except Exception as e:
+        return create_response(500, {'error': f'เกิดข้อผิดพลาดของระบบ: {str(e)}'})
