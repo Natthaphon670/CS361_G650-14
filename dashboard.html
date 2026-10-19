@@ -4,72 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard สาขาวิชา - คณะวิทยาศาสตร์และเทคโนโลยี มธ.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body style="background:#f8fafc; margin:0;">
+<body>
     <div id="auth-header-slot"></div>
 
     <main class="tu-dashboard-container">
-        <div style="margin-bottom:1.5rem;">
-            <h2 style="margin:0; font-size:1.5rem; color:#1e293b;">ระบบตรวจสอบภาระงานสาขาวิชา (Staff / Admin)</h2>
-            <p style="margin:0.25rem 0 0; color:#64748b; font-size:0.9rem;">
-                คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์
-            </p>
+        <div class="dash-head">
+            <div>
+                <h1 class="dash-title">ระบบตรวจสอบภาระงานสาขาวิชา (Staff / Admin)</h1>
+                <p class="muted-text">คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์</p>
+            </div>
+            <button type="button" class="tu-btn tu-btn-secondary" id="btn-export">⬇ Export CSV (Excel)</button>
         </div>
 
-        <!-- สถิติภาพรวม -->
+        
         <div class="tu-stats-grid">
-            <div class="tu-stat-box" style="border-left:4px solid #f59e0b;">
-                <span style="font-size:0.85rem; color:#64748b; font-weight:600;">รอการตรวจสอบ (Pending Review)</span>
-                <div class="tu-stat-num" id="stat-pending" style="color:#d97706;">0</div>
+            <div class="tu-stat-box stat-pending">
+                <span class="stat-label">รอการตรวจสอบ (Pending Review)</span>
+                <div class="tu-stat-num" id="stat-pending">0</div>
             </div>
-            <div class="tu-stat-box" style="border-left:4px solid #16a34a;">
-                <span style="font-size:0.85rem; color:#64748b; font-weight:600;">อนุมัติแล้ว (Approved)</span>
-                <div class="tu-stat-num" id="stat-approved" style="color:#16a34a;">0</div>
+            <div class="tu-stat-box stat-approved">
+                <span class="stat-label">อนุมัติแล้ว (Approved)</span>
+                <div class="tu-stat-num" id="stat-approved">0</div>
             </div>
-            <div class="tu-stat-box" style="border-left:4px solid #dc2626;">
-                <span style="font-size:0.85rem; color:#64748b; font-weight:600;">ส่งกลับแก้ไข (Rejected)</span>
-                <div class="tu-stat-num" id="stat-rejected" style="color:#dc2626;">0</div>
+            <div class="tu-stat-box stat-rejected">
+                <span class="stat-label">ส่งกลับแก้ไข (Rejected)</span>
+                <div class="tu-stat-num" id="stat-rejected">0</div>
             </div>
         </div>
 
-        <!-- ตัวกรอง -->
-        <div style="background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:1rem; margin-bottom:1rem; display:flex; gap:0.75rem;">
-            <select id="filter-status" class="tu-select-sm">
-                <option value="">-- ทุกสถานะ --</option>
-                <option value="Pending_Review" selected>รอการตรวจสอบ (Pending Review)</option>
-                <option value="Approved">อนุมัติแล้ว (Approved)</option>
-                <option value="Rejected">ส่งกลับแก้ไข (Rejected)</option>
-            </select>
-            <select id="filter-category" class="tu-select-sm">
-                <option value="">-- ทุกหมวดหมู่ --</option>
-                <option value="Teaching">การสอน (Teaching)</option>
-                <option value="Research">งานวิจัย (Research)</option>
-                <option value="Academic Service">บริการวิชาการ (Academic Service)</option>
-                <option value="Professional Development">พัฒนาวิชาชีพ (Professional Development)</option>
-            </select>
-            <button class="tu-btn tu-btn-sm" onclick="renderTable()">ค้นหา</button>
+        
+        <div class="chart-grid">
+            <section class="tu-card" aria-labelledby="chart-status-title">
+                <h2 class="chart-title" id="chart-status-title">สัดส่วนตามสถานะ</h2>
+                <div id="chart-status"></div>
+            </section>
+            <section class="tu-card" aria-labelledby="chart-cat-title">
+                <h2 class="chart-title" id="chart-cat-title">จำนวนรายการแยกตามหมวด (ตามตัวกรอง)</h2>
+                <div id="chart-category"></div>
+            </section>
         </div>
 
-        <!-- ตารางตรวจสอบรายการ -->
+        
+        <form class="filter-bar" id="filter-form">
+            <div class="filter-field">
+                <label for="filter-year">ปีการศึกษา</label>
+                <select id="filter-year" class="tu-select-sm"><option value="">ทุกปี</option></select>
+            </div>
+            <div class="filter-field">
+                <label for="filter-semester">ภาคการศึกษา</label>
+                <select id="filter-semester" class="tu-select-sm">
+                    <option value="">ทุกภาค</option>
+                    <option value="1">ภาคเรียนที่ 1</option>
+                    <option value="2">ภาคเรียนที่ 2</option>
+                </select>
+            </div>
+            <div class="filter-field">
+                <label for="filter-status">สถานะ</label>
+                <select id="filter-status" class="tu-select-sm">
+                    <option value="">ทุกสถานะ</option>
+                    <option value="Pending_Review" selected>รอการตรวจสอบ (Pending_Review)</option>
+                    <option value="Approved">อนุมัติแล้ว (Approved)</option>
+                    <option value="Rejected">ส่งกลับแก้ไข (Rejected)</option>
+                </select>
+            </div>
+            <div class="filter-field filter-grow">
+                <label for="filter-search">ค้นหาชื่ออาจารย์</label>
+                <input type="search" id="filter-search" class="tu-select-sm" placeholder="พิมพ์ชื่อ (ไทย / English)">
+            </div>
+            <button type="button" class="tu-btn tu-btn-secondary tu-btn-sm" id="btn-reset">ล้างตัวกรอง</button>
+        </form>
+
+        <div id="dash-error"></div>
+
         <div class="tu-table-box">
             <table class="tu-table">
                 <thead>
                     <tr>
                         <th>อาจารย์ผู้ส่ง</th>
-                        <th>หมวดงาน</th>
-                        <th>หัวข้อภาระงาน</th>
-                        <th>หลักฐานแนบ</th>
+                        <th>ภาค/ปี</th>
+                        <th>รายการ</th>
+                        <th>หลักฐาน</th>
                         <th>สถานะ</th>
-                        <th style="text-align:right;">การดำเนินการ</th>
+                        <th>อัปเดตล่าสุด</th>
+                        <th class="th-right">การดำเนินการ</th>
                     </tr>
                 </thead>
-                <tbody id="dashboard-tbody"></tbody>
+                <tbody id="dashboard-tbody">
+                    <tr><td colspan="7" class="empty-cell">กำลังโหลด...</td></tr>
+                </tbody>
             </table>
         </div>
+        <p class="muted-text" id="result-count" style="margin-top:0.5rem;"></p>
     </main>
 
+    
+    <div id="detail-modal" class="tu-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title">
+        <div class="tu-modal-box tu-modal-wide">
+            <div class="modal-head">
+                <div>
+                    <h3 id="detail-title" class="modal-title" style="margin:0; border:0; padding:0;"></h3>
+                    <div id="detail-meta" class="muted-text"></div>
+                </div>
+                <button type="button" class="tu-btn-outline-sm" data-close-modal aria-label="ปิด">✕</button>
+            </div>
+            <div id="detail-body"></div>
+            <div id="detail-review" class="review-box" hidden>
+                
+                <label for="reject-comment">เหตุผล (จำเป็นเมื่อส่งกลับแก้ไข)</label>
+                <textarea id="reject-comment" class="tu-form-control" rows="2" placeholder="ระบุสิ่งที่ต้องแก้ไข เช่น แนบหลักฐานไม่ครบ"></textarea>
+                <p id="review-error" class="form-error" role="alert" hidden></p>
+                <div class="modal-actions">
+                    <button type="button" class="tu-btn tu-btn-danger" id="btn-modal-reject">✕ Reject (ส่งกลับแก้ไข)</button>
+                    <button type="button" class="tu-btn tu-btn-success" id="btn-modal-approve">✓ Approve (อนุมัติ)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="common.js"></script>
     <script src="auth.js"></script>
+    <script src="api.js"></script>
     <script src="dashboard.js"></script>
 </body>
 </html>

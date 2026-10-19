@@ -27,7 +27,7 @@
     </div>
 
     <div id="main-content" class="profile-layout" style="display: none;">
-      <!-- Sidebar Information -->
+      
       <aside class="sidebar-card">
         <div class="avatar-wrapper">
           <div id="f-avatar" class="avatar-placeholder">TU</div>
@@ -49,7 +49,7 @@
         </div>
       </aside>
 
-      <!-- Main Detail Sections -->
+      
       <section class="content-area">
         <div class="card-block" id="block-interests">
           <h2 class="block-header">สาขาความสนใจและหัวข้องานวิจัย</h2>
@@ -66,130 +66,98 @@
           <ul id="f-education-list" class="custom-bullet-list"></ul>
         </div>
 
-        <!-- ส่วนที่เพิ่มใหม่สำหรับ Issue #6: คลังภาระงาน 4 หมวดหมู่ -->
-        <div class="card-block" id="block-workload-repository">
+        
+        <div class="card-block" id="block-workloads">
           <div class="repo-header-bar">
             <div>
-              <h2 class="block-header" style="margin-bottom: 0.25rem;">ภาระงานและผลงานวิชาการ</h2>
-              <p style="font-size: 0.85rem; color: var(--text-muted);">ข้อมูลภาระงานตามแบบฟอร์มรายงานผลการปฏิบัติงาน</p>
+              <h2 class="block-header" style="margin-bottom:0.25rem;">ภาระงานและผลงานวิชาการ</h2>
+              <p id="wl-subtitle" class="muted-text"></p>
             </div>
-            
-            <!-- ตัวเลือกปีการศึกษา / ภาคการศึกษา -->
             <div class="repo-filter-box">
-              <label for="select-term" style="font-size: 0.85rem; font-weight: 600;">ภาค/ปีการศึกษา:</label>
-              <select id="select-term" class="custom-select">
-                <option value="all" selected>ทั้งหมด (All Terms)</option>
-                <option value="2/2567">2/2567</option>
-                <option value="1/2567">1/2567</option>
-                <option value="2/2566">2/2566</option>
-              </select>
+              <label for="select-term" style="font-size:0.85rem; font-weight:600;">ภาค/ปีการศึกษา:</label>
+              <select id="select-term" class="custom-select"></select>
+              <button type="button" id="btn-new-term" class="tu-btn tu-btn-sm" hidden>+ เพิ่มภาคการศึกษา</button>
             </div>
           </div>
 
-          <!-- แถบ 4 หมวดหมู่งาน -->
-          <div class="tab-nav">
-            <button type="button" class="tab-btn active" data-tab="tab-teaching">1. งานสอน</button>
-            <button type="button" class="tab-btn" data-tab="tab-advising">2. การดูแลนักศึกษา</button>
-            <button type="button" class="tab-btn" data-tab="tab-research">3. งานวิจัย/วิชาการ</button>
-            <button type="button" class="tab-btn" data-tab="tab-services">4. งานบริการและบริหาร</button>
-          </div>
+          <div id="wl-notice"></div>
+          <div id="term-status-bar"></div>
 
-          <!-- ช่องค้นหาภายในผลงานของอาจารย์ท่านนี้ -->
+          <div class="tab-nav" id="wl-tabs" role="tablist"></div>
+
           <div class="search-input-wrap">
-            <input type="text" id="repo-search" placeholder="ค้นหาตามรหัสวิชา, ชื่องาน, หรือบทบาท..." class="custom-input">
+            <input type="text" id="repo-search" placeholder="ค้นหาในหมวดนี้..." class="custom-input">
           </div>
 
-          <!-- พื้นที่แสดงผลรายการของแต่ละแท็บ -->
-          <div class="tab-contents">
-            <div id="tab-teaching" class="tab-pane active">
-              <ul id="list-teaching" class="repo-data-list"></ul>
-            </div>
-            <div id="tab-advising" class="tab-pane">
-              <ul id="list-advising" class="repo-data-list"></ul>
-            </div>
-            <div id="tab-research" class="tab-pane">
-              <ul id="list-research" class="repo-data-list"></ul>
-            </div>
-            <div id="tab-services" class="tab-pane">
-              <ul id="list-services" class="repo-data-list"></ul>
-            </div>
+          <div class="wl-add-row">
+            <button type="button" id="btn-add-item" class="tu-btn tu-btn-sm" hidden>+ เพิ่มรายการ</button>
+          </div>
+          <ul id="wl-list" class="repo-data-list"></ul>
+        </div>
+
+        
+        <div class="card-block" id="block-publications" style="display:none;">
+          <div class="repo-header-bar">
+            <h2 class="block-header" style="margin-bottom:0;">ผลงานตีพิมพ์</h2>
+            <span class="pub-count-badge" id="pub-count"></span>
+          </div>
+          <ul id="list-publications" class="repo-data-list"></ul>
+          <div style="text-align:center; margin-top:1rem;">
+            <button type="button" id="btn-more-pubs" class="tu-btn tu-btn-secondary tu-btn-sm" hidden>แสดงเพิ่มเติม</button>
           </div>
         </div>
       </section>
     </div>
+
     
-    <!-- กล่องแสดงภาระงาน 4 หมวดของอาจารย์ -->
-    <div class="tu-workload-wrapper">
-        <div class="tu-card">
-            <div class="tu-card-header">
-                <div>
-                    <h3 style="margin:0; font-size:1.25rem; color:#1e293b;">ภาระงานและผลงานวิชาการ (Workloads)</h3>
-                    <p style="margin:0.25rem 0 0; color:#64748b; font-size:0.875rem;">
-                        ผลงาน 4 หมวด (การสอน, วิจัย, บริการวิชาการ, พัฒนาวิชาชีพ)
-                    </p>
-                </div>
-                <!-- ปุ่มเพิ่มงาน: จะแสดงผลเฉพาะอาจารย์ที่เป็นเจ้าของประวัตินี้เท่านั้น -->
-                <button id="btn-add-workload" class="tu-btn" style="display:none;" onclick="openWorkloadModal()">
-                    + บันทึกภาระงาน
-                </button>
-            </div>
-            <div id="workload-list-container"></div>
-        </div>
+    <div id="item-modal" class="tu-modal" role="dialog" aria-modal="true" aria-labelledby="item-modal-title">
+      <div class="tu-modal-box">
+        <h3 id="item-modal-title" class="modal-title"></h3>
+        <form id="item-form" novalidate>
+          <div id="item-fields"></div>
+          <div class="tu-form-group">
+            <label for="wl-file">ไฟล์หลักฐานแนบ (Evidence) — PDF / PNG / JPG ไม่เกิน 10 MB</label>
+            <div id="existing-evidence" class="muted-text"></div>
+            <input type="file" id="wl-file" class="tu-form-control" accept="application/pdf,image/png,image/jpeg">
+          </div>
+          <p id="item-form-error" class="form-error" role="alert" hidden></p>
+          <div class="modal-actions">
+            <button type="button" class="tu-btn tu-btn-secondary" data-close-modal>ยกเลิก</button>
+            <button type="submit" class="tu-btn" id="item-save-btn">บันทึก</button>
+          </div>
+        </form>
+      </div>
     </div>
 
-    <!-- Modal ฟอร์มบันทึกภาระงาน -->
-    <div id="workload-modal" class="tu-modal">
-        <div class="tu-modal-box">
-            <h3 style="margin-top:0; font-size:1.15rem; color:#1e293b; border-bottom:1px solid #e2e8f0; padding-bottom:0.75rem;">
-                บันทึกรายการภาระงาน
-            </h3>
-            <form id="workload-form">
-                <div class="tu-form-group">
-                    <label>หมวดหมู่ภาระงาน</label>
-                    <select id="wl-category" class="tu-form-control" required>
-                        <option value="Teaching">การสอน (Teaching)</option>
-                        <option value="Research">งานวิจัย (Research)</option>
-                        <option value="Academic Service">บริการวิชาการ (Academic Service)</option>
-                        <option value="Professional Development">พัฒนาวิชาชีพ (Professional Development)</option>
-                    </select>
-                </div>
-                <div class="tu-form-group">
-                    <label>หัวข้อ / ชื่องาน / รายวิชา</label>
-                    <input type="text" id="wl-title" class="tu-form-control" placeholder="เช่น บรรยายวิชา CS361 หรือ บทความวิจัยตีพิมพ์" required>
-                </div>
-                <div class="tu-form-group">
-                    <label>รายละเอียดเพิ่มเติม</label>
-                    <textarea id="wl-desc" class="tu-form-control" rows="3" placeholder="ระบุผลลัพธ์หรือรายละเอียดสังเขป"></textarea>
-                </div>
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.75rem;">
-                    <div class="tu-form-group">
-                        <label>ปีการศึกษา</label>
-                        <input type="text" id="wl-year" class="tu-form-control" value="2568" required>
-                    </div>
-                    <div class="tu-form-group">
-                        <label>ภาคการศึกษา</label>
-                        <select id="wl-semester" class="tu-form-control">
-                            <option value="1">ภาคเรียนที่ 1</option>
-                            <option value="2">ภาคเรียนที่ 2</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="tu-form-group">
-                    <label>ไฟล์หลักฐานแนบ (Evidence)</label>
-                    <input type="file" id="wl-file" class="tu-form-control">
-                </div>
-                <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top:1.25rem;">
-                    <button type="button" class="tu-btn tu-btn-secondary" onclick="closeWorkloadModal()">ยกเลิก</button>
-                    <button type="submit" class="tu-btn">บันทึกฉบับร่าง (Save Draft)</button>
-                </div>
-            </form>
-        </div>
+    
+    <div id="term-modal" class="tu-modal" role="dialog" aria-modal="true" aria-labelledby="term-modal-title">
+      <div class="tu-modal-box" style="max-width:380px;">
+        <h3 id="term-modal-title" class="modal-title">เพิ่มภาคการศึกษา</h3>
+        <form id="term-form">
+          <div class="tu-form-group">
+            <label for="new-year">ปีการศึกษา (พ.ศ.)</label>
+            <input type="number" id="new-year" class="tu-form-control" min="2500" max="2700" required>
+          </div>
+          <div class="tu-form-group">
+            <label for="new-semester">ภาคการศึกษา</label>
+            <select id="new-semester" class="tu-form-control">
+              <option value="1">ภาคเรียนที่ 1</option>
+              <option value="2">ภาคเรียนที่ 2</option>
+            </select>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="tu-btn tu-btn-secondary" data-close-modal>ยกเลิก</button>
+            <button type="submit" class="tu-btn">สร้าง</button>
+          </div>
+        </form>
+      </div>
     </div>
-
 
   </main>
-  <script type="module" src="profile.js"></script>
+  <script src="config.js"></script>
+  <script src="common.js"></script>
   <script src="auth.js"></script>
-  <script src="profile.js"></script
+  <script src="api.js"></script>
+  <script src="profile.js"></script>
 </body>
 </html>

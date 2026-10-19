@@ -1,207 +1,222 @@
-// dashboard.js - ระบบตรวจสอบภาระงานสาขาวิชา (Staff / Admin Dashboard)
-document.addEventListener("DOMContentLoaded", async () => {
-    // ตรวจสอบสิทธิ์เฉพาะ Staff หรือ Admin เท่านั้น
-    if (!Auth.requireAuth(["Staff", "Admin"])) return;
-    await renderTable();
 
-    // ดักจับเมื่อผู้ใช้เปลี่ยน Dropdown ให้ตารางอัปเดตค้นหาทันทีโดยไม่ต้องรอกดปุ่ม
-    document.getElementById("filter-status")?.addEventListener("change", renderTable);
-    document.getElementById("filter-category")?.addEventListener("change", renderTable);
-});
+(() => {
+    const $ = id => document.getElementById(id);
 
-const FACULTY_NAMES = {
-    "prof_001": "ผศ.ดร.ลัมพาพรรณ พันธ์ชูจิตร์",
-    "prof_img_001": "ผศ.ดร.ลัมพาพรรณ พันธ์ชูจิตร์",
-    "prof_002": "ผศ.ดร.ประภาพร รัตนธำรง",
-    "prof_img_002": "ผศ.ดร.ประภาพร รัตนธำรง",
-    "prof_003": "ผศ.ดร.ทรงศักดิ์ รองวิริยะพานิช",
-    "prof_img_003": "ผศ.ดร.ทรงศักดิ์ รองวิริยะพานิช"
-};
+    let names = {};            
+    let scoped = [];           
+    let rows = [];             
+    let openRecord = null;     
+    let yearsLoaded = false;
 
-// ดึงข้อมูล Workloads จาก sessionStorage หรือโหลดไฟล์ Mock หากยังไม่มี
-async function getWorkloads() {
-    let stored = sessionStorage.getItem("mock_workloads");
-    if (!stored || stored === "[]") {
+    document.addEventListener("DOMContentLoaded", async () => {
+        if (!(await Auth.guard(["Staff", "Admin"]))) return;   
         try {
-            const res = await fetch("faculties-workloads-mock.json");
-            const data = await res.json();
-            sessionStorage.setItem("mock_workloads", JSON.stringify(data));
-            return data;
-        } catch (e) {
-            return [];
-        }
-    }
-    return JSON.parse(stored);
-}
+            const faculties = await (await fetch("faculties.json")).json();
+            names = Object.fromEntries(faculties.map(f => [f.faculty_id, { th: f.name_th, en: f.name_en || "" }]));
+        } catch { /* ใช้ faculty_id แทนชื่อ */ }
 
-// ปรับโครงสร้างข้อมูลให้อ่านค่าได้แม่นยำ 100% ไม่หลุดตัวกรอง
-function normalizeItem(item) {
-    const id = item.id || item.workload_id || ("wl_" + Math.random().toString(36).substr(2, 9));
-    
-    // แปลงสถานะให้เป็นมาตรฐาน
-    let rawStatus = item.workflow_status || item.status || "Draft";
-    let status = "Draft";
-    const sLower = String(rawStatus).toLowerCase().replace(/[\s_-]+/g, "");
-    if (sLower === "approved") status = "Approved";
-    else if (sLower.includes("pending")) status = "Pending_Review";
-    else if (sLower.includes("reject")) status = "Rejected";
+        ["filter-year", "filter-semester", "filter-status"].forEach(id => $(id).addEventListener("change", load));
+        let t;
+        $("filter-search").addEventListener("input", () => { clearTimeout(t); t = setTimeout(render, 150); });
+        $("filter-form").addEventListener("submit", e => e.preventDefault());
+        $("btn-reset").addEventListener("click", () => {
+            $("filter-year").value = ""; $("filter-semester").value = ""; $("filter-status").value = ""; $("filter-search").value = "";
+            load();
+        });
+        $("btn-export").addEventListener("click", exportCsv);
+        $("dashboard-tbody").addEventListener("click", onRowClick);
+        $("btn-modal-approve").addEventListener("click", () => review(openRecord, "Approved"));
+        $("btn-modal-reject").addEventListener("click", () => review(openRecord, "Rejected"));
+        $("detail-body").addEventListener("click", e => {
+            const b = e.target.closest("[data-evidence]");
+            if (b) Api.openEvidence(b.dataset.evidence);
+        });
 
-    // แปลงหมวดหมู่งานและชื่อวิชา (รองรับทั้ง Array เดิม และฟิลด์ใหม่)
-    let cat = item.category || item.workload_type || item.type || "";
-    let title = item.title || item.title_th || item.course_name || item.course_name_th || item.name || "";
-    let desc = item.description || item.detail || item.course_id || "-";
-
-    if (Array.isArray(item.teaching) && item.teaching.length > 0) {
-        cat = cat || "Teaching";
-        const t = item.teaching[0];
-        title = title || t.course_name || t.course_name_th || t.name || (t.course_id ? `วิชา ${t.course_id}` : "");
-        desc = (desc === "-") ? (t.course_id ? `รหัสวิชา: ${t.course_id}` : "-") : desc;
-    } else if (Array.isArray(item.research) && item.research.length > 0) {
-        cat = cat || "Research";
-        const r = item.research[0];
-        title = title || r.title || r.title_th || r.name;
-    } else if (Array.isArray(item.academic_service) && item.academic_service.length > 0) {
-        cat = cat || "Academic Service";
-        title = title || item.academic_service[0].title || item.academic_service[0].name;
-    } else if (Array.isArray(item.professional_development) && item.professional_development.length > 0) {
-        cat = cat || "Professional Development";
-        title = title || item.professional_development[0].title || item.professional_development[0].name;
-    }
-
-    // จัดกลุ่มหมวดหมู่เป็น 4 กลุ่มหลัก
-    const cLower = String(cat).toLowerCase();
-    let normalizedCat = "Teaching";
-    if (cLower.includes("teach") || cLower.includes("สอน")) normalizedCat = "Teaching";
-    else if (cLower.includes("research") || cLower.includes("วิจัย")) normalizedCat = "Research";
-    else if (cLower.includes("service") || cLower.includes("บริการ")) normalizedCat = "Academic Service";
-    else if (cLower.includes("develop") || cLower.includes("พัฒนา")) normalizedCat = "Professional Development";
-    else if (cat) normalizedCat = cat;
-
-    return {
-        ...item,
-        id: String(id),
-        faculty_id: item.faculty_id || "prof_003",
-        category: normalizedCat,
-        title: title || "ภาระงานวิชาการ",
-        description: desc,
-        workflow_status: status,
-        evidence_name: item.evidence_name || (item.evidence_key ? item.evidence_key.split('/').pop() : null),
-        evidence_data: item.evidence_data || null
-    };
-}
-
-function updateStats(items) {
-    document.getElementById("stat-pending").textContent = items.filter(x => x.workflow_status === "Pending_Review").length;
-    document.getElementById("stat-approved").textContent = items.filter(x => x.workflow_status === "Approved").length;
-    document.getElementById("stat-rejected").textContent = items.filter(x => x.workflow_status === "Rejected").length;
-}
-
-// เปิดดูไฟล์หลักฐานในแท็บใหม่
-window.viewEvidence = function(id) {
-    const rawList = JSON.parse(sessionStorage.getItem("mock_workloads") || "[]");
-    const item = rawList.map(normalizeItem).find(w => w.id === String(id));
-    if (!item) return;
-
-    if (item.evidence_data) {
-        const win = window.open();
-        win.document.write(`
-            <html>
-                <head><title>${item.evidence_name || "ไฟล์หลักฐาน"}</title></head>
-                <body style="margin:0; height:100vh;">
-                    <iframe src="${item.evidence_data}" style="border:none; width:100%; height:100%;" allowfullscreen></iframe>
-                </body>
-            </html>
-        `);
-    } else {
-        alert("ไฟล์หลักฐาน: " + (item.evidence_name || "ไม่มีชื่อไฟล์") + "\n\n(รายการนี้เป็นข้อมูลระบบตั้งต้น จึงไม่มีไฟล์จำลองแนบมา หากต้องการทดสอบดูไฟล์จริง ให้ไปที่หน้า Profile แล้วกดเพิ่มภาระงานพร้อมเลือกแนบไฟล์จากในเครื่องครับ)");
-    }
-};
-
-window.renderTable = async function() {
-    const rawList = await getWorkloads();
-    const all = rawList.map(normalizeItem);
-    updateStats(all);
-
-    const filterStatus = (document.getElementById("filter-status")?.value || "").trim().toLowerCase();
-    const filterCat = (document.getElementById("filter-category")?.value || "").trim().toLowerCase();
-    const tbody = document.getElementById("dashboard-tbody");
-    if (!tbody) return;
-
-    // กรองข้อมูลแบบ Case-insensitive ไม่ให้หลุด
-    const filtered = all.filter(item => {
-        let matchStatus = true;
-        if (filterStatus) {
-            const itemS = item.workflow_status.toLowerCase().replace(/[\s_-]+/g, "");
-            const filterS = filterStatus.toLowerCase().replace(/[\s_-]+/g, "");
-            matchStatus = (itemS === filterS);
-        }
-
-        let matchCat = true;
-        if (filterCat) {
-            const itemC = item.category.toLowerCase();
-            const filterC = filterCat.toLowerCase();
-            matchCat = itemC.includes(filterC) || filterC.includes(itemC);
-        }
-
-        return matchStatus && matchCat;
+        await load();
     });
 
-    if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:2rem; color:#94a3b8;">ไม่พบรายการภาระงาน</td></tr>`;
-        return;
+    const nameOf = id => names[id]?.th || id;
+    const keyOf = r => `${r.faculty_id}|${r.term_id}`;
+    const findRec = k => [...rows, ...scoped].find(r => keyOf(r) === k);
+    const notDraft = r => r.workflow_status !== "Draft";   
+
+    
+    async function load() {
+        const base = { academic_year: $("filter-year").value, semester: $("filter-semester").value };
+        const status = $("filter-status").value;
+        $("dash-error").innerHTML = "";
+        $("dashboard-tbody").innerHTML = `<tr><td colspan="7" class="empty-cell">กำลังโหลด...</td></tr>`;
+        try {
+            scoped = (await Api.listWorkloads(base)).filter(notDraft);
+            rows = status
+                ? (await Api.listWorkloads({ ...base, workflow_status: status })).filter(notDraft)   
+                : scoped;
+            if (!yearsLoaded) populateYears();
+        } catch (e) {
+            scoped = []; rows = [];
+            $("dash-error").innerHTML = `<div class="notice notice-error">โหลดข้อมูลไม่สำเร็จ: ${escapeHtml(e.message)}</div>`;
+        }
+        render();
     }
 
-    tbody.innerHTML = filtered.map(item => {
-        const facId = String(item.faculty_id || "").toLowerCase().replace("prof_img_", "prof_");
-        const status = item.workflow_status;
-
-        return `
-            <tr style="border-bottom:1px solid #e2e8f0;">
-                <td style="padding:0.85rem 1rem;"><b>${FACULTY_NAMES[facId] || facId}</b></td>
-                <td style="padding:0.85rem 1rem;">
-                    <span style="background:#fef2f2; color:#c51a2e; padding:3px 8px; border-radius:12px; font-size:0.75rem; font-weight:600;">
-                        ${item.category}
-                    </span>
-                </td>
-                <td style="padding:0.85rem 1rem;">
-                    <div><b>${item.title}</b></div>
-                    <small style="color:#64748b;">${item.description}</small>
-                </td>
-                <td style="padding:0.85rem 1rem;">
-                    ${item.evidence_name || item.evidence_data ? `
-                        <button onclick="window.viewEvidence('${item.id}')" style="background:none; border:none; color:#c51a2e; font-weight:600; cursor:pointer; text-decoration:underline; padding:0;">
-                            📎 ${item.evidence_name || "ดูไฟล์แนบ"}
-                        </button>
-                    ` : '<span style="color:#94a3b8;">-</span>'}
-                </td>
-                <td style="padding:0.85rem 1rem;">
-                    <span style="padding:3px 10px; border-radius:12px; font-size:0.75rem; font-weight:600;
-                        ${status === 'Approved' ? 'background:#dcfce7; color:#15803d;' : 
-                          status === 'Pending_Review' ? 'background:#fef3c7; color:#92400e;' : 'background:#fee2e2; color:#b91c1c;'}">
-                        ${status}
-                    </span>
-                </td>
-                <td style="padding:0.85rem 1rem; text-align:right;">
-                    ${status === 'Pending_Review' ? `
-                        <button onclick="window.setStatus('${item.id}', 'Approved')" style="background:#16a34a; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:600;">Approve</button>
-                        <button onclick="window.setStatus('${item.id}', 'Rejected')" style="background:#dc2626; color:#fff; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; font-weight:600;">Reject</button>
-                    ` : `
-                        <span style="font-size:0.8rem; font-weight:600; color:${status === 'Approved' ? '#16a34a' : '#dc2626'};">
-                            ${status === 'Approved' ? '✓ อนุมัติแล้ว' : '✕ ส่งกลับแก้ไข'}
-                        </span>
-                    `}
-                </td>
-            </tr>
-        `;
-    }).join("");
-};
-
-window.setStatus = function(id, newStatus) {
-    let all = JSON.parse(sessionStorage.getItem("mock_workloads") || "[]");
-    const target = all.find(w => String(w.id || w.workload_id) === String(id));
-    if (target) {
-        target.workflow_status = newStatus;
-        sessionStorage.setItem("mock_workloads", JSON.stringify(all));
-        window.renderTable();
+    function populateYears() {
+        const years = [...new Set(scoped.map(r => Number(r.academic_year)))].sort((a, b) => b - a);
+        $("filter-year").innerHTML = `<option value="">ทุกปี</option>` + years.map(y => `<option value="${y}">${y}</option>`).join("");
+        yearsLoaded = true;
     }
-};
+
+    function visibleRows() {
+        const q = $("filter-search").value.toLowerCase().trim();
+        if (!q) return rows;
+        return rows.filter(r => {
+            const n = names[r.faculty_id];
+            return `${n?.th || ""} ${n?.en || ""} ${r.faculty_id}`.toLowerCase().includes(q);
+        });
+    }
+
+    
+    function render() {
+        const list = visibleRows().slice().sort((a, b) =>
+            (a.workflow_status === "Pending_Review" ? 0 : 1) - (b.workflow_status === "Pending_Review" ? 0 : 1) ||
+            sortTermsDesc(a, b) || a.faculty_id.localeCompare(b.faculty_id));
+
+        const count = s => scoped.filter(r => r.workflow_status === s).length;
+        $("stat-pending").textContent = count("Pending_Review");
+        $("stat-approved").textContent = count("Approved");
+        $("stat-rejected").textContent = count("Rejected");
+        renderCharts(list);
+
+        $("result-count").textContent = `แสดง ${list.length} จาก ${rows.length} รายการ`;
+        if (!list.length) {
+            $("dashboard-tbody").innerHTML = `<tr><td colspan="7" class="empty-cell">ไม่พบรายการภาระงานตามเงื่อนไขที่เลือก</td></tr>`;
+            return;
+        }
+        $("dashboard-tbody").innerHTML = list.map(r => {
+            const chips = CATEGORIES.map(c => {
+                const n = (r.workloads?.[c.key] || []).length;
+                return n ? `<span class="chip-sm" title="${escapeHtml(c.label)}">${escapeHtml(c.en.split(" ")[0])} ${n}</span>` : "";
+            }).join("");
+            const k = escapeHtml(keyOf(r));
+            const pending = r.workflow_status === "Pending_Review";
+            return `<tr>
+                <td><b>${escapeHtml(nameOf(r.faculty_id))}</b><br><small class="muted-text">${escapeHtml(r.faculty_id)}</small></td>
+                <td>${r.semester}/${r.academic_year}</td>
+                <td><div class="chip-row">${chips || '<span class="muted-text">-</span>'}</div></td>
+                <td>${countEvidence(r) ? `📎 ${countEvidence(r)} ไฟล์` : '<span class="muted-text">-</span>'}</td>
+                <td>${statusBadge(r.workflow_status)}</td>
+                <td><small>${escapeHtml(formatDateTime(r.updated_at))}</small></td>
+                <td class="td-right">
+                    <button type="button" class="tu-btn tu-btn-secondary tu-btn-sm" data-act="detail" data-key="${k}">ดูรายละเอียด</button>
+                    ${pending ? `
+                        <button type="button" class="tu-btn tu-btn-success tu-btn-sm" data-act="approve" data-key="${k}">Approve</button>
+                        <button type="button" class="tu-btn tu-btn-danger tu-btn-sm" data-act="reject" data-key="${k}">Reject</button>` : ""}
+                </td>
+            </tr>`;
+        }).join("");
+    }
+
+    function bar(label, value, max, cls) {
+        const pct = max ? Math.round((value / max) * 100) : 0;
+        return `<div class="bar-row"><span class="bar-label">${escapeHtml(label)}</span>
+            <span class="bar-track"><span class="bar-fill ${cls}" style="width:${pct}%"></span></span>
+            <span class="bar-value">${value}</span></div>`;
+    }
+
+    function renderCharts(list) {
+        const st = ["Pending_Review", "Approved", "Rejected"];
+        const sv = st.map(s => scoped.filter(r => r.workflow_status === s).length);
+        const smax = Math.max(1, ...sv);
+        $("chart-status").innerHTML = st.map((s, i) => bar(STATUS[s].label, sv[i], smax, `fill-${s.toLowerCase()}`)).join("");
+
+        const cv = CATEGORIES.map(c => list.reduce((n, r) => n + ((r.workloads?.[c.key]) || []).length, 0));
+        const cmax = Math.max(1, ...cv);
+        $("chart-category").innerHTML = CATEGORIES.map((c, i) => bar(c.label, cv[i], cmax, "fill-cat")).join("");
+    }
+
+
+    function onRowClick(e) {
+        const b = e.target.closest("[data-act]");
+        if (!b) return;
+        const rec = findRec(b.dataset.key);
+        if (!rec) return;
+        if (b.dataset.act === "detail") showDetail(rec);
+        if (b.dataset.act === "approve") review(rec, "Approved");
+        if (b.dataset.act === "reject") { showDetail(rec); $("reject-comment").focus(); }
+    }
+
+    function showDetail(rec) {
+        openRecord = rec;
+        $("detail-title").textContent = nameOf(rec.faculty_id);
+        $("detail-meta").innerHTML = `ภาค ${rec.semester}/${rec.academic_year} · ${escapeHtml(rec.evaluation_period || "")} · ${statusBadge(rec.workflow_status)}`;
+
+        let html = "";
+        if (rec.workflow_status === "Rejected" && rec.review_comment)
+            html += `<div class="notice notice-error"><b>เหตุผลที่ส่งกลับ:</b> ${escapeHtml(rec.review_comment)}</div>`;
+        html += CATEGORIES.map(c => {
+            const items = rec.workloads?.[c.key] || [];
+            return `<section class="detail-cat"><h4>${escapeHtml(c.label)} <small>(${escapeHtml(c.en)}) · ${items.length} รายการ</small></h4>
+                ${items.length ? `<ul class="detail-list">${items.map(it => {
+                    const s = c.summarize(it);
+                    return `<li><div class="repo-title">${escapeHtml(s.title)}</div>
+                        <div class="repo-sub-info">${escapeHtml(s.sub)}</div>
+                        ${it.evidence_key ? `<button type="button" class="link-btn" data-evidence="${escapeHtml(it.evidence_key)}">📎 ${escapeHtml(it.evidence_name || "ดูไฟล์หลักฐาน")}</button>` : `<span class="muted-text">ไม่มีไฟล์แนบ</span>`}</li>`;
+                }).join("")}</ul>` : `<p class="muted-text">ไม่มีรายการ</p>`}</section>`;
+        }).join("");
+        $("detail-body").innerHTML = html;
+
+        
+        $("detail-review").hidden = !(Auth.isStaffOrAdmin() && rec.workflow_status === "Pending_Review");
+        $("reject-comment").value = "";
+        $("review-error").hidden = true;
+        openModal($("detail-modal"));
+    }
+
+    async function review(rec, decision) {
+        if (!rec || !Auth.isStaffOrAdmin()) return;
+        const inModal = $("detail-modal").classList.contains("is-open");
+        const comment = inModal ? $("reject-comment").value.trim() : "";
+        if (decision === "Rejected" && !comment) {
+            if (!inModal) { showDetail(rec); }
+            $("review-error").textContent = "กรุณาระบุเหตุผลที่ส่งกลับแก้ไข";
+            $("review-error").hidden = false;
+            $("reject-comment").focus();
+            return;
+        }
+        const label = decision === "Approved" ? "อนุมัติ" : "ส่งกลับแก้ไข";
+        if (!confirm(`ยืนยัน${label}ภาระงานของ ${nameOf(rec.faculty_id)} ภาค ${rec.semester}/${rec.academic_year}?`)) return;
+        try {
+            await Api.reviewWorkload(rec.faculty_id, rec.term_id, decision, comment);
+            closeModal($("detail-modal"));
+            toast(`${label}เรียบร้อยแล้ว`, "success");
+            await load();
+        } catch (e) {
+            if (inModal) { $("review-error").textContent = e.message; $("review-error").hidden = false; }
+            else toast(e.message, "error");
+        }
+    }
+
+    
+    function csvCell(v) {
+        let s = String(v ?? "");
+        if (/^[=+@\t\r]|^-(?!$)/.test(s)) s = "'" + s;          
+        return `"${s.replace(/"/g, '""')}"`;
+    }
+
+    function exportCsv() {
+        const list = visibleRows();
+        if (!list.length) { toast("ไม่มีข้อมูลให้ Export", "error"); return; }
+        const head = ["faculty_id", "ชื่ออาจารย์", "ปีการศึกษา", "ภาคการศึกษา", "สถานะ", "หมวด", "หัวข้อ", "รายละเอียด", "ไฟล์หลักฐาน"];
+        const lines = [head.map(csvCell).join(",")];
+        list.forEach(r => CATEGORIES.forEach(c => (r.workloads?.[c.key] || []).forEach(it => {
+            const s = c.summarize(it);
+            lines.push([r.faculty_id, nameOf(r.faculty_id), r.academic_year, r.semester, r.workflow_status,
+                c.en, s.title, s.sub, it.evidence_name || ""].map(csvCell).join(","));
+        })));
+        const blob = new Blob(["﻿" + lines.join("\r\n")], { type: "text/csv;charset=utf-8" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `workloads_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    }
+})();

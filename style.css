@@ -661,3 +661,88 @@ header {
 .tu-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
 .tu-table th { background: #f8fafc; padding: 0.85rem 1rem; border-bottom: 1px solid var(--tu-border); color: #64748b; font-weight: 600; }
 .tu-table td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--tu-border); }
+
+/* ============================================================
+   Sub-Issue 5.1–5.4 additions (Auth / RBAC / Workload forms / Dashboard)
+   ============================================================ */
+.muted-text { font-size: 0.85rem; color: var(--text-muted); }
+.req { color: #dc2626; }
+.modal-title { margin: 0 0 1rem; font-size: 1.15rem; color: #1e293b; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.75rem; }
+.modal-head { display: flex; justify-content: space-between; gap: 1rem; align-items: flex-start; margin-bottom: 1rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.75rem; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.25rem; }
+.tu-modal.is-open { display: flex; }
+.tu-modal { overflow-y: auto; padding: 1rem; }
+.tu-modal-box { max-height: calc(100vh - 2rem); overflow-y: auto; }
+.tu-modal-wide { max-width: 760px; }
+.form-error { color: #b91c1c; background: #fee2e2; border: 1px solid #fecaca; padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.85rem; margin-top: 0.5rem; }
+.tu-form-control[aria-invalid="true"] { border-color: #dc2626; }
+.inline-check { display: inline-flex !important; align-items: center; gap: 0.35rem; margin-left: 0.75rem; font-weight: 400 !important; }
+
+/* แจ้งเตือน / toast */
+.notice { padding: 0.65rem 0.9rem; border-radius: 8px; font-size: 0.9rem; margin: 0.75rem 0; border: 1px solid; }
+.notice-warn { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+.notice-error { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+.notice-ok { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
+#toast-box { position: fixed; right: 1rem; bottom: 1rem; z-index: 2000; display: flex; flex-direction: column; gap: 0.5rem; }
+.toast { background: #1e293b; color: #fff; padding: 0.7rem 1rem; border-radius: 8px; font-size: 0.9rem; box-shadow: 0 8px 20px rgba(0,0,0,.2); max-width: 360px; }
+.toast-success { background: #15803d; }
+.toast-error { background: #b91c1c; }
+
+/* หน้าไม่มีสิทธิ์ */
+.blocked-panel { max-width: 520px; margin: 4rem auto; text-align: center; background: #fff; border: 1px solid var(--tu-border); border-radius: 12px; padding: 2.5rem 1.5rem; }
+.blocked-panel h2 { color: var(--tu-red); margin-bottom: 0.5rem; }
+.blocked-panel p { color: var(--text-muted); margin-bottom: 1.25rem; }
+.blocked-actions { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+
+/* ภาระงานบนหน้า Profile */
+.wl-add-row { margin-bottom: 0.75rem; }
+.term-status { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.item-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+.link-btn { background: none; border: none; color: var(--tu-red); font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0; font: inherit; font-size: 0.85rem; }
+
+/* Dashboard */
+.dash-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.dash-title { font-size: 1.5rem; color: #1e293b; }
+.tu-stat-box { border-left: 4px solid var(--tu-border); }
+.stat-pending { border-left-color: #f59e0b; } .stat-pending .tu-stat-num { color: #d97706; }
+.stat-approved { border-left-color: #16a34a; } .stat-approved .tu-stat-num { color: #16a34a; }
+.stat-rejected { border-left-color: #dc2626; } .stat-rejected .tu-stat-num { color: #dc2626; }
+.stat-label { font-size: 0.85rem; color: #64748b; font-weight: 600; }
+.chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+.chart-title { font-size: 1rem; margin-bottom: 0.75rem; color: #1e293b; }
+.bar-row { display: grid; grid-template-columns: 11rem 1fr 2.5rem; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; font-size: 0.85rem; }
+.bar-track { background: #f1f5f9; border-radius: 6px; height: 14px; overflow: hidden; }
+.bar-fill { display: block; height: 100%; border-radius: 6px; min-width: 2px; }
+.fill-pending_review { background: #f59e0b; } .fill-approved { background: #16a34a; } .fill-rejected { background: #dc2626; } .fill-cat { background: var(--tu-red); }
+.bar-value { text-align: right; font-weight: 700; }
+.filter-bar { background: #fff; border: 1px solid var(--tu-border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: flex-end; }
+.filter-field { display: flex; flex-direction: column; gap: 0.25rem; }
+.filter-field label { font-size: 0.75rem; font-weight: 600; color: #64748b; }
+.filter-grow { flex: 1; min-width: 180px; }
+.filter-grow .tu-select-sm { width: 100%; }
+.tu-table th, .tu-table td { padding: 0.75rem 1rem; vertical-align: top; }
+.tu-table tbody tr { border-bottom: 1px solid #e2e8f0; }
+.th-right, .td-right { text-align: right; white-space: nowrap; }
+.empty-cell { text-align: center; padding: 2rem !important; color: #94a3b8; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.chip-sm { background: #fef2f2; color: #c51a2e; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; }
+.detail-cat { margin-bottom: 1rem; }
+.detail-cat h4 { font-size: 0.95rem; margin-bottom: 0.4rem; color: #1e293b; }
+.detail-cat h4 small { color: var(--text-muted); font-weight: 400; }
+.detail-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.detail-list li { border: 1px solid var(--tu-border); border-radius: 8px; padding: 0.6rem 0.85rem; }
+.review-box { border-top: 1px solid var(--tu-border); margin-top: 1rem; padding-top: 1rem; }
+.review-box label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.35rem; }
+
+/* แถบเมนู: เพิ่มความเข้ากันได้กับจอเล็ก */
+.tu-auth-container { flex-wrap: wrap; gap: 0.5rem; }
+.tu-auth-right { flex-wrap: wrap; }
+.tu-nav-links { flex-wrap: wrap; }
+
+@media (max-width: 760px) {
+    .chart-grid, .tu-stats-grid { grid-template-columns: 1fr; }
+    .bar-row { grid-template-columns: 8rem 1fr 2rem; }
+}
+
+/* ให้ attribute hidden ใช้ได้เสมอ (ไม่ถูก display ของ .tu-btn ฯลฯ ทับ) */
+[hidden] { display: none !important; }

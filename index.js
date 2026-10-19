@@ -1,13 +1,13 @@
 let allFaculties = [];
 
-// ฟังก์ชันหลักสำหรับดึงข้อมูล
+
 async function fetchFaculties() {
   const loading = document.getElementById('loading-state');
   try {
     const response = await fetch('faculties.json');
     if (!response.ok) throw new Error('Network error');
     
-    // 2. บันทึกข้อมูลลงใน allFaculties
+    
     allFaculties = await response.json();
         
     renderFaculties(allFaculties);
@@ -19,12 +19,12 @@ async function fetchFaculties() {
   }
 }
 
-// ฟังก์ชันสำหรับนำข้อมูลมาสร้างเป็นการ์ด HTML
+
 function renderFaculties(faculties) {
   const grid = document.getElementById('faculty-grid');
   const loading = document.getElementById('loading-state');
       
-  grid.innerHTML = ''; // ล้างพื้นที่ก่อนใส่ข้อมูล
+  grid.innerHTML = ''; 
       
   if (faculties.length === 0) {
     grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">ไม่พบรายชื่ออาจารย์ที่ตรงกับคำค้นหา</p>';
@@ -61,7 +61,7 @@ function renderFaculties(faculties) {
   grid.style.display = 'grid';
 }
 
-// ฟังก์ชันค้นหาเมื่อผู้ใช้พิมพ์ในกล่อง Search
+
 function handleSearch() {
   const query = document.getElementById('faculty-search').value.toLowerCase().trim();
   const filtered = allFaculties.filter(faculty => {
@@ -73,11 +73,7 @@ function handleSearch() {
   renderFaculties(filtered);
 }
 
-function escapeHtml(str) {
-  return String(str || '').replace(/[&<>"']/g, match => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  })[match]);
-}
+
 
 document.addEventListener('DOMContentLoaded', () => {
   fetchFaculties();
