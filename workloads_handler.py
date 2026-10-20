@@ -57,12 +57,12 @@ def get_workloads_handler(event, context):
         
         year = query_params.get('academic_year')
         semester = query_params.get('semester')
+        status = query_params.get('workflow_status')
+
         if not target_term_id and year and semester:
             target_term_id = f"{year}#{semester}"
 
-        # BFLA Check: หากเรียกดูภาพรวมทั้งสาขาผ่าน Query Scope แผงการบริหาร
-        if query_params.get('scope') == 'department_overview':
-            verify_bfla(user_info, allowed_groups=['Staff', 'Admin'])
+        items = []
 
         # ---------------------------------------------------------------------
         # Case A: ดึงข้อมูลรายการเดียวด้วย Primary Key (faculty_id + term_id)
@@ -74,7 +74,6 @@ def get_workloads_handler(event, context):
             if not item:
                 return create_response(404, {'message': f'ไม่พบข้อมูลภาระงานของ {target_faculty_id} ในเทอม {target_term_id}'})
             
-            # Privacy / BOLA Check: ถ้าไม่ใช่งานของตัวเอง และไม่ใช่ Staff -> ดูได้เฉพาะงานที่ Approved แล้ว
             if not is_staff_or_admin and target_faculty_id != user_faculty_id:
                 if item.get('workflow_status') != 'Approved':
                     raise AuthorizationError('คุณไม่มีสิทธิ์ดูข้อมูลภาระงานที่ยังไม่อนุมัติของอาจารย์ท่านอื่น')
@@ -82,22 +81,16 @@ def get_workloads_handler(event, context):
             return create_response(200, item)
 
         # ---------------------------------------------------------------------
-        # Case B: Query ตาม faculty_id (ดึงทุกเทอมของอาจารย์ท่านนี้)
+        # Case B: Query ตาม faculty_id
         # ---------------------------------------------------------------------
         elif target_faculty_id:
-            response = table.query(
-                KeyConditionExpression=Key('faculty_id').eq(target_faculty_id)
-            )
+            response = table.query(KeyConditionExpression=Key('faculty_id').eq(target_faculty_id))
             items = response.get('Items', [])
-            
-            # กรองงานของผู้อื่นให้เห็นเฉพาะ Approved
             if not is_staff_or_admin and target_faculty_id != user_faculty_id:
                 items = [i for i in items if i.get('workflow_status') == 'Approved']
-                
-            return create_response(200, items)
 
         # ---------------------------------------------------------------------
-        # Case C: Query ตาม term_id ผ่าน GSI TermStatusIndex (ภาพรวมทั้งสาขา)
+        # Case C: Query ตาม term_id ผ่าน GSI
         # ---------------------------------------------------------------------
         elif target_term_id:
             response = table.query(
@@ -105,29 +98,36 @@ def get_workloads_handler(event, context):
                 KeyConditionExpression=Key('term_id').eq(target_term_id)
             )
             items = response.get('Items', [])
-            
             if not is_staff_or_admin:
                 items = [
                     i for i in items 
                     if i.get('workflow_status') == 'Approved' or i.get('faculty_id') == user_faculty_id
                 ]
-                
-            return create_response(200, items)
 
         # ---------------------------------------------------------------------
-        # Case D: ไม่ระบุ Key ชัดเจน
+        # Case D: Scan ทั้งหมด (สำหรับ Staff / Admin)
         # ---------------------------------------------------------------------
         else:
             if is_staff_or_admin:
                 response = table.scan()
-                return create_response(200, response.get('Items', []))
+                items = response.get('Items', [])
             elif user_faculty_id:
-                response = table.query(
-                    KeyConditionExpression=Key('faculty_id').eq(user_faculty_id)
-                )
-                return create_response(200, response.get('Items', []))
+                response = table.query(KeyConditionExpression=Key('faculty_id').eq(user_faculty_id))
+                items = response.get('Items', [])
             else:
                 return create_response(400, {'message': 'กรุณาระบุ faculty_id หรือ term_id ในการค้นหา'})
+
+        # ---------------------------------------------------------------------
+        # Dynamic Filter: กรองข้อมูลตาม Query Parameters เพิ่มเติม
+        # ---------------------------------------------------------------------
+        if year:
+            items = [i for i in items if str(i.get('academic_year')) == str(year)]
+        if semester:
+            items = [i for i in items if str(i.get('semester')) == str(semester)]
+        if status:
+            items = [i for i in items if i.get('workflow_status') == status]
+
+        return create_response(200, items)
 
     except AuthorizationError as auth_err:
         return create_response(auth_err.status_code, {'error': 'Forbidden', 'message': auth_err.message})

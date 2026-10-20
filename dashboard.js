@@ -42,15 +42,27 @@
 
     
     async function load() {
-        const base = { academic_year: $("filter-year").value, semester: $("filter-semester").value };
+        const year = $("filter-year").value;
+        const semester = $("filter-semester").value;
         const status = $("filter-status").value;
+
         $("dash-error").innerHTML = "";
         $("dashboard-tbody").innerHTML = `<tr><td colspan="7" class="empty-cell">กำลังโหลด...</td></tr>`;
         try {
-            scoped = (await Api.listWorkloads(base)).filter(notDraft);
+            // ดึงข้อมูลจาก API
+            const rawData = (await Api.listWorkloads({ academic_year: year, semester: semester })).filter(notDraft);
+
+            // Client-side Filter: กรองปีการศึกษาและภาคการศึกษาซ้ำให้อีกครั้ง
+            scoped = rawData.filter(r =>
+                (!year || String(r.academic_year) === String(year)) &&
+                (!semester || String(r.semester) === String(semester))
+            );
+
+            // กรองสถานะ (Pending_Review / Approved / Rejected)
             rows = status
-                ? (await Api.listWorkloads({ ...base, workflow_status: status })).filter(notDraft)   
+                ? scoped.filter(r => r.workflow_status === status)
                 : scoped;
+
             if (!yearsLoaded) populateYears();
         } catch (e) {
             scoped = []; rows = [];
@@ -58,7 +70,6 @@
         }
         render();
     }
-
     function populateYears() {
         const years = [...new Set(scoped.map(r => Number(r.academic_year)))].sort((a, b) => b - a);
         $("filter-year").innerHTML = `<option value="">ทุกปี</option>` + years.map(y => `<option value="${y}">${y}</option>`).join("");
