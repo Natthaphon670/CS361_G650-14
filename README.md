@@ -129,4 +129,4 @@
 
 ## Web Application
 
-- **Live Site:** [เปิดหน้าเว็บระบบบน AWS Amplify]([https://staging.dxac2u26txfej.amplifyapp.com/](https://main.d2eorbfslu1s80.amplifyapp.com/))
+- **Live Site:** [เปิดหน้าเว็บระบบบน AWS Amplify]([https://staging.dxac2u26txfej.amplifyapp.com/])
