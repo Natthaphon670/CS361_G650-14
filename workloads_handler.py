@@ -3,8 +3,22 @@ import os
 import boto3
 from decimal import Decimal
 from datetime import datetime, timezone
+from urllib.parse import unquote  
 from boto3.dynamodb.conditions import Key, Attr
 from auth_utils import get_user_claims, verify_bola, verify_bfla, AuthorizationError
+
+# -----------------------------------------------------------------------------
+# Helper สำหรับถอดรหัส URL Encoding ซ้ำซ้อน (%23, %2523, %252523 -> #)
+# -----------------------------------------------------------------------------
+def clean_param(val):
+    if not val:
+        return val
+    prev = None
+    curr = str(val)
+    while prev != curr:
+        prev = curr
+        curr = unquote(curr)
+    return curr
 
 # -----------------------------------------------------------------------------
 # Configuration & DynamoDB Setup
@@ -142,11 +156,10 @@ def get_workloads_handler(event, context):
 def save_workload_handler(event, context):
     try:
         user_info = get_user_claims(event)
-        is_staff_or_admin = user_info['is_staff_or_admin']
-
         path_params = event.get('pathParameters') or {}
-        target_faculty_id = path_params.get('faculty_id')
-        target_term_id = path_params.get('term_id')
+
+        target_faculty_id = clean_param(path_params.get('faculty_id'))
+        target_term_id = clean_param(path_params.get('term_id'))
 
         if not target_faculty_id or not target_term_id:
             return create_response(400, {'message': 'กรุณาระบุ faculty_id และ term_id ใน Path Parameters'})
@@ -229,7 +242,7 @@ def save_workload_handler(event, context):
 def delete_workload_handler(event, context):
     try:
         user_info = get_user_claims(event)
-        is_staff_or_admin = user_info['is_staff_or_admin']
+        path_params = event.get('pathParameters') or {}
 
         path_params = event.get('pathParameters') or {}
         target_faculty_id = path_params.get('faculty_id')
@@ -268,17 +281,16 @@ def delete_workload_handler(event, context):
 # =============================================================================
 # TASK 4: Lambda Function - UpdateWorkloadStatus (Workflow Management)
 # POST /workloads/{faculty_id}/{term_id}/status
-# Body: { "workflow_status": "Pending_Review" | "Approved" | "Rejected", "review_comment": "..." }
 # =============================================================================
 def update_workload_status_handler(event, context):
     try:
         user_info = get_user_claims(event)
         path_params = event.get('pathParameters') or {}
-        target_faculty_id = path_params.get('faculty_id')
-        target_term_id = path_params.get('term_id')
+        target_faculty_id = clean_param(path_params.get('faculty_id'))
+        target_term_id = clean_param(path_params.get('term_id'))
 
         if not target_faculty_id or not target_term_id:
-            return create_response(400, {'message': 'กรุณาระบุ faculty_id และ term_id'})
+            return create_response(400, {'message': 'กรุณาระบุ faculty_id และ term_id ใน Path Parameters'})
 
         body_raw = event.get('body')
         if not body_raw:
@@ -295,9 +307,7 @@ def update_workload_status_handler(event, context):
         if new_status not in ['Pending_Review', 'Approved', 'Rejected']:
             return create_response(400, {'message': 'workflow_status ต้องเป็น Pending_Review, Approved หรือ Rejected เท่านั้น'})
 
-        # ---------------------------------------------------------------------
-        # 1. ดึงข้อมูลปัจจุบันเพื่อตรวจสอบ State ว่าเปลี่ยนสถานะได้หรือไม่
-        # ---------------------------------------------------------------------
+        # 1. ดึงข้อมูลปัจจุบัน
         response = table.get_item(Key={'faculty_id': target_faculty_id, 'term_id': target_term_id})
         existing_item = response.get('Item')
 
@@ -307,43 +317,32 @@ def update_workload_status_handler(event, context):
         current_status = existing_item.get('workflow_status', 'Draft')
         now_iso = datetime.now(timezone.utc).isoformat()
 
-        # เตรียมคำสั่งอัปเดต DynamoDB
         update_expr = "SET workflow_status = :s, updated_at = :u"
         expr_values = {":s": new_status, ":u": now_iso}
 
-        # ---------------------------------------------------------------------
-        # 2. Logic สำหรับอาจารย์: Submit งาน (Draft / Rejected -> Pending_Review)
-        # ---------------------------------------------------------------------
+        # 2. Logic สำหรับอาจารย์: Submit งาน
         if new_status == 'Pending_Review':
-            # BOLA Check: ต้องเป็นเจ้าของงานเท่านั้น ถึงจะกดส่งได้
             verify_bola(user_info, target_faculty_id) 
 
             if current_status not in ['Draft', 'Rejected']:
                 return create_response(409, {'message': f'ไม่อนุญาตให้ส่งตรวจ เนื่องจากสถานะปัจจุบันคือ "{current_status}"'})
 
-        # ---------------------------------------------------------------------
-        # 3. Logic สำหรับเจ้าหน้าที่: ตรวจงาน (Pending_Review -> Approved / Rejected)
-        # ---------------------------------------------------------------------
+        # 3. Logic สำหรับเจ้าหน้าที่: ตรวจงาน
         elif new_status in ['Approved', 'Rejected']:
-            # BFLA Check: ป้องกันอาจารย์อนุมัติงานตัวเอง บังคับว่าต้องเป็น Staff/Admin เท่านั้น!
             verify_bfla(user_info, allowed_groups=['Staff', 'Admin'])
 
             if current_status != 'Pending_Review':
                 return create_response(409, {'message': f'ไม่สามารถตรวจงานได้ เนื่องจากสถานะปัจจุบันไม่ใช่รอการตรวจสอบ (ปัจจุบัน: "{current_status}")'})
             
-            # บังคับใส่เหตุผลหากกด Rejected (ตีกลับ)
             if new_status == 'Rejected' and not comment.strip():
                 return create_response(400, {'message': 'กรุณาระบุเหตุผล (review_comment) ในการส่งกลับแก้ไข'})
 
-            # Audit Trail: บันทึกร่องรอยว่าใครเป็นคนอนุมัติ/ตีกลับ และทำเมื่อไหร่
             update_expr += ", reviewed_by = :rb, reviewed_at = :ra, review_comment = :rc"
             expr_values[":rb"] = user_info.get('username', 'Unknown Staff')
             expr_values[":ra"] = now_iso
             expr_values[":rc"] = comment
 
-        # ---------------------------------------------------------------------
-        # 4. บันทึกการเปลี่ยนแปลงลง DynamoDB (Atomic Update)
-        # ---------------------------------------------------------------------
+        # 4. อัปเดต DynamoDB
         table.update_item(
             Key={'faculty_id': target_faculty_id, 'term_id': target_term_id},
             UpdateExpression=update_expr,
