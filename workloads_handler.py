@@ -359,3 +359,34 @@ def update_workload_status_handler(event, context):
         return create_response(auth_err.status_code, {'error': 'Forbidden', 'message': auth_err.message})
     except Exception as e:
         return create_response(500, {'error': f'เกิดข้อผิดพลาดของระบบ: {str(e)}'})
+    
+    # =============================================================================
+# MAIN ROUTER: lambda_handler (พนักงานต้อนรับแยกแยะ HTTP Method)
+# =============================================================================
+def lambda_handler(event, context):
+    try:
+        http_method = event.get('httpMethod')
+        resource = event.get('resource', '')
+
+        # ตอบกลับ OPTIONS สำหรับ CORS Preflight
+        if http_method == 'OPTIONS':
+            return create_response(200, 'CORS preflight successful')
+
+        # แยกแยะการทำงานตาม HTTP Method และ Path
+        if http_method == 'GET':
+            return get_workloads_handler(event, context)
+            
+        elif http_method == 'PUT':
+            return save_workload_handler(event, context)
+            
+        elif http_method == 'DELETE':
+            return delete_workload_handler(event, context)
+            
+        elif http_method == 'POST' and resource.endswith('/status'):
+            return update_workload_status_handler(event, context)
+            
+        else:
+            return create_response(400, {'message': f'ไม่รองรับ HTTP Method: {http_method} บน Resource นี้'})
+            
+    except Exception as e:
+        return create_response(500, {'error': f'Internal Server Error: {str(e)}'})
