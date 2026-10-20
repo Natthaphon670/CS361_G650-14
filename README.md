@@ -89,26 +89,7 @@
 
 ## System Architecture Diagram (V3)
 
-```text
-                                  +-------------------+
-                                  |   Amazon Cognito  |
-                                  | (User Pool & RBAC)|
-                                  +---------+---------+
-                                            |
-                                  JWT Token |
-                                            v
-+------------------+             +----------+----------+             +--------------------+
-|   AWS Amplify    |  HTTPS API  | Amazon API Gateway  |  Invoke     |     AWS Lambda     |
-| (Frontend Hosting)<------------> (Cognito Authorizer)<-------------> (BFLA/BOLA Logic)  |
-+------------------+             +---------------------+             +---+------------+---+
-                                                                         |            |
-                                                      Read/Write Data    |            | Generate Pre-signed URL
-                                                                         v            v
-                                                                 +-------+---+    +---+-------+
-                                                                 |  Amazon   |    | Private S3|
-                                                                 | DynamoDB  |    |  Bucket   |
-                                                                 +-----------+    +-----------+
-```
+- **AWS Architecture Diagram:** [Click Here](https://canva.link/lm69eondtsl6a2e)
 
 ---
 
