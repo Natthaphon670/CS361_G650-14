@@ -156,19 +156,16 @@ def get_workloads_handler(event, context):
 def save_workload_handler(event, context):
     try:
         user_info = get_user_claims(event)
-        is_staff_or_admin = user_info.get('is_staff_or_admin', False) 
-        
-        path_params = event.get('pathParameters') or {}
+        is_staff_or_admin = user_info.get('is_staff_or_admin', False)
 
+        path_params = event.get('pathParameters') or {}
         target_faculty_id = clean_param(path_params.get('faculty_id'))
         target_term_id = clean_param(path_params.get('term_id'))
 
         if not target_faculty_id or not target_term_id:
             return create_response(400, {'message': 'กรุณาระบุ faculty_id และ term_id ใน Path Parameters'})
 
-        # ---------------------------------------------------------------------
         # BOLA Protection: ตรวจสอบความเป็นเจ้าของข้อมูล
-        # ---------------------------------------------------------------------
         verify_bola(user_info, target_faculty_id)
 
         body_raw = event.get('body')
@@ -189,11 +186,10 @@ def save_workload_handler(event, context):
                 return create_response(409, {
                     'message': f'ไม่สามารถแก้ไขได้ เนื่องจากรายการอยู่ในสถานะ "{current_status}" (แก้ไขได้เฉพาะ Draft หรือ Rejected)'
                 })
-            
-            workflow_status = body.get('workflow_status', current_status)
+            workflow_status = body.get('workflow_status', current_status) if is_staff_or_admin else current_status
             created_at = existing_item.get('created_at', now_iso)
         else:
-            workflow_status = body.get('workflow_status', 'Draft')
+            workflow_status = body.get('workflow_status', 'Draft') if is_staff_or_admin else 'Draft'
             created_at = now_iso
 
         incoming_workloads = body.get('workloads', {})

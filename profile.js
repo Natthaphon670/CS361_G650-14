@@ -366,11 +366,6 @@
     async function persist(rec, workloads) {
         const res = await Api.saveWorkload({ ...rec, workloads });
         let saved = res && res.faculty_id ? res : { ...rec, workloads };
-        // เพิ่ม/แก้ภาระงานแล้ว → ขึ้นเป็น "รอการตรวจสอบ" ที่ Dashboard ทันที (ไม่ต้องกดส่งตรวจแยก)
-        if (saved.workflow_status !== "Pending_Review" && countItems(saved) > 0) {
-            const sub = await Api.submitForReview(saved.faculty_id, saved.term_id);
-            saved = sub && sub.workflow_status ? sub : { ...saved, workflow_status: "Pending_Review" };
-        }
         records = records.map(r => r.term_id === rec.term_id ? saved : r);
         renderWorkloads();
     }
