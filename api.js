@@ -14,7 +14,7 @@ const Api = (() => {
         });
         const headers = {};
         const token = Auth.getToken();
-        if (token) headers.Authorization = `Bearer ${token}`;
+        if (token) headers.Authorization = token;
         if (body !== undefined) headers["Content-Type"] = "application/json";
 
         let res;
@@ -35,18 +35,25 @@ const Api = (() => {
     }
 
     const real = {
+        // --- Workloads API ---
         async listWorkloads(filters = {}) {
             const data = await request("GET", "/workloads", { query: filters });
-            return Array.isArray(data) ? data : (data?.items || []);
+            return Array.isArray(data) ? data : (data?.Items || data?.items || []); 
         },
         saveWorkload(rec) {
             const { faculty_id, term_id, ...rest } = rec;
             return request("PUT", `/workloads/${encodeURIComponent(faculty_id)}/${encodeURIComponent(term_id)}`, {
                 body: {
-                    academic_year: rest.academic_year, semester: rest.semester,
-                    evaluation_period: rest.evaluation_period, workloads: rest.workloads
+                    academic_year: rest.academic_year, 
+                    semester: rest.semester,
+                    evaluation_period: rest.evaluation_period, 
+                    workloads: rest.workloads,
+                    workflow_status: rest.workflow_status
                 }
             });
+        },
+        deleteWorkload(fid, tid) {
+            return request("DELETE", `/workloads/${encodeURIComponent(fid)}/${encodeURIComponent(tid)}`);
         },
         submitForReview(fid, tid) {
             return request("POST", `/workloads/${encodeURIComponent(fid)}/${encodeURIComponent(tid)}/status`,
@@ -56,6 +63,22 @@ const Api = (() => {
             return request("POST", `/workloads/${encodeURIComponent(fid)}/${encodeURIComponent(tid)}/status`,
                 { body: { workflow_status: decision, review_comment: comment || "" } });
         },
+        
+        // --- Profiles API ---
+        async listProfiles() {
+            const data = await request("GET", "/profiles");
+            return Array.isArray(data) ? data : (data?.Items || data?.items || []);
+        },
+        async getProfile(facultyId) {
+            return await request("GET", `/profiles/${encodeURIComponent(facultyId)}`);
+        },
+        async updateProfile(facultyId, profileData) {
+            return await request("PUT", `/profiles/${encodeURIComponent(facultyId)}`, {
+                body: profileData
+            });
+        },
+
+        // --- Evidence API ---
         async uploadEvidence(file, { faculty_id, term_id }) {
             const { upload_url, key } = await request("POST", "/evidence/upload-url", {
                 body: { faculty_id, term_id, file_name: file.name, content_type: file.type, size: file.size }
