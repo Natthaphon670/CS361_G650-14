@@ -1,4 +1,3 @@
-
 (() => {
     const $ = id => document.getElementById(id);
 
@@ -9,7 +8,9 @@
     let yearsLoaded = false;
 
     document.addEventListener("DOMContentLoaded", async () => {
+        // ตรวจสอบสิทธิ์ผ่าน Auth.guard ถ้าไม่ผ่านจะถูกเตะออกทันทีโดยไม่แสดงหน้า Dashboard ค้าง
         if (!(await Auth.guard(["Staff", "Admin"]))) return;   
+        
         try {
             const faculties = await (await fetch("faculties.json")).json();
             names = Object.fromEntries(faculties.map(f => [f.faculty_id, { th: f.name_th, en: f.name_en || "" }]));
@@ -33,6 +34,11 @@
         });
 
         await load();
+
+        // โหลดเสร็จและผ่านการตรวจสอบสิทธิ์แล้ว ค่อยเปิดแสดงผลหน้า Dashboard และซ่อน Loading
+        $("loading-screen")?.remove();
+        const mainEl = $("app-main");
+        if (mainEl) mainEl.style.display = "block";
     });
 
     const nameOf = id => names[id]?.th || id;
@@ -40,7 +46,6 @@
     const findRec = k => [...rows, ...scoped].find(r => keyOf(r) === k);
     const notDraft = r => r.workflow_status !== "Draft";   
 
-    
     async function load() {
         const year = $("filter-year").value;
         const semester = $("filter-semester").value;
@@ -49,16 +54,13 @@
         $("dash-error").innerHTML = "";
         $("dashboard-tbody").innerHTML = `<tr><td colspan="7" class="empty-cell">กำลังโหลด...</td></tr>`;
         try {
-            // ดึงข้อมูลจาก API
             const rawData = (await Api.listWorkloads({ academic_year: year, semester: semester })).filter(notDraft);
 
-            // Client-side Filter: กรองปีการศึกษาและภาคการศึกษาซ้ำให้อีกครั้ง
             scoped = rawData.filter(r =>
                 (!year || String(r.academic_year) === String(year)) &&
                 (!semester || String(r.semester) === String(semester))
             );
 
-            // กรองสถานะ (Pending_Review / Approved / Rejected)
             rows = status
                 ? scoped.filter(r => r.workflow_status === status)
                 : scoped;
@@ -70,6 +72,7 @@
         }
         render();
     }
+
     function populateYears() {
         const years = [...new Set(scoped.map(r => Number(r.academic_year)))].sort((a, b) => b - a);
         $("filter-year").innerHTML = `<option value="">ทุกปี</option>` + years.map(y => `<option value="${y}">${y}</option>`).join("");
@@ -85,7 +88,6 @@
         });
     }
 
-    
     function render() {
         const list = visibleRows().slice().sort((a, b) =>
             (a.workflow_status === "Pending_Review" ? 0 : 1) - (b.workflow_status === "Pending_Review" ? 0 : 1) ||
@@ -144,7 +146,6 @@
         $("chart-category").innerHTML = CATEGORIES.map((c, i) => bar(c.label, cv[i], cmax, "fill-cat")).join("");
     }
 
-
     function onRowClick(e) {
         const b = e.target.closest("[data-act]");
         if (!b) return;
@@ -175,7 +176,6 @@
         }).join("");
         $("detail-body").innerHTML = html;
 
-        
         $("detail-review").hidden = !(Auth.isStaffOrAdmin() && rec.workflow_status === "Pending_Review");
         $("reject-comment").value = "";
         $("review-error").hidden = true;
@@ -206,7 +206,6 @@
         }
     }
 
-    
     function csvCell(v) {
         let s = String(v ?? "");
         if (/^[=+@\t\r]|^-(?!$)/.test(s)) s = "'" + s;          

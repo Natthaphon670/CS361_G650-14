@@ -12,7 +12,8 @@
 <body>
     <div id="auth-header-slot"></div>
 
-    <main class="tu-dashboard-container">
+    <!-- ซ่อนเนื้อหาหลักไว้ก่อน ป้องกันการกระพริบ (DOM Flash) -->
+    <main class="tu-dashboard-container" id="app-main" style="display: none;">
         <div class="dash-head">
             <div>
                 <h1 class="dash-title">ระบบตรวจสอบภาระงานสาขาวิชา (Staff / Admin)</h1>
@@ -21,7 +22,6 @@
             <button type="button" class="tu-btn tu-btn-secondary" id="btn-export">⬇ Export CSV (Excel)</button>
         </div>
 
-        
         <div class="tu-stats-grid">
             <div class="tu-stat-box stat-pending">
                 <span class="stat-label">รอการตรวจสอบ (Pending Review)</span>
@@ -37,7 +37,6 @@
             </div>
         </div>
 
-        
         <div class="chart-grid">
             <section class="tu-card" aria-labelledby="chart-status-title">
                 <h2 class="chart-title" id="chart-status-title">สัดส่วนตามสถานะ</h2>
@@ -49,7 +48,6 @@
             </section>
         </div>
 
-        
         <form class="filter-bar" id="filter-form">
             <div class="filter-field">
                 <label for="filter-year">ปีการศึกษา</label>
@@ -102,7 +100,11 @@
         <p class="muted-text" id="result-count" style="margin-top:0.5rem;"></p>
     </main>
 
-    
+    <!-- หน้าต่างแจ้งสถานะกำลังตรวจสอบสิทธิ์ -->
+    <div id="loading-screen" style="text-align: center; padding: 6rem 1rem; color: var(--text-muted);">
+        <p style="font-size: 1.1rem; font-weight: 500;">กำลังตรวจสอบสิทธิ์การเข้าใช้งาน...</p>
+    </div>
+
     <div id="detail-modal" class="tu-modal" role="dialog" aria-modal="true" aria-labelledby="detail-title">
         <div class="tu-modal-box tu-modal-wide">
             <div class="modal-head">
@@ -114,7 +116,6 @@
             </div>
             <div id="detail-body"></div>
             <div id="detail-review" class="review-box" hidden>
-                
                 <label for="reject-comment">เหตุผล (จำเป็นเมื่อส่งกลับแก้ไข)</label>
                 <textarea id="reject-comment" class="tu-form-control" rows="2" placeholder="ระบุสิ่งที่ต้องแก้ไข เช่น แนบหลักฐานไม่ครบ"></textarea>
                 <p id="review-error" class="form-error" role="alert" hidden></p>
