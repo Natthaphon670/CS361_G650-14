@@ -11,10 +11,12 @@ const Auth = (() => {
     const K_PKCE = "auth.pkce";
     const K_RETURN = "auth.return_to";
 
+    // 1.1 ใช้ sessionStorage สำหรับเก็บ Token และ Auth State ทั้งหมด
     const store = {
         get(k) { try { return JSON.parse(sessionStorage.getItem(k)); } catch { return null; } },
         set(k, v) { sessionStorage.setItem(k, JSON.stringify(v)); },
-        del(k) { sessionStorage.removeItem(k); }
+        del(k) { sessionStorage.removeItem(k); },
+        clearAll() { sessionStorage.clear(); }
     };
 
     function b64url(bytes) {
@@ -157,17 +159,18 @@ const Auth = (() => {
     }
 
     function logout() {
-        store.del(K_TOKENS);
-        store.del(K_USER);
+        // ล้างข้อมูลทั้งหมดใน sessionStorage
+        store.clearAll();
+
         if (isMock) {
-            window.location.href = "index.html";
+            window.location.replace("index.html");
             return;
         }
-        store.del("mock_workloads_v2"); store.del("mock_workloads_v3");
-        store.del("mock_evidence_v1");
+
+        // Redirect ไปยัง Cognito Logout URL
         const url = new URL(`${A.cognitoDomain}/logout`);
         url.search = new URLSearchParams({ client_id: A.clientId, logout_uri: A.logoutUri }).toString();
-        window.location.assign(url.toString());
+        window.location.replace(url.toString());
     }
 
     function hasRole(roles = []) {
@@ -278,6 +281,15 @@ const Auth = (() => {
     }
 
     const ready = handleCallback().then(loadMockFaculty);
+
+    // ดักจับกรณีผู้ใช้กดย้อนกลับ (Back Button / BFCache) เพื่อบังคับ re-verify สิทธิ์ใหม่
+    window.addEventListener("pageshow", async (event) => {
+        if (event.persisted) {
+            await ready;
+            renderNav();
+        }
+    });
+
     document.addEventListener("DOMContentLoaded", async () => { await ready; renderNav(); });
 
     return {
