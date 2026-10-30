@@ -146,7 +146,7 @@ def get_workloads_handler(event, context):
     except AuthorizationError as auth_err:
         return create_response(auth_err.status_code, {'error': 'Forbidden', 'message': auth_err.message})
     except Exception as e:
-        return create_response(500, {'error': f'เกิดข้อผิดพลาดในการดึงข้อมูลภาระงาน: {str(e)}'})
+        return create_response(500, {'message': 'เกิดข้อผิดพลาดในการดึงข้อมูลภาระงาน กรุณาลองใหม่อีกครั้ง'})
 
 
 # =============================================================================
@@ -230,7 +230,7 @@ def save_workload_handler(event, context):
     except AuthorizationError as auth_err:
         return create_response(auth_err.status_code, {'error': 'Forbidden', 'message': auth_err.message})
     except Exception as e:
-        return create_response(500, {'error': f'ไม่สามารถบันทึกข้อมูลภาระงานได้: {str(e)}'})
+        return create_response(500, {'message': 'เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง'})
 
 
 # =============================================================================
@@ -274,7 +274,7 @@ def delete_workload_handler(event, context):
     except AuthorizationError as auth_err:
         return create_response(auth_err.status_code, {'error': 'Forbidden', 'message': auth_err.message})
     except Exception as e:
-        return create_response(500, {'error': f'เกิดข้อผิดพลาดในการลบข้อมูล: {str(e)}'})
+        return create_response(500, {'message': 'เกิดข้อผิดพลาดในการลบข้อมูล กรุณาลองใหม่อีกครั้ง'})
 
 # =============================================================================
 # TASK 4: Lambda Function - UpdateWorkloadStatus (Workflow Management)
@@ -355,7 +355,7 @@ def update_workload_status_handler(event, context):
     except AuthorizationError as auth_err:
         return create_response(auth_err.status_code, {'error': 'Forbidden', 'message': auth_err.message})
     except Exception as e:
-        return create_response(500, {'error': f'เกิดข้อผิดพลาดของระบบ: {str(e)}'})
+        return create_response(500, {'message': 'เกิดข้อผิดพลาดของระบบ กรุณาลองใหม่อีกครั้ง'})
     
     # =============================================================================
 # MAIN ROUTER: lambda_handler (พนักงานต้อนรับแยกแยะ HTTP Method)
@@ -386,4 +386,4 @@ def lambda_handler(event, context):
             return create_response(400, {'message': f'ไม่รองรับ HTTP Method: {http_method} บน Resource นี้'})
             
     except Exception as e:
-        return create_response(500, {'error': f'Internal Server Error: {str(e)}'})
+        return create_response(500, {'message': 'เกิดข้อผิดพลาดของระบบ กรุณาลองใหม่อีกครั้ง'})

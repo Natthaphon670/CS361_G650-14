@@ -4,7 +4,11 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 const s3 = new S3Client({});
 const BUCKET = process.env.EVIDENCE_BUCKET;
-const URL_TTL_SECONDS = Number(process.env.UPLOAD_URL_TTL_SECONDS || 600);
+// Upload links are also bearer credentials, so enforce the same short lifetime.
+const configuredTtl = Number(process.env.UPLOAD_URL_TTL_SECONDS);
+const URL_TTL_SECONDS = Number.isFinite(configuredTtl) ? Math.trunc(configuredTtl) : 300;
+const MIN_URL_TTL_SECONDS = 120;
+const MAX_URL_TTL_SECONDS = 300;
 const MAX_FILE_BYTES = Number(process.env.MAX_FILE_BYTES || 10485760);
 const ALLOWED_TYPES = new Set(['application/pdf', 'image/png', 'image/jpeg']);
 
@@ -27,7 +31,7 @@ function safeFilename(name) {
 
 export const handler = async (event) => {
   try {
-    if (!BUCKET) return response(500, { message: 'Evidence bucket is not configured' });
+    if (!BUCKET) return response(500, { message: 'เกิดข้อผิดพลาดของระบบ กรุณาลองใหม่อีกครั้ง' });
     const claims = claimsFrom(event);
     const tokenFacultyId = claims['custom:faculty_id'] || claims.faculty_id;
     if (!claims.sub || !tokenFacultyId) {
@@ -57,10 +61,11 @@ export const handler = async (event) => {
       Key: key,
       ContentType: contentType
     });
-    const upload_url = await getSignedUrl(s3, command, { expiresIn: Math.min(Math.max(URL_TTL_SECONDS, 300), 900) });
-    return response(200, { upload_url, key, expires_in: Math.min(Math.max(URL_TTL_SECONDS, 300), 900) });
+    const expiresIn = Math.min(Math.max(URL_TTL_SECONDS, MIN_URL_TTL_SECONDS), MAX_URL_TTL_SECONDS);
+    const upload_url = await getSignedUrl(s3, command, { expiresIn });
+    return response(200, { upload_url, key, expires_in: expiresIn });
   } catch (error) {
     console.error('GenerateUploadUrl failed', { name: error?.name, message: error?.message });
-    return response(500, { message: 'Unable to create upload URL' });
+    return response(500, { message: 'เกิดข้อผิดพลาดในการสร้างลิงก์อัปโหลด กรุณาลองใหม่อีกครั้ง' });
   }
 };

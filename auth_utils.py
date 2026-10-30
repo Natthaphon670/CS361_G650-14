@@ -52,9 +52,7 @@ def verify_bfla(user_claims, allowed_groups=['Staff', 'Admin']):
     has_permission = any(group in allowed_groups for group in user_groups)
     
     if not has_permission:
-        raise AuthorizationError(
-            f"BFLA Violation: Access denied. Required role in {allowed_groups}, but user has {user_groups}"
-        )
+        raise AuthorizationError('คุณไม่มีสิทธิ์ดำเนินการนี้')
     return True
 
 def verify_bola(user_claims, target_faculty_id):
@@ -68,7 +66,5 @@ def verify_bola(user_claims, target_faculty_id):
     user_faculty_id = user_claims.get('faculty_id')
     
     if not user_faculty_id or str(user_faculty_id) != str(target_faculty_id):
-        raise AuthorizationError(
-            f"BOLA Violation: You are not authorized to access or modify data belonging to faculty_id '{target_faculty_id}'"
-        )
+        raise AuthorizationError('คุณไม่มีสิทธิ์เข้าถึงหรือแก้ไขข้อมูลนี้')
     return True

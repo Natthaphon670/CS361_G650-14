@@ -74,7 +74,7 @@ def get_profiles_handler(event, context):
 
     except Exception as e:
         return create_response(500, {
-            'error': f'เกิดข้อผิดพลาดในการดึงข้อมูลโปรไฟล์: {str(e)}'
+            'message': 'เกิดข้อผิดพลาดในการดึงข้อมูล กรุณาลองใหม่อีกครั้ง'
         })
 
 
@@ -149,5 +149,5 @@ def update_profile_handler(event, context):
         })
     except Exception as e:
         return create_response(500, {
-            'error': f'เกิดข้อผิดพลาดในการอัปเดตข้อมูลโปรไฟล์: {str(e)}'
+            'message': 'เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง'
         })
