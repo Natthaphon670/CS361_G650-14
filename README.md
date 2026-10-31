@@ -52,6 +52,39 @@
 - **Dynamic UI Controls:** แสดงผลเมนู ปุ่มกด (เช่น ปุ่ม *"ส่งตรวจสอบ"*, *"รับรองผลงาน"*) และฟอร์มตามสิทธิ์ผู้ใช้งาน
 - **Executive Dashboard:** หน้าสรุปข้อมูลภาระงานภาพรวมระดับสาขาวิชา สามารถกรองตามปีการศึกษาและภาคการศึกษาได้
 
+### 6. Logging, Audit Trail & Rate Limiting (Security Issue 5)
+
+**5.1 Audit Logs → Amazon CloudWatch** (`audit_logger.py`)
+- Lambda เขียน Audit Log เป็น JSON บรรทัดเดียวต่อเหตุการณ์ (`"log_type": "AUDIT"`) ทุกครั้งที่มี Submit / Approve / Reject, สร้าง / แก้ไข / ลบภาระงาน และแก้ไขโปรไฟล์
+- แต่ละ record เก็บ `timestamp` (UTC), `event_type`, `outcome` (`SUCCESS` / `DENIED` / `CONFLICT` / `ERROR`), ผู้กระทำ (`actor.username`, `actor.faculty_id`, `actor.groups`), เป้าหมาย (`target.faculty_id`, `target.term_id`), `status_from` → `status_to`, `source_ip` และ request id
+- บันทึกทั้งการกระทำที่สำเร็จและที่ถูกปฏิเสธ (BOLA/BFLA) เพื่อตรวจย้อนกลับการพยายามเข้าถึงผิดสิทธิ์
+- ไม่บันทึก Token, Request body หรือเนื้อหา comment และการเขียน log จะไม่ทำให้ request ล้ม
+- Error ฝั่ง Server (`"log_type": "ERROR"`) ถูกบันทึกใน CloudWatch ส่วน Client เห็นเพียงข้อความทั่วไป
+
+ตัวอย่าง Query ใน CloudWatch Logs Insights:
+```
+fields timestamp, event_type, outcome, actor.username, target.faculty_id, target.term_id, status_from, status_to
+| filter log_type = "AUDIT" and target.faculty_id = "FAC001"
+| sort timestamp desc
+```
+
+**5.2 Rate Limiting บน API Gateway**
+| ชั้น | ไฟล์ | การตั้งค่า (default) |
+|---|---|---|
+| Main API (REST, สร้างผ่าน Console) | `infra/apply-rate-limiting.sh` | Stage throttling 20 rps / burst 40, `POST .../status` 5 rps / burst 10, Usage Plan 10 rps / burst 20 / 10,000 req ต่อวันต่อ API key |
+| Evidence API (HTTP API, SAM) | `infra/evidence-api.yaml` | Default route 20 rps / burst 40, `POST /evidence/upload-url` 5 rps / burst 10 |
+| Per-IP (ทางเลือก, มีค่าใช้จ่าย) | `infra/api-waf.yaml` | AWS WAF rate-based rule บล็อก IP ที่เกิน 500 req / 5 นาที |
+| Monitoring | `infra/api-monitoring.yaml` | Metric filter จาก Audit Log + Alarm เมื่อ DENIED ≥ 10 หรือ 4XX (รวม 429) ≥ 200 ใน 5 นาที |
+
+```bash
+./infra/apply-rate-limiting.sh                 # ใช้ throttling + สร้าง usage plan
+REQUIRE_API_KEY=true ./infra/apply-rate-limiting.sh   # บังคับ x-api-key แล้วใส่ค่าใน config.js
+node infra/load-test.mjs                       # ทดสอบว่าได้ HTTP 429 เมื่อเกิน limit
+python -m pytest tests/ -q                     # unit test ของ Audit Logging
+```
+
+> Stage throttling เป็น token bucket ที่ทุก client ใช้ร่วมกัน ผู้โจมตีรายเดียวอาจทำให้ผู้ใช้อื่นโดน 429 ไปด้วย ถ้าต้องการจำกัดราย IP จริง ให้ deploy `infra/api-waf.yaml`
+
 ---
 
 ## Data Structure

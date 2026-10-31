@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  CS361 G650-14 Issue 5.2 (optional) — Per-IP rate limiting with AWS WAF.
+  API Gateway throttling is a shared bucket for ALL clients, so a single attacker can
+  exhaust it for everyone. A WAF rate-based rule blocks only the offending IP.
+  Works with REST API stages only (not HTTP API). Cost: ~USD 5/month per Web ACL + USD 1/rule + requests.
+
+Parameters:
+  RestApiId:
+    Type: String
+    Default: qzleoa96f4
+  StageName:
+    Type: String
+    Default: prod
+  RequestsPer5MinPerIp:
+    Type: Number
+    Default: 500
+    MinValue: 10
+    Description: Max requests per source IP in a rolling 5-minute window before blocking
+
+Resources:
+  ApiWebAcl:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: cs361-faculty-api-acl
+      Scope: REGIONAL
+      DefaultAction: { Allow: {} }
+      VisibilityConfig:
+        SampledRequestsEnabled: true
+        CloudWatchMetricsEnabled: true
+        MetricName: cs361-faculty-api-acl
+      Rules:
+        - Name: rate-limit-per-ip
+          Priority: 0
+          Action:
+            Block:
+              CustomResponse:
+                ResponseCode: 429
+          Statement:
+            RateBasedStatement:
+              Limit: !Ref RequestsPer5MinPerIp
+              AggregateKeyType: IP
+          VisibilityConfig:
+            SampledRequestsEnabled: true
+            CloudWatchMetricsEnabled: true
+            MetricName: rate-limit-per-ip
+
+  ApiWebAclAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties:
+      ResourceArn: !Sub 'arn:${AWS::Partition}:apigateway:${AWS::Region}::/restapis/${RestApiId}/stages/${StageName}'
+      WebACLArn: !GetAtt ApiWebAcl.Arn

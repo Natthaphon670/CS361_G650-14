@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 from urllib.parse import unquote  
 from boto3.dynamodb.conditions import Key, Attr
 from auth_utils import get_user_claims, verify_bola, verify_bfla, AuthorizationError
+import audit_logger as audit
 
 # -----------------------------------------------------------------------------
 # Helper สำหรับถอดรหัส URL Encoding ซ้ำซ้อน (%23, %2523, %252523 -> #)
@@ -146,6 +147,7 @@ def get_workloads_handler(event, context):
     except AuthorizationError as auth_err:
         return create_response(auth_err.status_code, {'error': 'Forbidden', 'message': auth_err.message})
     except Exception as e:
+        audit.log_server_error('get_workloads_handler', e, context)
         return create_response(500, {'message': 'เกิดข้อผิดพลาดในการดึงข้อมูลภาระงาน กรุณาลองใหม่อีกครั้ง'})
 
 
@@ -154,6 +156,7 @@ def get_workloads_handler(event, context):
 # PUT /workloads/{faculty_id}/{term_id}
 # =============================================================================
 def save_workload_handler(event, context):
+    user_info, target_faculty_id, target_term_id = None, None, None
     try:
         user_info = get_user_claims(event)
         is_staff_or_admin = user_info.get('is_staff_or_admin', False)
@@ -183,6 +186,9 @@ def save_workload_handler(event, context):
         if existing_item:
             current_status = existing_item.get('workflow_status', 'Draft')
             if not is_staff_or_admin and current_status in ['Pending_Review', 'Approved']:
+                audit.audit_log(audit.WORKLOAD_UPDATED, audit.CONFLICT, user_info=user_info, event=event,
+                                context=context, faculty_id=target_faculty_id, term_id=target_term_id,
+                                status_from=current_status, reason='edit_locked_by_workflow_status')
                 return create_response(409, {
                     'message': f'ไม่สามารถแก้ไขได้ เนื่องจากรายการอยู่ในสถานะ "{current_status}" (แก้ไขได้เฉพาะ Draft หรือ Rejected)'
                 })
@@ -222,14 +228,27 @@ def save_workload_handler(event, context):
 
         table.put_item(Item=item_to_save)
 
+        # Audit: Staff/Admin เปลี่ยน workflow_status ผ่าน PUT ได้ จึงต้องเก็บ status_from/status_to ด้วย
+        audit.audit_log(
+            audit.WORKLOAD_UPDATED if existing_item else audit.WORKLOAD_CREATED, audit.SUCCESS,
+            user_info=user_info, event=event, context=context,
+            faculty_id=target_faculty_id, term_id=target_term_id,
+            status_from=existing_item.get('workflow_status') if existing_item else None,
+            status_to=workflow_status)
+
         return create_response(200, {
             'message': 'บันทึกข้อมูลภาระงานเรียบร้อยแล้ว',
             'data': item_to_save
         })
 
     except AuthorizationError as auth_err:
+        audit.audit_log(audit.WORKLOAD_UPDATED, audit.DENIED, user_info=user_info, event=event, context=context,
+                        faculty_id=target_faculty_id, term_id=target_term_id, reason=auth_err.message)
         return create_response(auth_err.status_code, {'error': 'Forbidden', 'message': auth_err.message})
     except Exception as e:
+        audit.log_server_error('save_workload_handler', e, context)
+        audit.audit_log(audit.WORKLOAD_UPDATED, audit.ERROR, user_info=user_info, event=event, context=context,
+                        faculty_id=target_faculty_id, term_id=target_term_id, reason=type(e).__name__)
         return create_response(500, {'message': 'เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง'})
 
 
@@ -238,6 +257,7 @@ def save_workload_handler(event, context):
 # DELETE /workloads/{faculty_id}/{term_id}
 # =============================================================================
 def delete_workload_handler(event, context):
+    user_info, target_faculty_id, target_term_id = None, None, None
     try:
         user_info = get_user_claims(event)
         is_staff_or_admin = user_info.get('is_staff_or_admin', False)
@@ -261,19 +281,30 @@ def delete_workload_handler(event, context):
 
         current_status = existing_item.get('workflow_status', '')
         if current_status != 'Draft' and not is_staff_or_admin:
+            audit.audit_log(audit.WORKLOAD_DELETED, audit.CONFLICT, user_info=user_info, event=event,
+                            context=context, faculty_id=target_faculty_id, term_id=target_term_id,
+                            status_from=current_status, reason='delete_allowed_only_in_draft')
             return create_response(409, {
                 'message': f'ไม่สามารถลบรายการได้ เนื่องจากไม่อยู่ในสถานะฉบับร่าง (สถานะปัจจุบัน: "{current_status}")'
             })
 
         table.delete_item(Key={'faculty_id': target_faculty_id, 'term_id': target_term_id})
 
+        audit.audit_log(audit.WORKLOAD_DELETED, audit.SUCCESS, user_info=user_info, event=event, context=context,
+                        faculty_id=target_faculty_id, term_id=target_term_id, status_from=current_status)
+
         return create_response(200, {
             'message': f'ลบรายการภาระงานเทอม {target_term_id} ของ {target_faculty_id} เรียบร้อยแล้ว'
         })
 
     except AuthorizationError as auth_err:
+        audit.audit_log(audit.WORKLOAD_DELETED, audit.DENIED, user_info=user_info, event=event, context=context,
+                        faculty_id=target_faculty_id, term_id=target_term_id, reason=auth_err.message)
         return create_response(auth_err.status_code, {'error': 'Forbidden', 'message': auth_err.message})
     except Exception as e:
+        audit.log_server_error('delete_workload_handler', e, context)
+        audit.audit_log(audit.WORKLOAD_DELETED, audit.ERROR, user_info=user_info, event=event, context=context,
+                        faculty_id=target_faculty_id, term_id=target_term_id, reason=type(e).__name__)
         return create_response(500, {'message': 'เกิดข้อผิดพลาดในการลบข้อมูล กรุณาลองใหม่อีกครั้ง'})
 
 # =============================================================================
@@ -281,6 +312,8 @@ def delete_workload_handler(event, context):
 # POST /workloads/{faculty_id}/{term_id}/status
 # =============================================================================
 def update_workload_status_handler(event, context):
+    user_info, target_faculty_id, target_term_id = None, None, None
+    event_type, current_status, new_status = 'WORKLOAD_STATUS_CHANGE', None, None
     try:
         user_info = get_user_claims(event)
         path_params = event.get('pathParameters') or {}
@@ -305,6 +338,8 @@ def update_workload_status_handler(event, context):
         if new_status not in ['Pending_Review', 'Approved', 'Rejected']:
             return create_response(400, {'message': 'workflow_status ต้องเป็น Pending_Review, Approved หรือ Rejected เท่านั้น'})
 
+        event_type = audit.STATUS_TO_EVENT[new_status]
+
         # 1. ดึงข้อมูลปัจจุบัน
         response = table.get_item(Key={'faculty_id': target_faculty_id, 'term_id': target_term_id})
         existing_item = response.get('Item')
@@ -323,6 +358,9 @@ def update_workload_status_handler(event, context):
             verify_bola(user_info, target_faculty_id) 
 
             if current_status not in ['Draft', 'Rejected']:
+                audit.audit_log(event_type, audit.CONFLICT, user_info=user_info, event=event, context=context,
+                                faculty_id=target_faculty_id, term_id=target_term_id,
+                                status_from=current_status, status_to=new_status, reason='invalid_transition')
                 return create_response(409, {'message': f'ไม่อนุญาตให้ส่งตรวจ เนื่องจากสถานะปัจจุบันคือ "{current_status}"'})
 
         # 3. Logic สำหรับเจ้าหน้าที่: ตรวจงาน
@@ -330,6 +368,9 @@ def update_workload_status_handler(event, context):
             verify_bfla(user_info, allowed_groups=['Staff', 'Admin'])
 
             if current_status != 'Pending_Review':
+                audit.audit_log(event_type, audit.CONFLICT, user_info=user_info, event=event, context=context,
+                                faculty_id=target_faculty_id, term_id=target_term_id,
+                                status_from=current_status, status_to=new_status, reason='invalid_transition')
                 return create_response(409, {'message': f'ไม่สามารถตรวจงานได้ เนื่องจากสถานะปัจจุบันไม่ใช่รอการตรวจสอบ (ปัจจุบัน: "{current_status}")'})
             
             if new_status == 'Rejected' and not comment.strip():
@@ -347,17 +388,30 @@ def update_workload_status_handler(event, context):
             ExpressionAttributeValues=expr_values
         )
 
+        audit.audit_log(event_type, audit.SUCCESS, user_info=user_info, event=event, context=context,
+                        faculty_id=target_faculty_id, term_id=target_term_id,
+                        status_from=current_status, status_to=new_status,
+                        extra={'has_comment': bool(str(comment or '').strip())})
+
         return create_response(200, {
             'message': f'เปลี่ยนสถานะภาระงานเป็น {new_status} สำเร็จ',
             'workflow_status': new_status
         })
 
     except AuthorizationError as auth_err:
+        audit.audit_log(event_type, audit.DENIED, user_info=user_info, event=event, context=context,
+                        faculty_id=target_faculty_id, term_id=target_term_id,
+                        status_from=current_status, status_to=new_status, reason=auth_err.message)
         return create_response(auth_err.status_code, {'error': 'Forbidden', 'message': auth_err.message})
     except Exception as e:
+        audit.log_server_error('update_workload_status_handler', e, context)
+        audit.audit_log(event_type, audit.ERROR, user_info=user_info, event=event, context=context,
+                        faculty_id=target_faculty_id, term_id=target_term_id,
+                        status_from=current_status, status_to=new_status, reason=type(e).__name__)
         return create_response(500, {'message': 'เกิดข้อผิดพลาดของระบบ กรุณาลองใหม่อีกครั้ง'})
-    
-    # =============================================================================
+
+
+# =============================================================================
 # MAIN ROUTER: lambda_handler (พนักงานต้อนรับแยกแยะ HTTP Method)
 # =============================================================================
 def lambda_handler(event, context):
@@ -386,4 +440,5 @@ def lambda_handler(event, context):
             return create_response(400, {'message': f'ไม่รองรับ HTTP Method: {http_method} บน Resource นี้'})
             
     except Exception as e:
+        audit.log_server_error('lambda_handler', e, context)
         return create_response(500, {'message': 'เกิดข้อผิดพลาดของระบบ กรุณาลองใหม่อีกครั้ง'})

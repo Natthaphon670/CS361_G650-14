@@ -1,0 +1,148 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  CS361 G650-14 Issue 5 — CloudWatch metrics and alarms built on Audit Logs (5.1)
+  and API Gateway traffic (5.2). Deploy after the Lambda log groups exist.
+
+Parameters:
+  WorkloadsLogGroupName:
+    Type: String
+    Default: /aws/lambda/WorkloadsHandler
+    Description: Log group of the workloads Lambda (CloudWatch > Log groups)
+  RestApiName:
+    Type: String
+    Default: FacultyWorkloadAPI
+    Description: API Gateway REST API name (metric dimension ApiName)
+  StageName:
+    Type: String
+    Default: prod
+  AlarmEmail:
+    Type: String
+    Default: ''
+    Description: Optional email for alarm notifications (confirm the SNS subscription email)
+  DeniedThreshold:
+    Type: Number
+    Default: 10
+    Description: Denied (403) audit events within 5 minutes that indicate BOLA/BFLA probing
+  ClientErrorThreshold:
+    Type: Number
+    Default: 200
+    Description: 4XX responses within 5 minutes (includes 429 Too Many Requests)
+
+Conditions:
+  HasEmail: !Not [!Equals [!Ref AlarmEmail, '']]
+
+Resources:
+  AlarmTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: CS361 Faculty Workspace Security Alarms
+      Subscription: !If
+        - HasEmail
+        - [{ Protocol: email, Endpoint: !Ref AlarmEmail }]
+        - !Ref AWS::NoValue
+
+  # ---------------------------------------------------------------- Audit metrics
+  AuditDeniedMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref WorkloadsLogGroupName
+      FilterPattern: '{ $.log_type = "AUDIT" && $.outcome = "DENIED" }'
+      MetricTransformations:
+        - MetricNamespace: CS361/FacultyWorkspace
+          MetricName: AuditDenied
+          MetricValue: '1'
+          DefaultValue: 0
+
+  AuditWorkflowMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref WorkloadsLogGroupName
+      FilterPattern: '{ $.log_type = "AUDIT" && $.outcome = "SUCCESS" && ($.event_type = "WORKLOAD_SUBMITTED" || $.event_type = "WORKLOAD_APPROVED" || $.event_type = "WORKLOAD_REJECTED") }'
+      MetricTransformations:
+        - MetricNamespace: CS361/FacultyWorkspace
+          MetricName: WorkflowTransitions
+          MetricValue: '1'
+          DefaultValue: 0
+
+  ServerErrorMetric:
+    Type: AWS::Logs::MetricFilter
+    Properties:
+      LogGroupName: !Ref WorkloadsLogGroupName
+      FilterPattern: '{ $.log_type = "ERROR" }'
+      MetricTransformations:
+        - MetricNamespace: CS361/FacultyWorkspace
+          MetricName: LambdaHandledErrors
+          MetricValue: '1'
+          DefaultValue: 0
+
+  # ---------------------------------------------------------------- Alarms
+  DeniedSpikeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Many authorization denials — possible BOLA/BFLA probing by a user
+      Namespace: CS361/FacultyWorkspace
+      MetricName: AuditDenied
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: !Ref DeniedThreshold
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref AlarmTopic]
+
+  ApiClientErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: High 4XX rate (incl. 429 throttled) — abnormal or flooding traffic
+      Namespace: AWS/ApiGateway
+      MetricName: 4XXError
+      Dimensions:
+        - { Name: ApiName, Value: !Ref RestApiName }
+        - { Name: Stage, Value: !Ref StageName }
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: !Ref ClientErrorThreshold
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref AlarmTopic]
+
+  LambdaErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Workloads Lambda is returning 500s
+      Namespace: CS361/FacultyWorkspace
+      MetricName: LambdaHandledErrors
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 5
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref AlarmTopic]
+
+  # ---------------------------------------------------------------- Saved queries
+  AuditTrailQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: CS361/Audit/Workflow trail by faculty
+      LogGroupNames: [!Ref WorkloadsLogGroupName]
+      QueryString: |
+        fields timestamp, event_type, outcome, actor.username, actor.groups.0, target.faculty_id, target.term_id, status_from, status_to, source_ip
+        | filter log_type = "AUDIT"
+        | sort timestamp desc
+        | limit 200
+
+  DeniedByActorQuery:
+    Type: AWS::Logs::QueryDefinition
+    Properties:
+      Name: CS361/Audit/Denied attempts by actor
+      LogGroupNames: [!Ref WorkloadsLogGroupName]
+      QueryString: |
+        filter log_type = "AUDIT" and outcome = "DENIED"
+        | stats count(*) as attempts by actor.username, source_ip
+        | sort attempts desc
+
+Outputs:
+  AlarmTopicArn:
+    Value: !Ref AlarmTopic
