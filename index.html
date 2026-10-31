@@ -15,6 +15,10 @@
 <body>
   <div id="auth-header-slot"></div>
 
+    <div id="global-loading" style="display: flex; justify-content: center; align-items: center; height: 70vh;">
+        <h3>กำลังตรวจสอบสิทธิ์การเข้าถึง...</h3>
+  </div>
+
   <div class="top-accent-bar"></div>
 
   <header>
@@ -23,7 +27,7 @@
     </div>
   </header>
 
-  <main class="container">
+  <main class="container" id="protected-content" style="display: none;">
     <h1 class="page-title">รายชื่อคณาจารย์</h1>
 
     <div class="search-box-wrap" style="max-width: 500px; margin: 0 auto 2.5rem;">
