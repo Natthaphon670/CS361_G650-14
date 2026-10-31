@@ -16,7 +16,10 @@ const APP_CONFIG = {
 
     api: {
         // 3) API Gateway > Stages > prod > Invoke URL (ไม่ต้องมี / ท้ายสุด)
-        baseUrl: "https://qzleoa96f4.execute-api.us-east-1.amazonaws.com/prod"
+        baseUrl: "https://qzleoa96f4.execute-api.us-east-1.amazonaws.com/prod",
+        // 4) (ทางเลือก) API key จาก Usage Plan — ใส่เมื่อรัน infra/apply-rate-limiting.sh ด้วย REQUIRE_API_KEY=true
+        //    API key ฝั่งเว็บไม่ใช่ความลับ ใช้ระบุ client เพื่อคุม quota เท่านั้น การยืนยันตัวตนยังเป็น Cognito
+        apiKey: ""
     },
 
     evidence: {

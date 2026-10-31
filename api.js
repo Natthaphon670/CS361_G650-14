@@ -17,6 +17,8 @@ const Api = (() => {
         // HTTP API JWT authorizers expect the token in Bearer form.
         if (token) headers.Authorization = /^Bearer\s/i.test(token) ? token : `Bearer ${token}`;
         if (body !== undefined) headers["Content-Type"] = "application/json";
+        // Issue 5.2: ส่ง API key เฉพาะเมื่อ Usage Plan บังคับใช้ (REQUIRE_API_KEY=true)
+        if (APP_CONFIG.api.apiKey) headers["x-api-key"] = APP_CONFIG.api.apiKey;
 
         let res;
         try {
@@ -33,6 +35,8 @@ const Api = (() => {
         try { data = text ? JSON.parse(text) : null; } catch { /* ไม่ใช่ JSON */ }
         if (!res.ok) {
             // Never expose upstream/Lambda details for server-side failures.
+            // Issue 5.2: ถูก Throttle โดย API Gateway / WAF
+            if (res.status === 429) throw new ApiError("มีการเรียกใช้งานถี่เกินไป กรุณารอสักครู่แล้วลองใหม่", 429);
             if (res.status >= 500) throw new ApiError("เกิดข้อผิดพลาดของระบบ กรุณาลองใหม่อีกครั้ง", res.status);
             throw new ApiError(data?.message || data?.error || `เกิดข้อผิดพลาด (${res.status})`, res.status);
         }

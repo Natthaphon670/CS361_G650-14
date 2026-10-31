@@ -5,6 +5,7 @@ from decimal import Decimal
 from datetime import datetime, timezone
 from boto3.dynamodb.conditions import Key
 from auth_utils import get_user_claims, verify_bola, verify_bfla, AuthorizationError
+import audit_logger as audit
 
 # -----------------------------------------------------------------------------
 # Configuration & DynamoDB Setup
@@ -83,6 +84,7 @@ def get_profiles_handler(event, context):
 # PUT /profiles/{faculty_id}  (อาจารย์แก้ไขโปรไฟล์ตนเอง / Staff แก้ไขให้)
 # =============================================================================
 def update_profile_handler(event, context):
+    user_info, target_faculty_id = None, None
     try:
         # 1. ดึง Claims จาก Cognito JWT Token
         user_info = get_user_claims(event)
@@ -137,17 +139,26 @@ def update_profile_handler(event, context):
         # 6. บันทึกลง DynamoDB ตาราง FacultyProfiles
         table.put_item(Item=updated_item)
 
+        audit.audit_log(audit.PROFILE_UPDATED, audit.SUCCESS, user_info=user_info, event=event, context=context,
+                        faculty_id=target_faculty_id,
+                        extra={'fields': ','.join(sorted(k for k in body if k in updated_item))})
+
         return create_response(200, {
             'message': 'อัปเดตข้อมูลโปรไฟล์เรียบร้อยแล้ว',
             'data': updated_item
         })
 
     except AuthorizationError as auth_err:
+        audit.audit_log(audit.PROFILE_UPDATED, audit.DENIED, user_info=user_info, event=event, context=context,
+                        faculty_id=target_faculty_id, reason=auth_err.message)
         return create_response(auth_err.status_code, {
             'error': 'Forbidden', 
             'message': auth_err.message
         })
     except Exception as e:
+        audit.log_server_error('update_profile_handler', e, context)
+        audit.audit_log(audit.PROFILE_UPDATED, audit.ERROR, user_info=user_info, event=event, context=context,
+                        faculty_id=target_faculty_id, reason=type(e).__name__)
         return create_response(500, {
             'message': 'เกิดข้อผิดพลาดในการบันทึกข้อมูล กรุณาลองใหม่อีกครั้ง'
         })

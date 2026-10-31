@@ -16,6 +16,21 @@ Parameters:
     Type: String
     Default: http://localhost:3000
     Description: Exact web application origin; set production origin when deploying
+  ThrottleRateLimit:
+    Type: Number
+    Default: 20
+    Description: Steady-state requests per second allowed per route (all clients combined)
+  ThrottleBurstLimit:
+    Type: Number
+    Default: 40
+    Description: Maximum burst capacity per route
+  SensitiveRouteRateLimit:
+    Type: Number
+    Default: 5
+    Description: Requests per second for upload-url (each call issues a signed S3 write credential)
+  SensitiveRouteBurstLimit:
+    Type: Number
+    Default: 10
 
 Globals:
   Function:
@@ -35,6 +50,14 @@ Resources:
     Type: AWS::Serverless::HttpApi
     Properties:
       StageName: prod
+      # Issue 5.2: Throttling (token bucket ระดับ Stage) — HTTP API ไม่รองรับ Usage Plans จึงใช้ Route Settings แทน
+      DefaultRouteSettings:
+        ThrottlingRateLimit: !Ref ThrottleRateLimit
+        ThrottlingBurstLimit: !Ref ThrottleBurstLimit
+      RouteSettings:
+        'POST /evidence/upload-url':
+          ThrottlingRateLimit: !Ref SensitiveRouteRateLimit
+          ThrottlingBurstLimit: !Ref SensitiveRouteBurstLimit
       CorsConfiguration:
         AllowOrigins:
           - !Ref WebAppOrigin
