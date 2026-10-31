@@ -34,11 +34,6 @@
         });
 
         await load();
-
-        // โหลดเสร็จและผ่านการตรวจสอบสิทธิ์แล้ว ค่อยเปิดแสดงผลหน้า Dashboard และซ่อน Loading
-        $("loading-screen")?.remove();
-        const mainEl = $("app-main");
-        if (mainEl) mainEl.style.display = "block";
     });
 
     const nameOf = id => names[id]?.th || id;

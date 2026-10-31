@@ -20,8 +20,8 @@
 
     
     async function init() {
-        await Auth.ready;
-        const loading = $("loading-state");
+        if (!(await Auth.guard([]))) return;
+
         try {
             const res = await fetch("faculties.json");
             if (!res.ok) throw new Error("Cannot load faculties.json");
@@ -29,13 +29,14 @@
             const me = Auth.getUser();
             const id = new URLSearchParams(window.location.search).get("id") || me?.faculty_id || "prof_001";
             faculty = faculties.find(f => f.faculty_id === id);
+            
             if (!faculty) {
-                loading.innerHTML = `<p style="color: var(--tu-red);">ไม่พบข้อมูลอาจารย์รหัส: ${escapeHtml(id)}</p>`;
+                document.querySelector("main").innerHTML = `<p style="color: var(--tu-red); text-align: center; padding: 3rem;">ไม่พบข้อมูลอาจารย์รหัส: ${escapeHtml(id)}</p>`;
                 return;
             }
         } catch (err) {
             console.error(err);
-            loading.innerHTML = `<p style="color: var(--tu-red);">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>`;
+            document.querySelector("main").innerHTML = `<p style="color: var(--tu-red); text-align: center; padding: 3rem;">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>`;
             return;
         }
 
@@ -60,9 +61,6 @@
         avatar.innerHTML = `<img src="${escapeHtml(imgPath)}" alt="${escapeHtml(f.name_th)}"
             style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
         avatar.querySelector("img").addEventListener("error", () => { avatar.textContent = initials; }, { once: true });
-
-        $("loading-state").style.display = "none";
-        $("main-content").style.display = "grid";
 
         const contact = f.contact_information || {};
         setTextOrHide("f-office", "item-office", contact.office);

@@ -28,7 +28,7 @@ function renderFaculties(faculties) {
       
   if (faculties.length === 0) {
     grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">ไม่พบรายชื่ออาจารย์ที่ตรงกับคำค้นหา</p>';
-    loading.style.display = 'none';
+    if (loading) loading.style.display = 'none';
     grid.style.display = 'grid';
     return;
   }

@@ -193,13 +193,17 @@ const Auth = (() => {
     }
 
     function showBlocked(title, message, withLogin) {
+        const loader = document.getElementById("global-loading") || document.getElementById("loading-state") || document.getElementById("loading-screen");
+        if (loader) loader.style.display = "none";
+
         const main = document.querySelector("main") || document.body;
+        main.style.display = "block"; 
         main.innerHTML = `
-            <div class="blocked-panel">
-                <h2>${escapeHtml(title)}</h2>
-                <p>${escapeHtml(message)}</p>
+            <div class="blocked-panel" style="text-align: center; padding: 4rem 2rem; background: #fff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); margin-top: 2rem;">
+                <h2 style="color: #dc3545; margin-bottom: 1rem;">🛑 ${escapeHtml(title)}</h2>
+                <p style="font-size: 1.1rem; color: #6c757d; margin-bottom: 2rem;">${escapeHtml(message)}</p>
                 <div class="blocked-actions">
-                    ${withLogin && !isMock ? '<button class="tu-btn" id="blocked-login">เข้าสู่ระบบ</button>' : ""}
+                    ${withLogin && !isMock ? '<button class="tu-btn tu-btn-primary" id="blocked-login">เข้าสู่ระบบ</button>' : ""}
                     <a class="tu-btn tu-btn-secondary" href="index.html">กลับหน้ารายชื่ออาจารย์</a>
                 </div>
             </div>`;
@@ -218,6 +222,14 @@ const Auth = (() => {
             showBlocked("ไม่มีสิทธิ์เข้าถึงหน้านี้", `หน้านี้สำหรับผู้ใช้กลุ่ม ${roles.join(" / ")} เท่านั้น`, false);
             return false;
         }
+
+        // เมื่อผ่านสิทธิ์ -> ซ่อน Loader และ ปลดซ่อน <main> อัตโนมัติ
+        const loader = document.getElementById("global-loading") || document.getElementById("loading-state") || document.getElementById("loading-screen");
+        if (loader) loader.style.display = "none";
+
+        const main = document.querySelector("main");
+        if (main) main.style.display = "";
+
         return true;
     }
 
