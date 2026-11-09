@@ -20,7 +20,8 @@
 
     
     async function init() {
-        if (!(await Auth.guard([]))) return;
+        await Auth.ready;
+        const loading = $("loading-state");
 
         try {
             const res = await fetch("faculties.json");
