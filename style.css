@@ -238,6 +238,24 @@ header {
   margin: 0 auto 20px auto;
 }
 
+/* รูปภาพอาจารย์บนการ์ด */
+.avatar-placeholder img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+
+/* Tag/Chip ขนาดเล็กพิเศษสำหรับการ์ดอาจารย์หน้าแรก */
+.chip-sm-card {
+  font-size: 0.75rem !important;
+  padding: 0.15rem 0.55rem !important;
+  font-weight: 400 !important;
+  border-radius: 9999px !important;
+  line-height: 1.3;
+}
+
 .faculty-name-th {
   font-size: 1.2rem;
   font-weight: 600;

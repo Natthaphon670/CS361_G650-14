@@ -1,12 +1,10 @@
 let allFaculties = [];
 
-
 async function fetchFaculties() {
   const loading = document.getElementById('loading-state');
   try {
     const response = await fetch('faculties.json');
     if (!response.ok) throw new Error('Network error');
-    
     
     allFaculties = await response.json();
         
@@ -22,7 +20,6 @@ async function fetchFaculties() {
   }
 }
 
-
 function renderFaculties(faculties) {
   const grid = document.getElementById('faculty-grid');
   const loading = document.getElementById('global-loading');
@@ -34,7 +31,6 @@ function renderFaculties(faculties) {
     if (loading) loading.style.display = 'none';
     grid.style.display = 'grid';
     
-    // ปลดซ่อน <main> ด้วย
     const main = document.querySelector('main');
     if (main) main.style.display = '';
     return;
@@ -48,16 +44,27 @@ function renderFaculties(faculties) {
     const ext = profNumber === '022' ? '.png' : '.jpg';
     const imgPath = `https://faculty-output-and-workload-management-system-g14.s3.us-east-1.amazonaws.com/profile_image/prof_img_${profNumber}${ext}`;
     const initials = faculty.name_en ? faculty.name_en.split(' ').pop().substring(0, 2).toUpperCase() : 'TU';
+    
+    // ดึงข้อมูลสาขาความสนใจและหัวข้องานวิจัยโดยเฉพาะ
+    const rawInterests = faculty.research_interests || faculty.research_fields || faculty.research_topics || faculty.expertise || [];
+    const interestList = Array.isArray(rawInterests) 
+      ? rawInterests 
+      : (typeof rawInterests === 'string' ? [rawInterests] : []);
+    
+    // สร้าง HTML สำหรับ Tag ขนาดเล็ก (จำกัดการแสดงผลไม่เกิน 4 รายการเพื่อความสวยงาม)
+    const interestHtml = interestList.length > 0
+      ? `<div class="chip-container" style="margin-bottom: 1rem; justify-content: center; gap: 0.35rem;">${interestList.slice(0, 4).map(item => `<span class="chip chip-sm-card">${escapeHtml(item)}</span>`).join('')}</div>`
+      : '';
         
     card.innerHTML = `
       <div class="avatar-placeholder" style="overflow: hidden;">
         <img src="${imgPath}" alt="${escapeHtml(faculty.name_th)}" 
-              class="faculty-img" data-initials="${initials}"
-              style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              class="faculty-img" data-initials="${initials}">
       </div>
       <h2 class="faculty-name-th">${escapeHtml(faculty.name_th)}</h2>
       <p class="faculty-name-en">${escapeHtml(faculty.name_en)}</p>
       <div class="position-badge">${escapeHtml(faculty.academic_position || 'อาจารย์')}</div>
+      ${interestHtml}
       <a href="profile.html?id=${encodeURIComponent(faculty.faculty_id)}" class="view-profile-btn">ดูประวัติและผลงาน</a>
     `;
     
@@ -77,19 +84,22 @@ function renderFaculties(faculties) {
   if (main) main.style.display = '';
 }
 
-
 function handleSearch() {
   const query = document.getElementById('faculty-search').value.toLowerCase().trim();
   const filtered = allFaculties.filter(faculty => {
     const nameTh = (faculty.name_th || '').toLowerCase();
     const nameEn = (faculty.name_en || '').toLowerCase();
     const pos = (faculty.academic_position || '').toLowerCase();
-    return nameTh.includes(query) || nameEn.includes(query) || pos.includes(query);
+    
+    const rawInterests = faculty.research_interests || faculty.research_fields || faculty.research_topics || faculty.expertise || [];
+    const interestStr = Array.isArray(rawInterests) 
+      ? rawInterests.join(' ').toLowerCase() 
+      : (typeof rawInterests === 'string' ? rawInterests.toLowerCase() : '');
+    
+    return nameTh.includes(query) || nameEn.includes(query) || pos.includes(query) || interestStr.includes(query);
   });
   renderFaculties(filtered);
 }
-
-
 
 document.addEventListener('DOMContentLoaded', () => {
   fetchFaculties();
