@@ -82,3 +82,70 @@ const CATEGORIES = [
         })
     }
 ];
+
+function getCategory(key) {
+    return CATEGORIES.find(c => c.key === key);
+}
+
+
+function makeTermId(year, semester) { return `${Number(year)}#${Number(semester)}`; }
+
+function evaluationPeriod(year, semester) {
+    year = Number(year);
+    return Number(semester) === 1
+        ? `1 กรกฎาคม ${year} - 31 ธันวาคม ${year}`
+        : `1 มกราคม ${year + 1} - 30 มิถุนายน ${year + 1}`;
+}
+
+function emptyWorkloads() {
+    return Object.fromEntries(CATEGORIES.map(c => [c.key, []]));
+}
+
+function currentBuddhistYear() { return new Date().getFullYear() + 543; }
+
+function sortTermsDesc(a, b) {
+    return Number(b.academic_year) - Number(a.academic_year) || Number(b.semester) - Number(a.semester);
+}
+
+function countItems(record) {
+    return CATEGORIES.reduce((n, c) => n + ((record.workloads || {})[c.key] || []).length, 0);
+}
+
+function countEvidence(record) {
+    return CATEGORIES.reduce((n, c) =>
+        n + (((record.workloads || {})[c.key] || []).filter(i => i.evidence_key).length), 0);
+}
+
+function formatDateTime(iso) {
+    if (!iso) return "-";
+    const d = new Date(iso);
+    return isNaN(d) ? "-" : d.toLocaleString("th-TH", { dateStyle: "medium", timeStyle: "short" });
+}
+
+
+function toast(message, type = "info") {
+    let box = document.getElementById("toast-box");
+    if (!box) {
+        box = document.createElement("div");
+        box.id = "toast-box";
+        box.setAttribute("role", "status");
+        box.setAttribute("aria-live", "polite");
+        document.body.appendChild(box);
+    }
+    const el = document.createElement("div");
+    el.className = `toast toast-${type}`;
+    el.textContent = message;
+    box.appendChild(el);
+    setTimeout(() => el.remove(), type === "error" ? 6000 : 3500);
+}
+
+function openModal(el) { el?.classList.add("is-open"); }
+function closeModal(el) { el?.classList.remove("is-open"); }
+
+document.addEventListener("keydown", e => {
+    if (e.key === "Escape") document.querySelectorAll(".tu-modal.is-open").forEach(closeModal);
+});
+document.addEventListener("click", e => {
+    if (e.target.classList?.contains("tu-modal")) closeModal(e.target);          // คลิกพื้นหลัง
+    if (e.target.closest?.("[data-close-modal]")) closeModal(e.target.closest(".tu-modal"));
+});
