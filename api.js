@@ -104,12 +104,24 @@ const Api = (() => {
         async getEvidenceUrl(key) {
             const data = await request("GET", "/evidence/download-url", { query: { key } });
             return data.download_url;
+        },
+
+        // --- Settings API: กำหนดส่งภาระงาน (#83) ---
+        getDeadline() {
+            return request("GET", "/settings/deadline");
+        },
+        extendDeadlineToFriday() {
+            return request("PUT", "/settings/deadline", { body: { mode: "extend_to_friday" } });
+        },
+        setDeadline(isoOrNull) {
+            return request("PUT", "/settings/deadline", { body: { deadline: isoOrNull } });
         }
     };
 
     
     const K_DATA = "mock_workloads_v3";
     const K_EVID = "mock_evidence_v1";
+    const K_DEADLINE = "mock_deadline_v1";
     const readJson = (k, d) => { try { return JSON.parse(sessionStorage.getItem(k)) ?? d; } catch { return d; } };
     function writeJson(k, v) {
         try { sessionStorage.setItem(k, JSON.stringify(v)); }
@@ -147,6 +159,18 @@ const Api = (() => {
     function canSee(rec, u) {
         return rec.workflow_status === "Approved" || (u && (Auth.isStaffOrAdmin() || u.faculty_id === rec.faculty_id));
     }
+    // โหมดทดสอบ: ค่าเริ่มต้นกำหนดส่ง = วันศุกร์นี้ 23:59:59 (เวลาไทย)
+    function mockDeadline() {
+        const stored = readJson(K_DEADLINE, undefined);
+        return stored === undefined ? endOfFridayBkk().toISOString() : stored;
+    }
+    function mockDeadlineInfo() {
+        const d = mockDeadline();
+        return { deadline: d, is_locked: !!d && Date.now() > new Date(d).getTime(), server_time: new Date().toISOString() };
+    }
+    function assertNotLocked() {
+        if (!Auth.isStaffOrAdmin() && mockDeadlineInfo().is_locked) throw new ApiError("หมดเขตการส่ง/แก้ไขภาระงานแล้ว", 403);
+    }
     const sameKey = (a, fid, tid) => a.faculty_id === fid && a.term_id === tid;
     const clone = x => JSON.parse(JSON.stringify(x));
 
@@ -164,6 +188,7 @@ const Api = (() => {
         async saveWorkload(rec) {
             const u = requireUser();
             if (u.faculty_id !== rec.faculty_id) throw new ApiError("แก้ไขได้เฉพาะภาระงานของตนเอง", 403);
+            assertNotLocked();
             const all = await loadAll();
             const now = new Date().toISOString();
             const idx = all.findIndex(a => sameKey(a, rec.faculty_id, rec.term_id));
@@ -188,6 +213,7 @@ const Api = (() => {
         async submitForReview(fid, tid) {
             const u = requireUser();
             if (u.faculty_id !== fid) throw new ApiError("ส่งตรวจได้เฉพาะภาระงานของตนเอง", 403);
+            assertNotLocked();
             const all = await loadAll();
             const rec = all.find(a => sameKey(a, fid, tid));
             if (!rec) throw new ApiError("ไม่พบข้อมูล", 404);
@@ -239,6 +265,25 @@ const Api = (() => {
             if (!item) throw new ApiError("ไม่พบไฟล์หลักฐาน (ข้อมูลตั้งต้นของระบบจำลองไม่มีไฟล์จริง)", 404);
             const blob = await (await fetch(item.dataUrl)).blob();   // data: URL เปิดตรง ๆ ไม่ได้ จึงแปลงเป็น blob URL
             return URL.createObjectURL(blob);
+        },
+        async getDeadline() {
+            return mockDeadlineInfo();
+        },
+        async extendDeadlineToFriday() {
+            requireUser();
+            if (!Auth.isStaffOrAdmin()) throw new ApiError("คุณไม่มีสิทธิ์ดำเนินการนี้", 403);
+            const friday = endOfFridayBkk();
+            const cur = mockDeadline();
+            if (cur && new Date(cur) >= friday) throw new ApiError("กำหนดส่งปัจจุบันอยู่หลังวันศุกร์นี้แล้ว ไม่จำเป็นต้องขยายเวลา", 409);
+            writeJson(K_DEADLINE, friday.toISOString());
+            return { message: "ขยายเวลาถึงวันศุกร์แล้ว", ...mockDeadlineInfo() };
+        },
+        async setDeadline(isoOrNull) {
+            requireUser();
+            if (!Auth.isStaffOrAdmin()) throw new ApiError("คุณไม่มีสิทธิ์ดำเนินการนี้", 403);
+            if (isoOrNull !== null && !(new Date(isoOrNull) > new Date())) throw new ApiError("กำหนดส่งใหม่ต้องเป็นเวลาในอนาคต", 400);
+            writeJson(K_DEADLINE, isoOrNull);
+            return { message: "บันทึกกำหนดส่งแล้ว", ...mockDeadlineInfo() };
         }
     };
 

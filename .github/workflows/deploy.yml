@@ -1,0 +1,184 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      seed_data:
+        description: "นำข้อมูลตั้งต้น (faculties.json / mock workloads) เข้า DynamoDB หลัง deploy — ใช้หลัง teardown (#76)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  id-token: write   # สำหรับ OIDC (วิธี A)
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false   # ห้ามยกเลิก CloudFormation กลางคัน
+
+env:
+  AWS_REGION: ${{ vars.AWS_REGION || 'us-east-1' }}
+  STACK_NAME: ${{ vars.STACK_NAME || 'cs361-faculty-workload' }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install test tools
+        run: pip install boto3 pytest cfn-lint
+      - name: Python unit tests (audit log, deadline)
+        run: python -m pytest tests/ -q
+        env:
+          AWS_DEFAULT_REGION: us-east-1
+      - name: Node unit tests
+        run: npm run test:repository
+      - name: Lint CloudFormation / SAM
+        run: cfn-lint template.yaml infra/*.yaml
+      - name: JavaScript syntax
+        run: for f in *.js scripts/*.mjs; do node --check "$f"; done
+
+  backend:
+    needs: test
+    # เปิดใช้การ deploy เมื่อทีมตั้ง Variable DEPLOY_ENABLED = true แล้วเท่านั้น
+    # (กันไม่ให้ workflow ขึ้นสีแดงก่อนตั้งค่า credentials และไม่ deploy ทับ stack เดิมโดยไม่ตั้งใจ)
+    if: github.event_name != 'pull_request' && vars.DEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      api_url: ${{ steps.out.outputs.api_url }}
+      frontend_url: ${{ steps.out.outputs.frontend_url }}
+      bucket: ${{ steps.out.outputs.bucket }}
+      distribution: ${{ steps.out.outputs.distribution }}
+      client_id: ${{ steps.out.outputs.client_id }}
+      cognito_domain: ${{ steps.out.outputs.cognito_domain }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: aws-actions/setup-sam@v2
+        with:
+          use-installer: true
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+
+      - name: sam build
+        run: sam build
+
+      - name: sam deploy
+        env:
+          SUBMISSION_DEADLINE: ${{ vars.SUBMISSION_DEADLINE }}
+        run: |
+          overrides=()
+          if [[ -n "$SUBMISSION_DEADLINE" ]]; then
+            overrides=(--parameter-overrides "SubmissionDeadline=$SUBMISSION_DEADLINE")
+          fi
+          sam deploy \
+            --stack-name "$STACK_NAME" \
+            --region "$AWS_REGION" \
+            --resolve-s3 \
+            --capabilities CAPABILITY_IAM \
+            --no-confirm-changeset \
+            --no-fail-on-empty-changeset \
+            --tags project=cs361-g650-14 managed-by=github-actions \
+            "${overrides[@]}"
+
+      - name: Read stack outputs
+        id: out
+        run: |
+          get() {
+            aws cloudformation describe-stacks --stack-name "$STACK_NAME" \
+              --query "Stacks[0].Outputs[?OutputKey=='$1'].OutputValue" --output text
+          }
+          {
+            echo "api_url=$(get ApiGatewayInvokeURL)"
+            echo "frontend_url=$(get FrontendUrl)"
+            echo "bucket=$(get FrontendBucketName)"
+            echo "distribution=$(get FrontendDistributionId)"
+            echo "client_id=$(get UserPoolClientId)"
+            echo "cognito_domain=$(get CognitoDomain)"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Seed initial data (manual run only)
+        if: github.event_name == 'workflow_dispatch' && inputs.seed_data
+        run: |
+          pip install boto3
+          python migrate_profiles_to_dynamo.py
+          python migrate_workloads_to_dynamo.py
+
+  frontend:
+    needs: backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.AWS_REGION }}
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+
+      - name: Build dist/ with generated config.js
+        run: node scripts/build-frontend.mjs dist
+        env:
+          API_URL: ${{ needs.backend.outputs.api_url }}
+          FRONTEND_URL: ${{ needs.backend.outputs.frontend_url }}
+          CLIENT_ID: ${{ needs.backend.outputs.client_id }}
+          COGNITO_DOMAIN: ${{ needs.backend.outputs.cognito_domain }}
+
+      - name: Upload to S3
+        env:
+          BUCKET: ${{ needs.backend.outputs.bucket }}
+        run: |
+          # รูปภาพ/ข้อมูล cache ได้ 1 ชม. ส่วน HTML/JS/CSS ให้ตรวจเวอร์ชันใหม่ทุกครั้ง (no-cache)
+          aws s3 sync dist "s3://$BUCKET" --delete \
+            --exclude "*.html" --exclude "*.js" --exclude "*.css" \
+            --cache-control "public, max-age=3600"
+          aws s3 sync dist "s3://$BUCKET" --delete \
+            --exclude "*" --include "*.html" --include "*.js" --include "*.css" \
+            --cache-control "no-cache"
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id "${{ needs.backend.outputs.distribution }}" \
+            --paths "/*" --query Invalidation.Id --output text
+
+      - name: Wait for CloudFront (ครั้งแรกหลังสร้างใหม่ใช้เวลาหลายนาที)
+        run: aws cloudfront wait distribution-deployed --id "${{ needs.backend.outputs.distribution }}"
+
+      - name: Smoke test
+        run: ./scripts/smoke-test.sh
+        env:
+          API_URL: ${{ needs.backend.outputs.api_url }}
+          FRONTEND_URL: ${{ needs.backend.outputs.frontend_url }}
+
+      - name: Summary
+        run: |
+          {
+            echo "### Deploy สำเร็จ"
+            echo "- Website: ${{ needs.backend.outputs.frontend_url }}"
+            echo "- API: ${{ needs.backend.outputs.api_url }}"
+            echo "- Commit: \`${GITHUB_SHA::7}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

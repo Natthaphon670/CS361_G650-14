@@ -7,6 +7,7 @@
     let openRecord = null;     
     let yearsLoaded = false;
     let loadRequest = 0;
+    let deadlineInfo = null;
 
     document.addEventListener("DOMContentLoaded", async () => {
         // ตรวจสอบสิทธิ์ผ่าน Auth.guard ถ้าไม่ผ่านจะถูกเตะออกทันทีโดยไม่แสดงหน้า Dashboard ค้าง
@@ -34,8 +35,76 @@
             if (b) Api.openEvidence(b.dataset.evidence);
         });
 
-        await load();
+        $("btn-extend-friday").addEventListener("click", extendToFriday);
+        $("btn-set-deadline").addEventListener("click", setCustomDeadline);
+
+        await Promise.all([load(), loadDeadline()]);
+        setInterval(() => renderDeadlineCard(), 60 * 1000);
     });
+
+    // =========================================================================
+    // #83: กำหนดส่งภาระงาน — Staff/Admin ขยายเวลาได้ทันทีโดยไม่ต้องแก้โค้ด
+    // =========================================================================
+    const pad = n => String(n).padStart(2, "0");
+    // แปลงเวลา ISO เป็นค่าของ <input type="datetime-local"> ตามเวลาไทย
+    function toBkkInputValue(iso) {
+        const d = new Date(new Date(iso).getTime() + BKK_OFFSET_MS);
+        return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}T${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`;
+    }
+
+    async function loadDeadline() {
+        deadlineInfo = await fetchDeadline();
+        renderDeadlineCard();
+        if (deadlineInfo?.deadline) $("deadline-input").value = toBkkInputValue(deadlineInfo.deadline);
+    }
+
+    function renderDeadlineCard() {
+        const st = renderDeadlineBanner($("deadline-banner"), deadlineInfo, { staffView: true });
+        if (st.level === "none") {
+            $("deadline-banner").innerHTML = `<div class="notice notice-ok">ยังไม่ได้กำหนดเวลาปิดรับ — อาจารย์ส่ง/แก้ไขได้ตลอด</div>`;
+        }
+        const friday = endOfFridayBkk();
+        const btn = $("btn-extend-friday");
+        btn.textContent = `ขยายเวลาถึงวันศุกร์นี้ (${friday.toLocaleDateString("th-TH", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "Asia/Bangkok" })} 23:59 น.)`;
+        const alreadyLater = deadlineInfo?.deadline && new Date(deadlineInfo.deadline) >= friday;
+        btn.disabled = !!alreadyLater;
+        btn.title = alreadyLater ? "กำหนดส่งปัจจุบันอยู่หลังวันศุกร์นี้แล้ว" : "";
+    }
+
+    function showDeadlineError(msg) {
+        $("deadline-error").textContent = msg || "";
+        $("deadline-error").hidden = !msg;
+    }
+
+    async function saveDeadline(action, confirmText) {
+        if (!confirm(confirmText)) return;
+        showDeadlineError("");
+        const buttons = [$("btn-extend-friday"), $("btn-set-deadline")];
+        buttons.forEach(b => { b.disabled = true; });
+        try {
+            const res = await action();
+            toast(res?.message || "บันทึกกำหนดส่งแล้ว", "success");
+            await loadDeadline();
+        } catch (e) {
+            showDeadlineError(e.message);
+        } finally {
+            $("btn-set-deadline").disabled = false;
+            renderDeadlineCard();
+        }
+    }
+
+    function extendToFriday() {
+        const when = formatThaiDeadline(endOfFridayBkk().toISOString());
+        return saveDeadline(() => Api.extendDeadlineToFriday(), `ยืนยันขยายเวลาส่งภาระงานถึง${when}?\nอาจารย์จะกลับมาแก้ไขและส่งตรวจได้ทันที`);
+    }
+
+    function setCustomDeadline() {
+        const v = $("deadline-input").value;            // "YYYY-MM-DDTHH:mm" (เวลาไทย)
+        if (!v) { showDeadlineError("กรุณาเลือกวันและเวลา"); return; }
+        const iso = `${v}:00+07:00`;
+        if (!(new Date(iso) > new Date())) { showDeadlineError("กำหนดส่งใหม่ต้องเป็นเวลาในอนาคต"); return; }
+        return saveDeadline(() => Api.setDeadline(iso), `ยืนยันตั้งกำหนดส่งเป็น${formatThaiDeadline(iso)}?`);
+    }
 
     const nameOf = id => names[id]?.th || id;
     const keyOf = r => `${r.faculty_id}|${r.term_id}`;
