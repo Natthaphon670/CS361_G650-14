@@ -51,6 +51,21 @@
             </section>
         </div>
 
+        <!-- #83: จัดการกำหนดส่งภาระงาน (Staff/Admin) -->
+        <section class="tu-card" id="deadline-card" aria-labelledby="deadline-title" style="margin-bottom: 1rem;">
+            <h2 class="chart-title" id="deadline-title">กำหนดส่งภาระงาน (Deadline)</h2>
+            <div id="deadline-banner"></div>
+            <div class="deadline-admin">
+                <button type="button" class="tu-btn" id="btn-extend-friday">ขยายเวลาถึงวันศุกร์นี้</button>
+                <div class="filter-field">
+                    <label for="deadline-input">หรือกำหนดวัน/เวลาเอง (เวลาไทย)</label>
+                    <input type="datetime-local" id="deadline-input" class="tu-select-sm">
+                </div>
+                <button type="button" class="tu-btn tu-btn-secondary" id="btn-set-deadline">บันทึกกำหนดส่ง</button>
+            </div>
+            <p id="deadline-error" class="form-error" role="alert" hidden></p>
+        </section>
+
         <form class="filter-bar" id="filter-form">
             <div class="filter-field">
                 <label for="filter-year">ปีการศึกษา</label>

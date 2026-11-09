@@ -570,7 +570,7 @@ header {
   font-weight: 700;
 }
 
-/* ปุ่มสไตล์ มธ. */
+
 .tu-btn {
   background: var(--tu-red);
   color: #ffffff;
@@ -595,7 +595,7 @@ header {
 .tu-btn-secondary { background: #f1f5f9; color: #334155; }
 .tu-btn-secondary:hover { background: #e2e8f0; }
 
-/* การ์ดภาระงานในหน้า Profile */
+
 .tu-workload-wrapper {
   max-width: 1000px;
   margin: 2rem auto;
@@ -627,7 +627,7 @@ header {
   background: #ffffff;
 }
 
-/* ป้ายสถานะ (Badges) */
+
 .tu-badge {
   display: inline-flex;
   align-items: center;
@@ -641,7 +641,7 @@ header {
 .tu-badge-approved { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
 .tu-badge-rejected { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
 
-/* Modal กรอกภาระงาน */
+
 .tu-modal {
   display: none;
   position: fixed;
@@ -674,7 +674,7 @@ header {
   font-size: 0.9rem;
 }
 
-/* Dashboard */
+
 .tu-dashboard-container { max-width: 1100px; margin: 2rem auto; padding: 0 1rem; }
 .tu-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
 .tu-stat-box { background: #fff; border: 1px solid var(--tu-border); border-radius: 8px; padding: 1.25rem; }
@@ -685,9 +685,7 @@ header {
 .tu-table thead th { position: sticky; top: 0; z-index: 10; }
 .tu-table td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--tu-border); }
 
-/* ============================================================
-   Sub-Issue 5.1–5.4 additions (Auth / RBAC / Workload forms / Dashboard)
-   ============================================================ */
+
 .muted-text { font-size: 0.85rem; color: var(--text-muted); }
 .req { color: #dc2626; }
 .modal-title { margin: 0 0 1rem; font-size: 1.15rem; color: #1e293b; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.75rem; }
@@ -701,7 +699,7 @@ header {
 .tu-form-control[aria-invalid="true"] { border-color: #dc2626; }
 .inline-check { display: inline-flex !important; align-items: center; gap: 0.35rem; margin-left: 0.75rem; font-weight: 400 !important; }
 
-/* แจ้งเตือน / toast */
+
 .notice { padding: 0.65rem 0.9rem; border-radius: 8px; font-size: 0.9rem; margin: 0.75rem 0; border: 1px solid; }
 .notice-warn { background: #fffbeb; border-color: #fde68a; color: #92400e; }
 .notice-error { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
@@ -711,19 +709,19 @@ header {
 .toast-success { background: #15803d; }
 .toast-error { background: #b91c1c; }
 
-/* หน้าไม่มีสิทธิ์ */
+
 .blocked-panel { max-width: 520px; margin: 4rem auto; text-align: center; background: #fff; border: 1px solid var(--tu-border); border-radius: 12px; padding: 2.5rem 1.5rem; }
 .blocked-panel h2 { color: var(--tu-red); margin-bottom: 0.5rem; }
 .blocked-panel p { color: var(--text-muted); margin-bottom: 1.25rem; }
 .blocked-actions { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
 
-/* ภาระงานบนหน้า Profile */
+
 .wl-add-row { margin-bottom: 0.75rem; }
 .term-status { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
 .item-actions { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
 .link-btn { background: none; border: none; color: var(--tu-red); font-weight: 600; cursor: pointer; text-decoration: underline; padding: 0; font: inherit; font-size: 0.85rem; }
 
-/* Dashboard */
+
 .dash-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
 .dash-title { font-size: 1.5rem; color: #1e293b; }
 .tu-stat-box { border-left: 4px solid var(--tu-border); }
@@ -757,7 +755,7 @@ header {
 .review-box { border-top: 1px solid var(--tu-border); margin-top: 1rem; padding-top: 1rem; }
 .review-box label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.35rem; }
 
-/* แถบเมนู: เพิ่มความเข้ากันได้กับจอเล็ก */
+
 .tu-auth-container { flex-wrap: wrap; gap: 0.5rem; }
 .tu-auth-right { flex-wrap: wrap; }
 .tu-nav-links { flex-wrap: wrap; }
@@ -767,5 +765,14 @@ header {
     .bar-row { grid-template-columns: 8rem 1fr 2rem; }
 }
 
-/* ให้ attribute hidden ใช้ได้เสมอ (ไม่ถูก display ของ .tu-btn ฯลฯ ทับ) */
+
 [hidden] { display: none !important; }
+
+
+.deadline-banner { padding: 0.75rem 1rem; border-radius: 8px; font-weight: 600; font-size: 0.95rem; margin: 0 0 1rem; border: 1px solid; }
+.deadline-warn   { background: #fffbeb; border-color: #fcd34d; color: #92400e; }
+.deadline-urgent { background: #fef2f2; border-color: #fca5a5; color: #991b1b; }
+.deadline-locked { background: #fee2e2; border-color: #f87171; color: #7f1d1d; }
+.tu-btn:disabled, .tu-btn[aria-disabled="true"] { background: #9ca3af !important; border-color: #9ca3af !important; color: #f9fafb !important; cursor: not-allowed; opacity: 1; }
+.deadline-admin { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 0.75rem; margin-top: 0.75rem; }
+.deadline-admin .filter-field { min-width: 220px; }

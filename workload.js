@@ -8,12 +8,25 @@
     let selectedTerm = "all";    
     let activeCat = CATEGORIES[0].key;
     let editing = null;          
+    let deadlineInfo = null;     // ผล GET /settings/deadline (#83)
+    let dlState = { level: "none", locked: false, msLeft: Infinity };
+    let lockTimer = null;
 
     const isOwner = () => !!faculty && Auth.isOwner(faculty.faculty_id);
     const isStaff = () => Auth.isStaffOrAdmin();
     const canSeeStatus = () => isOwner() || isStaff();
     const canEditRecord = rec => isOwner() && EDITABLE.includes(rec.workflow_status);
     const currentRecord = () => records.find(r => r.term_id === selectedTerm) || null;
+
+    // #83: หมดเขตส่งงาน -> อาจารย์ดูได้อย่างเดียว (Staff/Admin ไม่ถูกล็อก) — Backend ตรวจซ้ำเสมอ
+    const LOCK_MSG = "หมดเขตการส่ง/แก้ไขภาระงานแล้ว";
+    const isLocked = () => !isStaff() && dlState.locked;
+    const lockAttr = () => isLocked() ? ` disabled aria-disabled="true" title="${LOCK_MSG}"` : "";
+    function blockIfLocked() {
+        if (!isLocked()) return false;
+        toast(LOCK_MSG, "error");
+        return true;
+    }
 
     document.addEventListener("DOMContentLoaded", init);
 
@@ -52,7 +65,9 @@
         if ($("wl-owner-name")) $("wl-owner-name").textContent = `อาจารย์: ${faculty.name_th} (${faculty.faculty_id})`;
 
         bindEvents();
-        await loadWorkloads();
+        [deadlineInfo] = await Promise.all([fetchDeadline(), loadWorkloads()]);
+        renderWorkloads();
+        setInterval(tickDeadline, 60 * 1000);   // นับถอยหลังบนแถบประกาศทุก 1 นาที
 
         if (loading) loading.style.display = "none";
         if (mainEl) mainEl.style.display = "block";
@@ -70,7 +85,43 @@
         renderWorkloads();
     }
 
+    function renderDeadline() {
+        dlState = renderDeadlineBanner($("deadline-banner"), canSeeStatus() ? deadlineInfo : null,
+            { staffView: isStaff() && !isOwner() });
+        scheduleLockTimer();
+    }
+
+    // เรียกทุก 1 นาที: อัปเดตตัวนับถอยหลัง และล็อกปุ่มทันทีถ้าเพิ่งเลยกำหนดระหว่างเปิดหน้า
+    function tickDeadline() {
+        const wasLocked = dlState.locked;
+        renderDeadline();
+        if (dlState.locked !== wasLocked) renderWorkloads();
+    }
+
+    function scheduleLockTimer() {
+        clearTimeout(lockTimer);
+        lockTimer = null;
+        if (dlState.locked || !Number.isFinite(dlState.msLeft)) return;
+        // setTimeout รองรับสูงสุด ~24.8 วัน ถ้าไกลกว่านั้น setInterval รายนาทีจะจัดการให้
+        if (dlState.msLeft < 2 ** 31 - 1) {
+            lockTimer = setTimeout(() => {
+                renderWorkloads();
+                if (isLocked()) { closeModal($("item-modal")); toast(LOCK_MSG, "error"); }
+            }, dlState.msLeft + 500);
+        }
+    }
+
+    async function handleLockError(err) {
+        if (err?.status !== 403 || !String(err.message).includes("หมดเขต")) return false;
+        deadlineInfo = (await fetchDeadline()) || { deadline: new Date().toISOString(), is_locked: true };
+        closeModal($("item-modal"));
+        renderWorkloads();
+        toast(LOCK_MSG, "error");
+        return true;
+    }
+
     function renderWorkloads() {
+        renderDeadline();
         renderSubtitle();
         renderTermSelect();
         renderStatusBar();
@@ -83,6 +134,8 @@
         const rec = currentRecord();
         if (rec && rec.workflow_status === "Approved") {
             el.innerHTML = `<span style="color: var(--tu-red, #c00); font-weight: 600;">🔒 รายการนี้ได้รับการอนุมัติแล้ว ไม่สามารถแก้ไขได้</span>`;
+        } else if (isOwner() && isLocked()) {
+            el.textContent = "";
         } else if (isOwner()) {
             el.textContent = "ภาระงานของคุณ — เพิ่ม/แก้ไขได้ไม่จำกัด (เมื่อเพิ่มแล้วจะขึ้นเป็น “รอการตรวจสอบ” ที่ Dashboard)";
         } else if (isStaff()) {
@@ -91,6 +144,9 @@
             el.textContent = "แสดงเฉพาะภาระงานที่ได้รับการอนุมัติแล้ว";
         }
         $("btn-new-term").hidden = !isOwner() || (rec && rec.workflow_status === "Approved");
+        $("btn-new-term").disabled = isLocked();
+        if (isLocked() && isOwner()) el.insertAdjacentHTML("beforeend",
+            `${el.textContent ? "<br>" : ""}<span class="muted-text">🔒 ${LOCK_MSG} — ดูข้อมูลได้อย่างเดียว</span>`);
     }
 
     function renderTermSelect() {
@@ -109,7 +165,9 @@
             <div>${statusBadge(rec.workflow_status)}
                 <span class="muted-text">รอบประเมิน: ${escapeHtml(rec.evaluation_period || "-")}</span></div>`;
         if (isOwner() && ["Draft", "Rejected"].includes(rec.workflow_status)) {
-            html += `<button type="button" class="tu-btn tu-btn-sm" id="btn-submit-review" ${countItems(rec) === 0 ? "disabled title=\"ต้องมีอย่างน้อย 1 รายการ\"" : ""}>ส่งตรวจ (Submit for Review)</button>`;
+            const submitAttr = isLocked() ? lockAttr()
+                : countItems(rec) === 0 ? ` disabled title="ต้องมีอย่างน้อย 1 รายการ"` : "";
+            html += `<button type="button" class="tu-btn tu-btn-sm" id="btn-submit-review"${submitAttr}>ส่งตรวจ (Submit for Review)</button>`;
         }
         html += `</div>`;
         if (rec.workflow_status === "Approved") {
@@ -143,6 +201,7 @@
         
         // ซ่อนปุ่มเพิ่มรายการทันทีหากสถานะเป็น Approved หรือไม่อยู่ในสถานะแก้ไขได้
         $("btn-add-item").hidden = !(isOwner() && (rec ? canEditRecord(rec) : records.length > 0));
+        $("btn-add-item").disabled = isLocked();
 
         const rows = [];
         scopeRecords().forEach(r => (r.workloads?.[cat.key] || []).forEach((item, idx) => rows.push({ r, item, idx })));
@@ -165,8 +224,8 @@
                 <div class="repo-title">${escapeHtml(s.title)}</div>
                 <div class="repo-sub-info">${escapeHtml(s.sub)}</div>
                 ${editable ? `<div class="item-actions">
-                    <button type="button" class="tu-btn tu-btn-secondary tu-btn-sm" data-action="edit" data-term="${escapeHtml(r.term_id)}" data-idx="${idx}">แก้ไข</button>
-                    <button type="button" class="tu-btn tu-btn-danger tu-btn-sm" data-action="delete" data-term="${escapeHtml(r.term_id)}" data-idx="${idx}">ลบ</button>
+                    <button type="button" class="tu-btn tu-btn-secondary tu-btn-sm" data-action="edit" data-term="${escapeHtml(r.term_id)}" data-idx="${idx}"${lockAttr()}>แก้ไข</button>
+                    <button type="button" class="tu-btn tu-btn-danger tu-btn-sm" data-action="delete" data-term="${escapeHtml(r.term_id)}" data-idx="${idx}"${lockAttr()}>ลบ</button>
                 </div>` : (r.workflow_status === "Approved" ? `<div class="item-actions"><span class="muted-text" style="font-size: 0.85rem; color: var(--tu-red, rgb(0, 204, 10));">อนุมัติแล้ว</span></div>` : "")}
             </li>`;
         }).join("");
@@ -175,8 +234,9 @@
     function bindEvents() {
         $("select-term").addEventListener("change", e => { selectedTerm = e.target.value; renderWorkloads(); });
         $("repo-search").addEventListener("input", renderList);
-        $("btn-new-term").addEventListener("click", openTermModal);
+        $("btn-new-term").addEventListener("click", () => { if (!blockIfLocked()) openTermModal(); });
         $("btn-add-item").addEventListener("click", () => {
+            if (blockIfLocked()) return;
             const rec = currentRecord();
             if (rec && !canEditRecord(rec)) {
                 toast("รายการนี้ได้รับการอนุมัติแล้ว ไม่สามารถเพิ่มหรือแก้ไขได้", "error");
@@ -202,6 +262,7 @@
             const b = e.target.closest("[data-action]");
             if (!b) return;
             if (b.dataset.action === "evidence") Api.openEvidence(b.dataset.key);
+            if ((b.dataset.action === "edit" || b.dataset.action === "delete") && blockIfLocked()) return;
             if (b.dataset.action === "edit") {
                 const rec = records.find(r => r.term_id === b.dataset.term);
                 if (rec && !canEditRecord(rec)) {
@@ -239,6 +300,7 @@
     }
 
     function openItemForm(catKey, idx) {
+        if (blockIfLocked()) return;
         const rec = currentRecord();
         if (!rec || !canEditRecord(rec)) {
             toast("รายการนี้ได้รับการอนุมัติแล้ว ไม่สามารถแก้ไขได้", "error");
@@ -260,6 +322,7 @@
                <label class="inline-check"><input type="checkbox" id="remove-evidence"> ลบไฟล์แนบเดิม</label>`
             : "";
         showFormError("");
+        $("item-save-btn").disabled = isLocked();
         openModal($("item-modal"));
         $("item-fields").querySelector("input, select, textarea")?.focus();
     }
@@ -294,6 +357,7 @@
 
     async function onSaveItem(e) {
         e.preventDefault();
+        if (blockIfLocked()) return;
         const rec = records.find(r => r.term_id === editing?.termId);
         if (!rec || !canEditRecord(rec)) {
             toast("รายการนี้ได้รับการอนุมัติแล้ว ไม่สามารถบันทึกการเปลี่ยนแปลงได้", "error");
@@ -337,9 +401,9 @@
             closeModal($("item-modal"));
             toast("บันทึกเรียบร้อยแล้ว — สถานะ: รอการตรวจสอบ", "success");
         } catch (err) {
-            showFormError(err.message);
+            if (!(await handleLockError(err))) showFormError(err.message);
         } finally {
-            btn.disabled = false; btn.textContent = "บันทึก";
+            btn.disabled = isLocked(); btn.textContent = "บันทึก";
         }
     }
 
@@ -351,6 +415,7 @@
     }
 
     async function onDeleteItem(termId, idx) {
+        if (blockIfLocked()) return;
         const rec = records.find(r => r.term_id === termId);
         if (!rec || !canEditRecord(rec)) {
             toast("รายการนี้ได้รับการอนุมัติแล้ว ไม่สามารถลบได้", "error");
@@ -362,10 +427,11 @@
         try {
             await persist(rec, workloads);
             toast("ลบรายการแล้ว", "success");
-        } catch (err) { toast(err.message, "error"); }
+        } catch (err) { if (!(await handleLockError(err))) toast(err.message, "error"); }
     }
 
     async function onSubmitForReview() {
+        if (blockIfLocked()) return;
         const rec = currentRecord();
         if (!rec || !canEditRecord(rec)) return;
         if (!confirm(`ส่งภาระงานภาค ${rec.semester}/${rec.academic_year} เพื่อตรวจสอบ?\nหลังส่งแล้วจะแก้ไขไม่ได้จนกว่าจะถูกส่งกลับ`)) return;
@@ -379,7 +445,7 @@
             toast("ส่งตรวจเรียบร้อยแล้ว — สถานะ: รอการตรวจสอบ", "success");
         } catch (err) {
             btn.disabled = false;
-            toast(err.message, "error");
+            if (!(await handleLockError(err))) toast(err.message, "error");
         }
     }
 
@@ -403,6 +469,12 @@
         }
         const term_id = makeTermId(year, semester);
         const alreadyExists = records.some(r => r.term_id === term_id);
+        // #83: หมดเขตแล้วเปิดดูภาคเดิมได้ แต่สร้างภาคใหม่ไม่ได้
+        if (!alreadyExists && blockIfLocked()) {
+            closeModal($("term-modal"));
+            if (submitButton) { submitButton.disabled = false; submitButton.textContent = originalLabel; }
+            return;
+        }
         try {
             if (!alreadyExists) {
                 const created = await Api.saveWorkload({
@@ -418,7 +490,10 @@
             closeModal($("term-modal"));
             renderWorkloads();
             toast(alreadyExists ? "เปิดภาคการศึกษาที่เลือกแล้ว" : "สร้างภาคการศึกษาแล้ว", "success");
-        } catch (err) { toast(err.message, "error"); }
+        } catch (err) {
+            if (await handleLockError(err)) closeModal($("term-modal"));
+            else toast(err.message, "error");
+        }
         finally { if (submitButton) { submitButton.disabled = false; submitButton.textContent = originalLabel; } }
     }
 })();

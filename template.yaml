@@ -2,6 +2,25 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Faculty Output & Workload Management System (V5 IaC - Public GET & Secure Mutate)
 
+Parameters:
+  CognitoUserPoolId:
+    Type: String
+    Default: us-east-1_07XfU83b2
+    Description: User pool เดิม (ผู้ใช้และกลุ่ม Faculty/Staff/Admin อยู่ที่นี่ จึงไม่สร้างใหม่ทุกครั้งที่ deploy)
+  CognitoDomain:
+    Type: String
+    Default: https://us-east-107xfu83b2.auth.us-east-1.amazoncognito.com
+    Description: Hosted UI domain ของ User pool (ใช้สร้าง config.js ฝั่ง Frontend)
+  EvidenceBucketName:
+    Type: String
+    Default: tu-cs-faculty-evidence
+  SubmissionDeadline:
+    Type: String
+    Default: ''
+    Description: >-
+      (#83) กำหนดส่งเริ่มต้น ISO 8601 เช่น 2026-11-13T23:59:59+07:00 — ใช้เมื่อยังไม่มีค่าในตาราง SystemSettings
+      ค่าที่ Staff/Admin ตั้งผ่านหน้า Dashboard จะมีผลเหนือค่านี้ เว้นว่างไว้ = ไม่จำกัดเวลา
+
 Globals:
   Function:
     Timeout: 15
@@ -26,7 +45,7 @@ Resources:
       Auth:
         Authorizers:
           CognitoAuth:
-            UserPoolArn: "arn:aws:cognito-idp:us-east-1:258201668475:userpool/us-east-1_07XfU83b2"
+            UserPoolArn: !Sub "arn:${AWS::Partition}:cognito-idp:${AWS::Region}:${AWS::AccountId}:userpool/${CognitoUserPoolId}"
 
   # ---------------------------------------------------------
   # 2. DynamoDB Tables
@@ -66,13 +85,25 @@ Resources:
         - AttributeName: faculty_id
           KeyType: HASH
 
+  # (#83) ค่าตั้งระบบที่ Staff/Admin แก้ได้ทันทีโดยไม่ต้อง deploy ใหม่ เช่น กำหนดส่งภาระงาน
+  SystemSettingsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: setting_key
+          AttributeType: S
+      KeySchema:
+        - AttributeName: setting_key
+          KeyType: HASH
+
   # ---------------------------------------------------------
   # 3. S3 Bucket สำหรับไฟล์หลักฐาน
   # ---------------------------------------------------------
   EvidenceBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: tu-cs-faculty-evidence
+      BucketName: !Ref EvidenceBucketName
       CorsConfiguration:
         CorsRules:
           - AllowedHeaders: ['*']
@@ -89,10 +120,14 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref FacultyWorkloadsTable
+        - DynamoDBReadPolicy:
+            TableName: !Ref SystemSettingsTable
       Environment:
         Variables:
           TABLE_NAME: !Ref FacultyWorkloadsTable
           GSI_NAME: TermStatusIndex
+          SETTINGS_TABLE_NAME: !Ref SystemSettingsTable
+          SUBMISSION_DEADLINE: !Ref SubmissionDeadline
       Events:
         # GET: เปิดโล่ง (NONE) ให้บุคคลทั่วไปดึงข้อมูลดูได้ (Lambda ฝั่ง Backend จะคอยกรองเฉพาะข้อมูลที่ Approved ให้)
         GetWorkloads:
@@ -175,6 +210,38 @@ Resources:
             Auth:
               Authorizer: CognitoAuth
 
+  # (#83) อ่าน/ขยายกำหนดส่งภาระงาน
+  SettingsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: settings_handler.lambda_handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref SystemSettingsTable
+      Environment:
+        Variables:
+          SETTINGS_TABLE_NAME: !Ref SystemSettingsTable
+          SUBMISSION_DEADLINE: !Ref SubmissionDeadline
+      Events:
+        # GET: สาธารณะ ใช้แสดงแถบแจ้งเตือนกำหนดส่ง (ไม่ใช่ข้อมูลลับ)
+        GetDeadline:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FacultyApi
+            Path: /settings/deadline
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        # PUT: Staff/Admin เท่านั้น (Lambda ตรวจ BFLA ซ้ำ)
+        PutDeadline:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FacultyApi
+            Path: /settings/deadline
+            Method: PUT
+            Auth:
+              Authorizer: CognitoAuth
+
   UploadUrlFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -204,7 +271,106 @@ Resources:
             Auth:
               Authorizer: CognitoAuth
 
+  # ---------------------------------------------------------
+  # 5. Frontend Hosting (#75): S3 (private) + CloudFront
+  #    GitHub Actions อัปโหลดไฟล์เว็บ + config.js ที่สร้างจาก Outputs ของ stack นี้
+  # ---------------------------------------------------------
+  FrontendBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+  FrontendOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${AWS::StackName}-frontend-oac"
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  FrontendDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: !Sub "${AWS::StackName} frontend"
+        DefaultRootObject: index.html
+        HttpVersion: http2
+        PriceClass: PriceClass_200
+        Origins:
+          - Id: frontend-s3
+            DomainName: !GetAtt FrontendBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt FrontendOriginAccessControl.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+        DefaultCacheBehavior:
+          TargetOriginId: frontend-s3
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          AllowedMethods: [GET, HEAD]
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6   # Managed-CachingOptimized
+          ResponseHeadersPolicyId: 67f7725c-6f97-4210-82d7-5512b31e9d03   # Managed-SecurityHeadersPolicy
+
+  FrontendBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref FrontendBucket
+      PolicyDocument:
+        Statement:
+          - Sid: AllowCloudFrontRead
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub "${FrontendBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${FrontendDistribution}"
+
+  # App client ใหม่ใน User pool เดิม ที่รู้จัก URL ของ CloudFront อัตโนมัติ
+  # (สร้างระบบใหม่ได้โดยไม่ต้องเข้า Console ไปเพิ่ม Callback URL ด้วยมือ)
+  WebUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref CognitoUserPoolId
+      ClientName: !Sub "${AWS::StackName}-web"
+      GenerateSecret: false
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthFlows: [code]
+      AllowedOAuthScopes: [openid, email, profile]
+      SupportedIdentityProviders: [COGNITO]
+      CallbackURLs:
+        - !Sub "https://${FrontendDistribution.DomainName}/index.html"
+        - http://localhost:8080/index.html
+      LogoutURLs:
+        - !Sub "https://${FrontendDistribution.DomainName}/index.html"
+        - http://localhost:8080/index.html
+      ExplicitAuthFlows: [ALLOW_REFRESH_TOKEN_AUTH]
+      PreventUserExistenceErrors: ENABLED
+
 Outputs:
   ApiGatewayInvokeURL:
     Description: "API Gateway Endpoint URL (นำไปใส่ใน config.js ฝั่ง Frontend)"
     Value: !Sub "https://${FacultyApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
+  FrontendUrl:
+    Description: URL ของเว็บไซต์ (CloudFront)
+    Value: !Sub "https://${FrontendDistribution.DomainName}"
+  FrontendBucketName:
+    Value: !Ref FrontendBucket
+  FrontendDistributionId:
+    Value: !Ref FrontendDistribution
+  UserPoolClientId:
+    Value: !Ref WebUserPoolClient
+  CognitoDomain:
+    Value: !Ref CognitoDomain
+  SystemSettingsTableName:
+    Value: !Ref SystemSettingsTable

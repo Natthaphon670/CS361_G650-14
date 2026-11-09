@@ -42,9 +42,21 @@
         renderFacultyBasic(faculty);
         initPublications();
         bindEvents();
+        renderOwnerDeadline();
 
         if (loading) loading.style.display = "none";
         if (mainEl) mainEl.style.display = "block";
+    }
+
+    // #83: แถบแจ้งเตือนกำหนดส่งภาระงาน เฉพาะอาจารย์ที่เป็นเจ้าของโปรไฟล์ (ไม่บล็อกการแสดงหน้า)
+    async function renderOwnerDeadline() {
+        if (!Auth.isOwner(faculty.faculty_id)) return;
+        const el = $("deadline-banner");
+        const st = renderDeadlineBanner(el, await fetchDeadline());
+        if (st.level !== "none" && !st.locked) {
+            el.firstElementChild?.insertAdjacentHTML("beforeend",
+                ` <a href="workload.html?id=${encodeURIComponent(faculty.faculty_id)}">ไปที่หน้าจัดการภาระงาน →</a>`);
+        }
     }
 
     function renderFacultyBasic(f) {

@@ -1,5 +1,3 @@
-
-
 function escapeHtml(str) {
     return String(str ?? "").replace(/[&<>"']/g, m => ({
         "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -150,3 +148,79 @@ document.addEventListener("click", e => {
     if (e.target.classList?.contains("tu-modal")) closeModal(e.target);          // คลิกพื้นหลัง
     if (e.target.closest?.("[data-close-modal]")) closeModal(e.target.closest(".tu-modal"));
 });
+
+// =============================================================================
+// กำหนดส่งภาระงาน (Sub-Issue 2.6 / #83) — เวลาไทย UTC+07:00
+// =============================================================================
+const BKK_OFFSET_MS = 7 * 60 * 60 * 1000;
+
+/** 23:59:59 วันศุกร์ของสัปดาห์นี้ตามเวลาไทย (เสาร์/อาทิตย์ = ศุกร์หน้า) — ตรงกับ deadline_config.end_of_friday */
+function endOfFridayBkk(now = new Date()) {
+    const bkk = new Date(now.getTime() + BKK_OFFSET_MS);              // อ่านค่า UTC* = เวลาไทย
+    const daysAhead = (5 - bkk.getUTCDay() + 7) % 7;                    // getUTCDay: อาทิตย์=0, ศุกร์=5
+    const friday = Date.UTC(bkk.getUTCFullYear(), bkk.getUTCMonth(), bkk.getUTCDate() + daysAhead, 23, 59, 59);
+    return new Date(friday - BKK_OFFSET_MS);
+}
+
+function formatThaiDeadline(iso) {
+    const d = new Date(iso);
+    const day = d.toLocaleDateString("th-TH", { weekday: "long", timeZone: "Asia/Bangkok" });
+    const date = d.toLocaleDateString("th-TH", { day: "2-digit", month: "2-digit", year: "numeric", timeZone: "Asia/Bangkok" });
+    const time = d.toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit", timeZone: "Asia/Bangkok" });
+    return `${day}ที่ ${date} เวลา ${time} น.`;
+}
+
+/**
+ * สรุปสถานะกำหนดส่งจากผล GET /settings/deadline
+ * level: "none" | "info" (เหลือ > 3 วัน) | "warn" (≤ 3 วัน) | "urgent" (≤ 24 ชม.) | "locked"
+ * คำนวณเวลาที่เหลือจาก server_time เพื่อไม่ให้นาฬิกาเครื่องผู้ใช้ที่ตั้งผิดทำให้ปุ่มเปิด/ปิดผิด
+ */
+function deadlineState(info, clientNow = Date.now()) {
+    if (!info || !info.deadline) return { level: "none", locked: false, msLeft: Infinity };
+    const skew = info.server_time ? new Date(info.server_time).getTime() - (info._fetched_at ?? clientNow) : 0;
+    const msLeft = new Date(info.deadline).getTime() - (clientNow + skew);
+    const locked = !!info.is_locked || msLeft <= 0;
+    const DAY = 86400000;
+    const level = locked ? "locked" : msLeft <= DAY ? "urgent" : msLeft <= 3 * DAY ? "warn" : "info";
+    return { level, locked, msLeft, deadline: info.deadline };
+}
+
+function formatTimeLeft(ms) {
+    const mins = Math.floor(ms / 60000);
+    const d = Math.floor(mins / 1440), h = Math.floor((mins % 1440) / 60), m = mins % 60;
+    if (d > 0) return `${d} วัน${h ? ` ${h} ชั่วโมง` : ""}`;
+    if (h > 0) return `${h} ชั่วโมง ${m} นาที`;
+    return `${Math.max(m, 1)} นาที`;
+}
+
+/** แสดงแถบประกาศกำหนดส่งใน element ที่ระบุ คืนค่า state ไว้ใช้ล็อกปุ่ม */
+function renderDeadlineBanner(el, info, { staffView = false } = {}) {
+    const st = deadlineState(info);
+    if (!el) return st;
+    if (st.level === "none") { el.innerHTML = ""; return st; }
+    const when = formatThaiDeadline(st.deadline);
+    let cls, text;
+    if (st.locked) {
+        cls = "deadline-banner deadline-locked";
+        text = staffView
+            ? `⛔ ปิดรับการส่งภาระงานแล้ว (หมดเขต${when}) — อาจารย์จะแก้ไข/ส่งตรวจไม่ได้จนกว่าจะขยายเวลา`
+            : `⛔ หมดเขตการส่ง/แก้ไขภาระงานแล้ว (สิ้นสุด${when}) หากต้องการแก้ไขกรุณาติดต่อเจ้าหน้าที่`;
+    } else {
+        // ตาม #83: สีเหลือง = ยังเปิดรับ, สีแดง = เหลือไม่เกิน 24 ชม.
+        cls = `deadline-banner deadline-${st.level === "urgent" ? "urgent" : "warn"}`;
+        text = `⏰ เหลือเวลาส่งภาระงานอีก ${formatTimeLeft(st.msLeft)} (สิ้นสุด${when})`;
+    }
+    el.innerHTML = `<div class="${cls}" role="status">${escapeHtml(text)}</div>`;
+    return st;
+}
+
+/** โหลดกำหนดส่ง (ล้มเหลวได้โดยไม่ทำให้หน้าเว็บพัง — backend ยังบังคับใช้กำหนดส่งเสมอ) */
+async function fetchDeadline() {
+    try {
+        const info = await Api.getDeadline();
+        return info ? { ...info, _fetched_at: Date.now() } : null;
+    } catch (e) {
+        console.warn("โหลดกำหนดส่งไม่สำเร็จ", e);
+        return null;
+    }
+}

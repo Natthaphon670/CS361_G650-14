@@ -7,6 +7,7 @@ from urllib.parse import unquote
 from boto3.dynamodb.conditions import Key, Attr
 from auth_utils import get_user_claims, verify_bola, verify_bfla, AuthorizationError
 import audit_logger as audit
+import deadline_config as deadline
 
 # -----------------------------------------------------------------------------
 # Helper สำหรับถอดรหัส URL Encoding ซ้ำซ้อน (%23, %2523, %252523 -> #)
@@ -43,6 +44,27 @@ class DecimalEncoder(json.JSONEncoder):
                 return int(obj)
             return float(obj)
         return super(DecimalEncoder, self).default(obj)
+
+def deadline_guard(user_info, event, context, event_type, faculty_id, term_id, status_from=None, status_to=None):
+    """
+    Sub-Issue 2.6 (#83): อาจารย์ส่ง/แก้ไข/ลบภาระงานได้เฉพาะก่อนกำหนดส่ง
+    Staff/Admin ได้รับยกเว้น เพื่อให้ตรวจงานและแก้ไขข้อมูลหลังปิดรับได้
+    คืนค่า Response 403 เมื่อหมดเขต หรือ None เมื่อดำเนินการต่อได้
+    """
+    if user_info.get('is_staff_or_admin'):
+        return None
+    cfg = deadline.get_deadline()
+    if not deadline.is_locked(cfg):
+        return None
+    audit.audit_log(event_type, audit.LOCKED, user_info=user_info, event=event, context=context,
+                    faculty_id=faculty_id, term_id=term_id, status_from=status_from, status_to=status_to,
+                    reason='deadline_passed')
+    return create_response(403, {
+        'error': 'DeadlinePassed',
+        'message': deadline.LOCKED_MESSAGE,
+        'deadline': cfg['deadline'].astimezone(deadline.BKK).isoformat(),
+    })
+
 
 def create_response(status_code, body):
     """ส่ง Response กลับไปยัง API Gateway พร้อม CORS Headers"""
@@ -171,6 +193,10 @@ def save_workload_handler(event, context):
         # BOLA Protection: ตรวจสอบความเป็นเจ้าของข้อมูล
         verify_bola(user_info, target_faculty_id)
 
+        locked = deadline_guard(user_info, event, context, audit.WORKLOAD_UPDATED, target_faculty_id, target_term_id)
+        if locked:
+            return locked
+
         body_raw = event.get('body')
         if not body_raw:
             return create_response(400, {'message': 'ไม่พบข้อมูลภาระงาน (Request body is empty)'})
@@ -274,6 +300,10 @@ def delete_workload_handler(event, context):
         # ---------------------------------------------------------------------
         verify_bola(user_info, target_faculty_id)
 
+        locked = deadline_guard(user_info, event, context, audit.WORKLOAD_DELETED, target_faculty_id, target_term_id)
+        if locked:
+            return locked
+
         existing_item = table.get_item(Key={'faculty_id': target_faculty_id, 'term_id': target_term_id}).get('Item')
 
         if not existing_item:
@@ -356,6 +386,11 @@ def update_workload_status_handler(event, context):
         # 2. Logic สำหรับอาจารย์: Submit งาน
         if new_status == 'Pending_Review':
             verify_bola(user_info, target_faculty_id) 
+
+            locked = deadline_guard(user_info, event, context, event_type, target_faculty_id, target_term_id,
+                                    status_from=current_status, status_to=new_status)
+            if locked:
+                return locked
 
             if current_status not in ['Draft', 'Rejected']:
                 audit.audit_log(event_type, audit.CONFLICT, user_info=user_info, event=event, context=context,
