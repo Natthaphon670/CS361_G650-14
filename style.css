@@ -660,6 +660,10 @@ header {
   box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
 }
 .tu-form-group { margin-bottom: 1rem; }
+.form-section { padding: 1rem; margin: 0 0 1rem; border: 1px solid var(--tu-border); border-radius: 8px; background: #fff; }
+.form-section h4 { margin: 0 0 0.85rem; color: #334155; font-size: 0.95rem; }
+.form-section-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 1rem; }
+.field-help { display: block; margin-top: 0.35rem; color: #64748b; font-size: 0.8rem; }
 .tu-form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #334155; margin-bottom: 0.35rem; }
 .tu-form-control {
   width: 100%;
@@ -675,9 +679,10 @@ header {
 .tu-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
 .tu-stat-box { background: #fff; border: 1px solid var(--tu-border); border-radius: 8px; padding: 1.25rem; }
 .tu-stat-num { font-size: 1.75rem; font-weight: 700; margin-top: 0.25rem; }
-.tu-table-box { background: #fff; border: 1px solid var(--tu-border); border-radius: 8px; overflow: hidden; }
+.tu-table-box { background: #fff; border: 1px solid var(--tu-border); border-radius: 8px; max-height: 70vh; overflow: auto; }
 .tu-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; }
 .tu-table th { background: #f8fafc; padding: 0.85rem 1rem; border-bottom: 1px solid var(--tu-border); color: #64748b; font-weight: 600; }
+.tu-table thead th { position: sticky; top: 0; z-index: 10; }
 .tu-table td { padding: 0.85rem 1rem; border-bottom: 1px solid var(--tu-border); }
 
 /* ============================================================

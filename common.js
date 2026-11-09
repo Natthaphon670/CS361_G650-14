@@ -42,7 +42,8 @@ const CATEGORIES = [
             { name: "output_type", label: "ประเภทผลงาน", type: "select", required: true,
               options: ["บทความวิจัย", "วารสารวิชาการ", "หนังสือ/ตำรา"] },
             { name: "title", label: "ชื่อผลงาน", type: "text", required: true },
-            { name: "participation_percentage", label: "สัดส่วนการมีส่วนร่วม (%)", type: "number", required: true, min: 0, max: 100, step: 1, default: 100 },
+            { name: "participation_percentage", label: "สัดส่วนการมีส่วนร่วม (%)", type: "number", required: true, min: 0, max: 100, step: 1, default: 100,
+              help: "ระบุเปอร์เซ็นต์ส่วนร่วมของคุณในผลงานนี้ ตั้งแต่ 0–100%" },
             { name: "category", label: "ระดับการตีพิมพ์", type: "select", required: true,
               options: ["ระดับนานาชาติ (International)", "ระดับชาติ (National)", "TCI กลุ่ม 1", "TCI กลุ่ม 2"] }
         ],

@@ -6,6 +6,7 @@
     let rows = [];             
     let openRecord = null;     
     let yearsLoaded = false;
+    let loadRequest = 0;
 
     document.addEventListener("DOMContentLoaded", async () => {
         // ตรวจสอบสิทธิ์ผ่าน Auth.guard ถ้าไม่ผ่านจะถูกเตะออกทันทีโดยไม่แสดงหน้า Dashboard ค้าง
@@ -42,14 +43,16 @@
     const notDraft = r => r.workflow_status !== "Draft";   
 
     async function load() {
+        const requestId = ++loadRequest;
         const year = $("filter-year").value;
         const semester = $("filter-semester").value;
         const status = $("filter-status").value;
 
         $("dash-error").innerHTML = "";
-        $("dashboard-tbody").innerHTML = `<tr><td colspan="7" class="empty-cell">กำลังโหลด...</td></tr>`;
+        $("dashboard-tbody").setAttribute("aria-busy", "true");
         try {
             const rawData = (await Api.listWorkloads({ academic_year: year, semester: semester })).filter(notDraft);
+            if (requestId !== loadRequest) return;
 
             scoped = rawData.filter(r =>
                 (!year || String(r.academic_year) === String(year)) &&
@@ -62,10 +65,13 @@
 
             if (!yearsLoaded) populateYears();
         } catch (e) {
-            scoped = []; rows = [];
+            if (requestId !== loadRequest) return;
             $("dash-error").innerHTML = `<div class="notice notice-error">โหลดข้อมูลไม่สำเร็จ: ${escapeHtml(e.message)}</div>`;
         }
-        render();
+        if (requestId === loadRequest) {
+            $("dashboard-tbody").removeAttribute("aria-busy");
+            render();
+        }
     }
 
     function populateYears() {
@@ -223,5 +229,6 @@
         a.download = `workloads_${new Date().toISOString().slice(0, 10)}.csv`;
         document.body.appendChild(a); a.click(); a.remove();
         setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+        toast("ส่งออกไฟล์ CSV แล้ว", "success");
     }
 })();

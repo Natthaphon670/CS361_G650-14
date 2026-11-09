@@ -63,7 +63,6 @@
             records = (await Api.listWorkloads({ faculty_id: faculty.faculty_id })).sort(sortTermsDesc);
             $("wl-notice").innerHTML = "";
         } catch (e) {
-            records = [];
             $("wl-notice").innerHTML = `<div class="notice notice-warn">${escapeHtml(
                 e.status === 401 || e.status === 403 ? "ไม่มีสิทธิ์ดูข้อมูลภาระงาน — กรุณาเข้าสู่ระบบ" : e.message)}</div>`;
         }
@@ -235,7 +234,8 @@
             input = `<input id="${id}" class="tu-form-control" type="${f.type}" value="${escapeHtml(value)}"
                 placeholder="${escapeHtml(f.placeholder || "")}"${attrs}${req}>`;
         }
-        return `<div class="tu-form-group">${label}${input}</div>`;
+        const help = f.help ? `<small class="field-help">${escapeHtml(f.help)}</small>` : "";
+        return `<div class="tu-form-group">${label}${input}${help}</div>`;
     }
 
     function openItemForm(catKey, idx) {
@@ -250,7 +250,10 @@
 
         $("item-modal-title").textContent =
             `${idx === null ? "เพิ่มรายการ" : "แก้ไขรายการ"}: ${cat.label} — ภาค ${rec.semester}/${rec.academic_year}`;
-        $("item-fields").innerHTML = cat.fields.map(f => fieldHtml(f, item[f.name] ?? f.default ?? "")).join("");
+        const fieldMarkup = cat.fields.map(f => fieldHtml(f, item[f.name] ?? f.default ?? ""));
+        $("item-fields").innerHTML = catKey === "academic_outputs"
+            ? `<section class="form-section"><h4>รายละเอียดผลงาน</h4><div class="form-section-grid">${fieldMarkup.slice(0, 2).join("")}${fieldMarkup[3] || ""}</div></section><section class="form-section"><h4>สัดส่วนการมีส่วนร่วม</h4>${fieldMarkup[2] || ""}</section>`
+            : fieldMarkup.join("");
         $("wl-file").value = "";
         $("existing-evidence").innerHTML = item.evidence_key
             ? `ไฟล์เดิม: <b>${escapeHtml(item.evidence_name || item.evidence_key)}</b> (เลือกไฟล์ใหม่เพื่อแทนที่)
@@ -302,6 +305,13 @@
         let values;
         try {
             values = readAndValidate(cat);
+            if (editing.catKey === "academic_outputs" && values.title) {
+                const normalizedTitle = values.title.trim().replace(/\s+/g, " ").toLocaleLowerCase();
+                const duplicate = records.some(record => (record.workloads.academic_outputs || []).some((entry, index) =>
+                    !(record.term_id === editing.termId && index === editing.idx) &&
+                    entry.title?.trim().replace(/\s+/g, " ").toLocaleLowerCase() === normalizedTitle));
+                if (duplicate) throw new Error("พบงานวิจัยชื่อเดียวกันในระบบแล้ว กรุณาตรวจสอบรายการเดิมก่อนบันทึก");
+            }
             const file = $("wl-file").files[0];
             if (file) { const err = Api.validateEvidenceFile(file); if (err) throw new Error(err); }
         } catch (err) { showFormError(err.message); return; }
@@ -381,12 +391,20 @@
 
     async function onCreateTerm(e) {
         e.preventDefault();
+        const submitButton = e.submitter || $("term-form").querySelector('[type="submit"]');
+        const originalLabel = submitButton?.textContent;
+        if (submitButton) { submitButton.disabled = true; submitButton.textContent = "กำลังบันทึก..."; }
         const year = Number($("new-year").value);
         const semester = Number($("new-semester").value);
-        if (!Number.isInteger(year) || year < 2500 || year > 2700) { toast("ปีการศึกษาไม่ถูกต้อง", "error"); return; }
+        if (!Number.isInteger(year) || year < 2500 || year > 2700) {
+            toast("ปีการศึกษาไม่ถูกต้อง", "error");
+            if (submitButton) { submitButton.disabled = false; submitButton.textContent = originalLabel; }
+            return;
+        }
         const term_id = makeTermId(year, semester);
+        const alreadyExists = records.some(r => r.term_id === term_id);
         try {
-            if (!records.some(r => r.term_id === term_id)) {
+            if (!alreadyExists) {
                 const created = await Api.saveWorkload({
                     faculty_id: faculty.faculty_id, term_id, academic_year: year, semester,
                     evaluation_period: evaluationPeriod(year, semester), workloads: emptyWorkloads()
@@ -399,6 +417,8 @@
             selectedTerm = term_id;
             closeModal($("term-modal"));
             renderWorkloads();
+            toast(alreadyExists ? "เปิดภาคการศึกษาที่เลือกแล้ว" : "สร้างภาคการศึกษาแล้ว", "success");
         } catch (err) { toast(err.message, "error"); }
+        finally { if (submitButton) { submitButton.disabled = false; submitButton.textContent = originalLabel; } }
     }
 })();
