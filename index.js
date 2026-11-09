@@ -45,19 +45,26 @@ function renderFaculties(faculties) {
     card.innerHTML = `
       <div class="avatar-placeholder" style="overflow: hidden;">
         <img src="${imgPath}" alt="${escapeHtml(faculty.name_th)}" 
-              style="width: 100%; height: 100%; object-fit: cover; display: block;" 
-              onerror="this.onerror=null; this.parentNode.innerHTML='${initials}';">
+              class="faculty-img" data-initials="${initials}"
+              style="width: 100%; height: 100%; object-fit: cover; display: block;">
       </div>
       <h2 class="faculty-name-th">${escapeHtml(faculty.name_th)}</h2>
       <p class="faculty-name-en">${escapeHtml(faculty.name_en)}</p>
       <div class="position-badge">${escapeHtml(faculty.academic_position || 'อาจารย์')}</div>
       <a href="profile.html?id=${encodeURIComponent(faculty.faculty_id)}" class="view-profile-btn">ดูประวัติและผลงาน</a>
     `;
+    
+    const imgEl = card.querySelector('.faculty-img');
+    if (imgEl) {
+        imgEl.addEventListener('error', function() {
+            this.parentNode.innerHTML = this.dataset.initials;
+        });
+    }
         
     grid.appendChild(card);
   });
       
-  loading.style.display = 'none';
+  if (loading) loading.style.display = 'none';
   grid.style.display = 'grid';
 }
 
