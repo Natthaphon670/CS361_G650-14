@@ -22,7 +22,7 @@ async function fetchFaculties() {
 
 function renderFaculties(faculties) {
   const grid = document.getElementById('faculty-grid');
-  const loading = document.getElementById('loading-state');
+  const loading = document.getElementById('global-loading');
       
   grid.innerHTML = ''; 
       
