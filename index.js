@@ -11,6 +11,9 @@ async function fetchFaculties() {
     allFaculties = await response.json();
         
     renderFaculties(allFaculties);
+    if (loading) {
+      loading.style.display = 'none';
+    }
   } catch (error) {
     console.error('ไม่สามารถดึงไฟล์ faculties.json ได้:', error);
     if (loading) {
