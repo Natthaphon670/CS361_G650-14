@@ -1,0 +1,210 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Faculty Output & Workload Management System (V5 IaC - Public GET & Secure Mutate)
+
+Globals:
+  Function:
+    Timeout: 15
+    MemorySize: 128
+    Runtime: python3.12
+    Architectures:
+      - x86_64
+    CodeUri: .
+
+Resources:
+  # ---------------------------------------------------------
+  # 1. API Gateway + CORS (ไม่มี DefaultAuthorizer เพื่อให้ตั้งค่าแยกราย Route ได้)
+  # ---------------------------------------------------------
+  FacultyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+      Auth:
+        Authorizers:
+          CognitoAuth:
+            UserPoolArn: "arn:aws:cognito-idp:us-east-1:258201668475:userpool/us-east-1_07XfU83b2"
+
+  # ---------------------------------------------------------
+  # 2. DynamoDB Tables
+  # ---------------------------------------------------------
+  FacultyWorkloadsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: FacultyWorkloads
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: faculty_id
+          AttributeType: S
+        - AttributeName: term_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: faculty_id
+          KeyType: HASH
+        - AttributeName: term_id
+          KeyType: RANGE
+      GlobalSecondaryIndexes:
+        - IndexName: TermStatusIndex
+          KeySchema:
+            - AttributeName: term_id
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+
+  FacultyProfilesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: FacultyProfiles
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: faculty_id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: faculty_id
+          KeyType: HASH
+
+  # ---------------------------------------------------------
+  # 3. S3 Bucket สำหรับไฟล์หลักฐาน
+  # ---------------------------------------------------------
+  EvidenceBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: tu-cs-faculty-evidence
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders: ['*']
+            AllowedMethods: [GET, PUT, POST]
+            AllowedOrigins: ['*']
+
+  # ---------------------------------------------------------
+  # 4. AWS Lambda Functions & Events Routing
+  # ---------------------------------------------------------
+  WorkloadsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: workloads_handler.lambda_handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref FacultyWorkloadsTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref FacultyWorkloadsTable
+          GSI_NAME: TermStatusIndex
+      Events:
+        # GET: เปิดโล่ง (NONE) ให้บุคคลทั่วไปดึงข้อมูลดูได้ (Lambda ฝั่ง Backend จะคอยกรองเฉพาะข้อมูลที่ Approved ให้)
+        GetWorkloads:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FacultyApi
+            Path: /workloads
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        GetWorkloadItem:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FacultyApi
+            Path: /workloads/{faculty_id}/{term_id}
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        # PUT, DELETE, POST: ต้องใช้ Cognito Authorizer (บังคับ Login)
+        PutWorkload:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FacultyApi
+            Path: /workloads/{faculty_id}/{term_id}
+            Method: PUT
+            Auth:
+              Authorizer: CognitoAuth
+        DeleteWorkload:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FacultyApi
+            Path: /workloads/{faculty_id}/{term_id}
+            Method: DELETE
+            Auth:
+              Authorizer: CognitoAuth
+        PostWorkloadStatus:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FacultyApi
+            Path: /workloads/{faculty_id}/{term_id}/status
+            Method: POST
+            Auth:
+              Authorizer: CognitoAuth
+
+  ProfilesFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: profiles_handler.lambda_handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref FacultyProfilesTable
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref FacultyProfilesTable
+      Events:
+        # GET Profiles: เปิดโล่ง (NONE) สำหรับหน้า index และ profile ทั่วไป
+        GetProfiles:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FacultyApi
+            Path: /profiles
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        GetProfileItem:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FacultyApi
+            Path: /profiles/{faculty_id}
+            Method: GET
+            Auth:
+              Authorizer: NONE
+        # PUT Profile: บังคับ Login (เฉพาะเจ้าของหรือ Admin)
+        PutProfile:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FacultyApi
+            Path: /profiles/{faculty_id}
+            Method: PUT
+            Auth:
+              Authorizer: CognitoAuth
+
+  UploadUrlFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: GenerateUploadUrl.lambda_handler
+      Policies:
+        - S3CrudPolicy:
+            BucketName: !Ref EvidenceBucket
+      Environment:
+        Variables:
+          EVIDENCE_BUCKET_NAME: !Ref EvidenceBucket
+      Events:
+        # การอัปโหลด/ดาวน์โหลดหลักฐาน ต้องผ่านการยืนยันตัวตนทั้งหมด
+        PostUploadUrl:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FacultyApi
+            Path: /evidence/upload-url
+            Method: POST
+            Auth:
+              Authorizer: CognitoAuth
+        GetDownloadUrl:
+          Type: Api
+          Properties:
+            RestApiId: !Ref FacultyApi
+            Path: /evidence/download-url
+            Method: GET
+            Auth:
+              Authorizer: CognitoAuth
+
+Outputs:
+  ApiGatewayInvokeURL:
+    Description: "API Gateway Endpoint URL (นำไปใส่ใน config.js ฝั่ง Frontend)"
+    Value: !Sub "https://${FacultyApi}.execute-api.${AWS::Region}.amazonaws.com/prod"
