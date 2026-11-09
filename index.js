@@ -22,9 +22,7 @@ async function fetchFaculties() {
 
 function renderFaculties(faculties) {
   const grid = document.getElementById('faculty-grid');
-  
-  // 1. ปรับให้ค้นหา Loader ได้ทั้ง 2 ชื่อ (เผื่อ HTML ตั้งชื่อไว้แบบไหนก็ทำงานได้)
-  const loading = document.getElementById('global-loading') || document.getElementById('loading-state');
+  const loading = document.getElementById('loading-state');
       
   grid.innerHTML = ''; 
       
@@ -70,13 +68,8 @@ function renderFaculties(faculties) {
     grid.appendChild(card);
   });
       
-  // 2. ปิด Loading
   if (loading) loading.style.display = 'none';
-  
-  // 3. เปิด Grid
   grid.style.display = 'grid';
-  
-  // 4. สำคัญที่สุด! ปลดซ่อนแท็ก <main> ที่ถูกซ่อนไว้ตอนแรก (DOM Flash)
   const main = document.querySelector('main');
   if (main) main.style.display = '';
 }
