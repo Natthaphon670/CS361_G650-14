@@ -33,6 +33,7 @@ function renderFaculties(faculties) {
     if (loading) loading.style.display = 'none';
     grid.style.display = 'grid';
     
+    // ปลดซ่อน <main> ด้วย
     const main = document.querySelector('main');
     if (main) main.style.display = '';
     return;
@@ -69,18 +70,15 @@ function renderFaculties(faculties) {
     grid.appendChild(card);
   });
       
+  // 2. ปิด Loading
   if (loading) loading.style.display = 'none';
+  
+  // 3. เปิด Grid
   grid.style.display = 'grid';
-
+  
+  // 4. สำคัญที่สุด! ปลดซ่อนแท็ก <main> ที่ถูกซ่อนไว้ตอนแรก (DOM Flash)
   const main = document.querySelector('main');
   if (main) main.style.display = '';
-}
-        
-    grid.appendChild(card);
-  });
-      
-  if (loading) loading.style.display = 'none';
-  grid.style.display = 'grid';
 }
 
 
