@@ -239,7 +239,8 @@ const Auth = (() => {
         const u = getUser();
         const links = [`<a class="tu-nav-item" href="index.html">รายชื่อคณาจารย์</a>`];
         if (u?.faculty_id) {
-            links.push(`<a class="tu-nav-item" href="profile.html?id=${encodeURIComponent(u.faculty_id)}">ภาระงานของฉัน</a>`);
+            // ปรับลิงก์ให้ชี้ไปยังหน้า workload.html สำหรับจัดการภาระงานรายปีโดยเฉพาะ
+            links.push(`<a class="tu-nav-item" href="workload.html?id=${encodeURIComponent(u.faculty_id)}">ภาระงานรายปีของฉัน</a>`);
         }
         links.push(`<a class="tu-nav-item tu-nav-highlight" data-roles="Staff Admin" href="dashboard.html">📊 จัดการภาพรวมสาขา</a>`);
 
