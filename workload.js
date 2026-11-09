@@ -168,7 +168,7 @@
                 ${editable ? `<div class="item-actions">
                     <button type="button" class="tu-btn tu-btn-secondary tu-btn-sm" data-action="edit" data-term="${escapeHtml(r.term_id)}" data-idx="${idx}">แก้ไข</button>
                     <button type="button" class="tu-btn tu-btn-danger tu-btn-sm" data-action="delete" data-term="${escapeHtml(r.term_id)}" data-idx="${idx}">ลบ</button>
-                </div>` : (r.workflow_status === "Approved" ? `<div class="item-actions"><span class="muted-text" style="font-size: 0.85rem; color: var(--tu-red, #c00);">🔒 อนุมัติแล้ว (ล็อก)</span></div>` : "")}
+                </div>` : (r.workflow_status === "Approved" ? `<div class="item-actions"><span class="muted-text" style="font-size: 0.85rem; color: var(--tu-red, rgb(0, 204, 10));">อนุมัติแล้ว</span></div>` : "")}
             </li>`;
         }).join("");
     }
