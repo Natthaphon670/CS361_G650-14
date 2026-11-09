@@ -22,7 +22,9 @@ async function fetchFaculties() {
 
 function renderFaculties(faculties) {
   const grid = document.getElementById('faculty-grid');
-  const loading = document.getElementById('loading-state');
+  
+  // 1. ปรับให้ค้นหา Loader ได้ทั้ง 2 ชื่อ (เผื่อ HTML ตั้งชื่อไว้แบบไหนก็ทำงานได้)
+  const loading = document.getElementById('global-loading') || document.getElementById('loading-state');
       
   grid.innerHTML = ''; 
       
@@ -30,6 +32,9 @@ function renderFaculties(faculties) {
     grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 2rem;">ไม่พบรายชื่ออาจารย์ที่ตรงกับคำค้นหา</p>';
     if (loading) loading.style.display = 'none';
     grid.style.display = 'grid';
+    
+    const main = document.querySelector('main');
+    if (main) main.style.display = '';
     return;
   }
 
@@ -60,6 +65,16 @@ function renderFaculties(faculties) {
             this.parentNode.innerHTML = this.dataset.initials;
         });
     }
+        
+    grid.appendChild(card);
+  });
+      
+  if (loading) loading.style.display = 'none';
+  grid.style.display = 'grid';
+
+  const main = document.querySelector('main');
+  if (main) main.style.display = '';
+}
         
     grid.appendChild(card);
   });
