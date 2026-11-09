@@ -22,6 +22,7 @@
     async function init() {
         await Auth.ready;
         const loading = $("loading-state");
+        const mainEl = document.querySelector("main");
 
         try {
             const res = await fetch("faculties.json");
@@ -32,12 +33,14 @@
             faculty = faculties.find(f => f.faculty_id === id);
             
             if (!faculty) {
-                document.querySelector("main").innerHTML = `<p style="color: var(--tu-red); text-align: center; padding: 3rem;">ไม่พบข้อมูลอาจารย์รหัส: ${escapeHtml(id)}</p>`;
+                mainEl.innerHTML = `<p style="color: var(--tu-red); text-align: center; padding: 3rem;">ไม่พบข้อมูลอาจารย์รหัส: ${escapeHtml(id)}</p>`;
+                mainEl.style.display = "block";
                 return;
             }
         } catch (err) {
             console.error(err);
-            document.querySelector("main").innerHTML = `<p style="color: var(--tu-red); text-align: center; padding: 3rem;">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>`;
+            mainEl.innerHTML = `<p style="color: var(--tu-red); text-align: center; padding: 3rem;">เกิดข้อผิดพลาดในการโหลดข้อมูล</p>`;
+            mainEl.style.display = "block";
             return;
         }
 
@@ -45,6 +48,9 @@
         renderPublications();
         bindEvents();
         await loadWorkloads();
+
+        if (loading) loading.style.display = "none";
+        if (mainEl) mainEl.style.display = "block";
     }
 
     
