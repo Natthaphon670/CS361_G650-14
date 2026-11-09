@@ -1,6 +1,7 @@
 (() => {
     const $ = id => document.getElementById(id);
-    const EDITABLE = ["Draft", "Rejected", "Pending_Review", "Approved"];
+    const EDITABLE = ["Draft", "Rejected", "Pending_Review"];   // ตัด "Approved" ออก เพื่อล็อกไม่ให้แก้ไข/ลบเมื่ออนุมัติแล้ว
+    const PUB_PAGE = 10;
 
     let faculty = null;
     let records = [];            
@@ -17,17 +18,10 @@
     document.addEventListener("DOMContentLoaded", init);
 
     async function init() {
-        // --- 1. Client-Side Route Guard & DOM Flash Protection ---
         await Auth.ready;
-        
-        // ตรวจสอบสิทธิ์การเข้าถึง หากยังไม่เข้าสู่ระบบ ให้ Redirect ไปยัง Cognito Hosted UI
         const me = Auth.getUser();
         if (!me) {
-            if (typeof Auth !== 'undefined' && Auth.login) {
-                Auth.login();
-            } else {
-                console.error("Auth.login is not defined");
-            }
+            if (typeof Auth !== 'undefined' && Auth.login) Auth.login();
             return;
         }
 
@@ -54,18 +48,12 @@
             return;
         }
 
-        // ตั้งค่าลิงก์กลับไปยังหน้า Profile
-        if ($("btn-view-profile")) {
-            $("btn-view-profile").href = `profile.html?id=${faculty.faculty_id}`;
-        }
-        if ($("wl-owner-name")) {
-            $("wl-owner-name").textContent = `อาจารย์: ${faculty.name_th} (${faculty.faculty_id})`;
-        }
+        if ($("btn-view-profile")) $("btn-view-profile").href = `profile.html?id=${faculty.faculty_id}`;
+        if ($("wl-owner-name")) $("wl-owner-name").textContent = `อาจารย์: ${faculty.name_th} (${faculty.faculty_id})`;
 
         bindEvents();
         await loadWorkloads();
 
-        // --- 2. เรนเดอร์ DOM เมื่อตรวจสอบสิทธิ์และดึงข้อมูลสำเร็จเรียบร้อย ---
         if (loading) loading.style.display = "none";
         if (mainEl) mainEl.style.display = "block";
     }
@@ -93,10 +81,17 @@
 
     function renderSubtitle() {
         const el = $("wl-subtitle");
-        if (isOwner()) el.textContent = "ภาระงานของคุณ — เพิ่ม/แก้ไขได้ไม่จำกัด (เมื่อเพิ่มแล้วจะขึ้นเป็น “รอการตรวจสอบ” ที่ Dashboard)";
-        else if (isStaff()) el.textContent = "มุมมองสำหรับผู้ตรวจสอบ — อนุมัติ/ส่งกลับได้ที่หน้า Dashboard";
-        else el.textContent = "แสดงเฉพาะภาระงานที่ได้รับการอนุมัติแล้ว";
-        $("btn-new-term").hidden = !isOwner();
+        const rec = currentRecord();
+        if (rec && rec.workflow_status === "Approved") {
+            el.innerHTML = `<span style="color: var(--tu-red, #c00); font-weight: 600;">🔒 รายการนี้ได้รับการอนุมัติแล้ว ไม่สามารถแก้ไขได้</span>`;
+        } else if (isOwner()) {
+            el.textContent = "ภาระงานของคุณ — เพิ่ม/แก้ไขได้ไม่จำกัด (เมื่อเพิ่มแล้วจะขึ้นเป็น “รอการตรวจสอบ” ที่ Dashboard)";
+        } else if (isStaff()) {
+            el.textContent = "มุมมองสำหรับผู้ตรวจสอบ — อนุมัติ/ส่งกลับได้ที่หน้า Dashboard";
+        } else {
+            el.textContent = "แสดงเฉพาะภาระงานที่ได้รับการอนุมัติแล้ว";
+        }
+        $("btn-new-term").hidden = !isOwner() || (rec && rec.workflow_status === "Approved");
     }
 
     function renderTermSelect() {
@@ -118,6 +113,9 @@
             html += `<button type="button" class="tu-btn tu-btn-sm" id="btn-submit-review" ${countItems(rec) === 0 ? "disabled title=\"ต้องมีอย่างน้อย 1 รายการ\"" : ""}>ส่งตรวจ (Submit for Review)</button>`;
         }
         html += `</div>`;
+        if (rec.workflow_status === "Approved") {
+            html += `<div class="notice notice-ok"><b>สถานะ:</b> รายการนี้ได้รับการอนุมัติแล้ว ไม่สามารถแก้ไขหรือลบรายการได้</div>`;
+        }
         if (rec.workflow_status === "Rejected" && rec.review_comment && canSeeStatus()) {
             html += `<div class="notice notice-error"><b>เหตุผลที่ส่งกลับแก้ไข:</b> ${escapeHtml(rec.review_comment)}
                 ${rec.reviewed_by ? `<br><small>โดย ${escapeHtml(rec.reviewed_by)} · ${escapeHtml(formatDateTime(rec.reviewed_at))}</small>` : ""}</div>`;
@@ -143,6 +141,8 @@
         const cat = getCategory(activeCat);
         const query = $("repo-search").value.toLowerCase().trim();
         const rec = currentRecord();
+        
+        // ซ่อนปุ่มเพิ่มรายการทันทีหากสถานะเป็น Approved หรือไม่อยู่ในสถานะแก้ไขได้
         $("btn-add-item").hidden = !(isOwner() && (rec ? canEditRecord(rec) : records.length > 0));
 
         const rows = [];
@@ -168,7 +168,7 @@
                 ${editable ? `<div class="item-actions">
                     <button type="button" class="tu-btn tu-btn-secondary tu-btn-sm" data-action="edit" data-term="${escapeHtml(r.term_id)}" data-idx="${idx}">แก้ไข</button>
                     <button type="button" class="tu-btn tu-btn-danger tu-btn-sm" data-action="delete" data-term="${escapeHtml(r.term_id)}" data-idx="${idx}">ลบ</button>
-                </div>` : ""}
+                </div>` : (r.workflow_status === "Approved" ? `<div class="item-actions"><span class="muted-text" style="font-size: 0.85rem; color: var(--tu-red, #c00);">🔒 อนุมัติแล้ว (ล็อก)</span></div>` : "")}
             </li>`;
         }).join("");
     }
@@ -178,7 +178,12 @@
         $("repo-search").addEventListener("input", renderList);
         $("btn-new-term").addEventListener("click", openTermModal);
         $("btn-add-item").addEventListener("click", () => {
-            if (!currentRecord() && records.length) { selectedTerm = records[0].term_id; renderWorkloads(); }
+            const rec = currentRecord();
+            if (rec && !canEditRecord(rec)) {
+                toast("รายการนี้ได้รับการอนุมัติแล้ว ไม่สามารถเพิ่มหรือแก้ไขได้", "error");
+                return;
+            }
+            if (!rec && records.length) { selectedTerm = records[0].term_id; renderWorkloads(); }
             openItemForm(activeCat, null);
         });
         $("item-form").addEventListener("submit", onSaveItem);
@@ -198,7 +203,16 @@
             const b = e.target.closest("[data-action]");
             if (!b) return;
             if (b.dataset.action === "evidence") Api.openEvidence(b.dataset.key);
-            if (b.dataset.action === "edit") { selectedTerm = b.dataset.term; openItemForm(activeCat, Number(b.dataset.idx)); }
+            if (b.dataset.action === "edit") {
+                const rec = records.find(r => r.term_id === b.dataset.term);
+                if (rec && !canEditRecord(rec)) {
+                    toast("รายการนี้ได้รับการอนุมัติแล้ว ไม่สามารถแก้ไขได้", "error");
+                    renderWorkloads();
+                    return;
+                }
+                selectedTerm = b.dataset.term; 
+                openItemForm(activeCat, Number(b.dataset.idx));
+            }
             if (b.dataset.action === "delete") onDeleteItem(b.dataset.term, Number(b.dataset.idx));
         });
     }
@@ -226,7 +240,10 @@
 
     function openItemForm(catKey, idx) {
         const rec = currentRecord();
-        if (!rec || !canEditRecord(rec)) return;
+        if (!rec || !canEditRecord(rec)) {
+            toast("รายการนี้ได้รับการอนุมัติแล้ว ไม่สามารถแก้ไขได้", "error");
+            return;
+        }
         const cat = getCategory(catKey);
         const item = idx === null ? {} : (rec.workloads[catKey][idx] || {});
         editing = { termId: rec.term_id, catKey, idx };
@@ -275,7 +292,10 @@
     async function onSaveItem(e) {
         e.preventDefault();
         const rec = records.find(r => r.term_id === editing?.termId);
-        if (!rec || !canEditRecord(rec)) return;
+        if (!rec || !canEditRecord(rec)) {
+            toast("รายการนี้ได้รับการอนุมัติแล้ว ไม่สามารถบันทึกการเปลี่ยนแปลงได้", "error");
+            return;
+        }
         const cat = getCategory(editing.catKey);
         const btn = $("item-save-btn");
 
@@ -322,7 +342,10 @@
 
     async function onDeleteItem(termId, idx) {
         const rec = records.find(r => r.term_id === termId);
-        if (!rec || !canEditRecord(rec)) return;
+        if (!rec || !canEditRecord(rec)) {
+            toast("รายการนี้ได้รับการอนุมัติแล้ว ไม่สามารถลบได้", "error");
+            return;
+        }
         if (!confirm("ต้องการลบรายการภาระงานนี้หรือไม่?")) return;
         const workloads = structuredClone({ ...emptyWorkloads(), ...rec.workloads });
         workloads[activeCat].splice(idx, 1);

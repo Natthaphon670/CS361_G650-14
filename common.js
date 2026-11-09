@@ -39,7 +39,8 @@ const CATEGORIES = [
     {
         key: "academic_outputs", en: "Research", label: "งานวิจัย / ผลงานวิชาการ",
         fields: [
-            { name: "output_type", label: "ประเภทผลงาน", type: "text", required: true, placeholder: "เช่น บทความวิจัย, แบบบรรยาย" },
+            { name: "output_type", label: "ประเภทผลงาน", type: "select", required: true,
+              options: ["บทความวิจัย", "วารสารวิชาการ", "หนังสือ/ตำรา"] },
             { name: "title", label: "ชื่อผลงาน", type: "text", required: true },
             { name: "participation_percentage", label: "สัดส่วนการมีส่วนร่วม (%)", type: "number", required: true, min: 0, max: 100, step: 1, default: 100 },
             { name: "category", label: "ระดับการตีพิมพ์", type: "text", required: true, placeholder: "เช่น วารสารวิชาการระดับนานาชาติ" }
